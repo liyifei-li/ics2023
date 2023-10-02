@@ -89,7 +89,7 @@ static int cmd_x(char *args) {
   sscanf(token, "%x", &EXPR);
   for (uint32_t i = 0; i < N; i++) {
     data = (uint32_t *)guest_to_host(EXPR);
-    printf("%#x\n", *data);
+    printf("%#10x\n", *data);
     EXPR += 4;
   }
   return 0;
