@@ -19,7 +19,7 @@
 #include <readline/history.h>
 #include "sdb.h"
 
-#include <memory/host.h>
+#include <memory/paddr.h>
 
 static int is_batch_mode = false;
 
@@ -82,14 +82,14 @@ static int cmd_info(char *args) {
 static int cmd_x(char *args) {
   char *token;
   uint32_t N;
-  uint32_t EXPR;
-  word_t data;
+  uint32_t *EXPR = NULL;
+  paddr_t data;
   token = strtok(args, " ");
   sscanf(token, "%d", &N);
   token = strtok(NULL, " ");
-  sscanf(token, "%x", &EXPR);
+  sscanf(token, "%x", EXPR);
   for (uint32_t i = 0; i < N; i++) {
-    data = host_read(&EXPR, 4);
+    data = host_to_guest((uint8_t *)EXPR);
     printf("%#x\n", data);
     EXPR += 4;
   }
