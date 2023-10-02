@@ -56,13 +56,13 @@ static int cmd_q(char *args) {
 static int cmd_help(char *args);
 
 static int cmd_si(char *args) {
-  char *stepptr;
+  char *token;
   uint64_t step = 0;
-  stepptr = strtok(args, " ");
-  if (stepptr == NULL)
+  token = strtok(args, " ");
+  if (token == NULL)
     step = 1;
   else
-    sscanf(stepptr, "%ld", &step);
+    sscanf(token, "%ld", &step);
   cpu_exec(step);
   return 0;
 }
@@ -83,7 +83,7 @@ static struct {
   { "help", "Display information about all supported commands", cmd_help },
   { "c", "Continue the execution of the program", cmd_c },
   { "q", "Exit NEMU", cmd_q },
-  { "si", "Step one instruction exactly. si [N] does si for N times.", cmd_si },
+  { "si", "Step one instruction exactly. si [N] steps N instructions.", cmd_si },
   { "info", "Generic command for showing things about the program being debugged.", cmd_info },
   { "x", "Examine memory: x/FMT ADDRESS.", cmd_x },
   /* TODO: Add more commands */
