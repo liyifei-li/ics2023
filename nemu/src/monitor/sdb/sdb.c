@@ -90,7 +90,7 @@ static int cmd_x(char *args) {
   sscanf(token, "%x", &EXPR);
   for (uint32_t i = 0; i < N; i++) {
     data = host_read(&EXPR, 4);
-    printf("%d", data);
+    printf("%-10x", data);
     EXPR += 4;
   }
   return 0;
