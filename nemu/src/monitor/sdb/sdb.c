@@ -56,7 +56,14 @@ static int cmd_q(char *args) {
 static int cmd_help(char *args);
 
 static int cmd_si(char *args) {
-  printf("%s", args);
+  char *stepptr;
+  uint64_t step = 0;
+  stepptr = strtok(args, " ");
+  if (stepptr == NULL)
+    step = 1;
+  else
+    sscanf(stepptr, "%ld", &step);
+  cpu_exec(step);
   return 0;
 }
 
