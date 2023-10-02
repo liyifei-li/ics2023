@@ -19,6 +19,8 @@
 #include <readline/history.h>
 #include "sdb.h"
 
+#include <memory/host.h>
+
 static int is_batch_mode = false;
 
 void init_regex();
@@ -79,17 +81,21 @@ static int cmd_info(char *args) {
 
 static int cmd_x(char *args) {
   char *token;
-  uint32_t N, EXPR;
+  uint32_t N;
+  uint32_t EXPR;
+  word_t data;
   token = strtok(args, " ");
   sscanf(token, "%d", &N);
   token = strtok(args, " ");
   sscanf(token, "%x", &EXPR);
-  /*
   for (uint32_t i = 0; i < N; i++) {
-    printf("%x\n", paddr_read(EXPR, 4));
-  */
+    data = host_read(&EXPR, 4);
+    printf("%d", data);
+    EXPR += 4;
+  }
   return 0;
 }
+
 static struct {
   const char *name;
   const char *description;
