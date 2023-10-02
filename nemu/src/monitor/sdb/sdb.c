@@ -86,7 +86,7 @@ static int cmd_x(char *args) {
   word_t data;
   token = strtok(args, " ");
   sscanf(token, "%d", &N);
-  token = strtok(args, " ");
+  token = strtok(NULL, " ");
   sscanf(token, "%x", &EXPR);
   for (uint32_t i = 0; i < N; i++) {
     data = host_read(&EXPR, 4);
