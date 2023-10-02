@@ -79,6 +79,7 @@ static int cmd_info(char *args) {
   return 0;
 }
 
+/*
 static int cmd_x(char *args) {
   char *token;
   uint32_t N;
@@ -95,6 +96,27 @@ static int cmd_x(char *args) {
   }
   return 0;
 }
+*/
+
+static int cmd_x(char *args) {
+  char *token;
+  uint32_t N;
+  uint32_t EXPR;
+  word_t data;
+  token = strtok(args, " ");
+  sscanf(token, "%d", &N);
+  token = strtok(NULL, " ");
+  sscanf(token, "%x", &EXPR);
+  for (uint32_t i = 0; i < N; i++) {
+    data = paddr_read(EXPR, 4);
+    printf("%#x\n", data);
+    EXPR += 4;
+  }
+  return 0;
+}
+
+
+
 
 static struct {
   const char *name;
