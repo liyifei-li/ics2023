@@ -57,13 +57,13 @@ static int cmd_help(char *args);
 
 static int cmd_si(char *args) {
   char *token;
-  uint64_t step = 0;
+  uint64_t N = 0;
   token = strtok(args, " ");
   if (token == NULL)
-    step = 1;
+    N = 1;
   else
-    sscanf(token, "%ld", &step);
-  cpu_exec(step);
+    sscanf(token, "%ld", &N);
+  cpu_exec(N);
   return 0;
 }
 
@@ -78,6 +78,12 @@ static int cmd_info(char *args) {
 }
 
 static int cmd_x(char *args) {
+  char *token;
+  uint64_t N, EXPR;
+  token = strtok(args, " ");
+  sscanf(token, "%ld", &N);
+  token = strtok(args, " ");
+  sscanf(token, "%lx", &EXPR);
   return 0;
 }
 
