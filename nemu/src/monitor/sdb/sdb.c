@@ -77,13 +77,14 @@ static int cmd_info(char *args) {
   return 0;
 }
 
-static int cmd_x(char *args) {/*
+static int cmd_x(char *args) {
   char *token;
   uint32_t N, EXPR;
   token = strtok(args, " ");
   sscanf(token, "%d", &N);
   token = strtok(args, " ");
   sscanf(token, "%x", &EXPR);
+  /*
   for (uint32_t i = 0; i < N; i++) {
     printf("%x\n", paddr_read(EXPR, 4));
   */
