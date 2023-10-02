@@ -57,12 +57,12 @@ static int cmd_help(char *args);
 
 static int cmd_si(char *args) {
   char *token;
-  uint64_t N = 0;
+  uint32_t N = 0;
   token = strtok(args, " ");
   if (token == NULL)
     N = 1;
   else
-    sscanf(token, "%ld", &N);
+    sscanf(token, "%d", &N);
   cpu_exec(N);
   return 0;
 }
@@ -77,16 +77,18 @@ static int cmd_info(char *args) {
   return 0;
 }
 
-static int cmd_x(char *args) {
+static int cmd_x(char *args) {/*
   char *token;
-  uint64_t N, EXPR;
+  uint32_t N, EXPR;
   token = strtok(args, " ");
-  sscanf(token, "%ld", &N);
+  sscanf(token, "%d", &N);
   token = strtok(args, " ");
-  sscanf(token, "%lx", &EXPR);
+  sscanf(token, "%x", &EXPR);
+  for (uint32_t i = 0; i < N; i++) {
+    printf("%x\n", paddr_read(EXPR, 4));
+  */
   return 0;
 }
-
 static struct {
   const char *name;
   const char *description;
@@ -97,7 +99,7 @@ static struct {
   { "q", "Exit NEMU", cmd_q },
   { "si", "Step one instruction exactly. si [N] steps N instructions.", cmd_si },
   { "info", "Generic command for showing things about the program being debugged.", cmd_info },
-  { "x", "Examine memory: x/FMT ADDRESS.", cmd_x },
+  { "x", "Examine memory: x N EXPR.", cmd_x },
   /* TODO: Add more commands */
 
 };
