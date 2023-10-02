@@ -83,14 +83,14 @@ static int cmd_x(char *args) {
   char *token;
   uint32_t N;
   uint32_t *EXPR = NULL;
-  paddr_t data;
+  uint32_t *data;
   token = strtok(args, " ");
   sscanf(token, "%d", &N);
   token = strtok(NULL, " ");
   sscanf(token, "%x", EXPR);
   for (uint32_t i = 0; i < N; i++) {
-    data = host_to_guest((uint8_t *)EXPR);
-    printf("%#x\n", data);
+    data = (uint32_t *)guest_to_host(*EXPR);
+    printf("%#x\n", *data);
     EXPR += 4;
   }
   return 0;
