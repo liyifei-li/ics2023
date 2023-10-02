@@ -79,7 +79,6 @@ static int cmd_info(char *args) {
   return 0;
 }
 
-/*
 static int cmd_x(char *args) {
   char *token;
   uint32_t N;
@@ -96,8 +95,8 @@ static int cmd_x(char *args) {
   }
   return 0;
 }
-*/
 
+/*
 static int cmd_x(char *args) {
   char *token;
   uint32_t N;
@@ -114,7 +113,7 @@ static int cmd_x(char *args) {
   }
   return 0;
 }
-
+*/
 
 
 
