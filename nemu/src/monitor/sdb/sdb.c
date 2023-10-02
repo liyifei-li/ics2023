@@ -55,6 +55,18 @@ static int cmd_q(char *args) {
 
 static int cmd_help(char *args);
 
+static int cmd_si(char *args) {
+  return 0;
+}
+
+static int cmd_info(char *args) {
+  return 0;
+}
+
+static int cmd_x(char *args) {
+  return 0;
+}
+
 static struct {
   const char *name;
   const char *description;
@@ -63,7 +75,9 @@ static struct {
   { "help", "Display information about all supported commands", cmd_help },
   { "c", "Continue the execution of the program", cmd_c },
   { "q", "Exit NEMU", cmd_q },
-
+  { "si", "Step one instruction exactly.\nUsage: stepi [N]\nArgument N means step N times (or till program stops for another reason).", cmd_si },
+  { "info", "Generic command for showing things about the program being debugged.", cmd_info },
+  { "x", "Examine memory: x/FMT ADDRESS.", cmd_x },
   /* TODO: Add more commands */
 
 };
