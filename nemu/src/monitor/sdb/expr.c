@@ -222,7 +222,7 @@ exprs eval(uint32_t p, uint32_t q) {
 
 word_t expr(char *e, bool *success) {
   if (!make_token(e)) {
-    *success = false;
+    success = false;
     return 0;
   }
   /* TODO: Insert codes to evaluate the expression. */
@@ -234,7 +234,7 @@ word_t expr(char *e, bool *success) {
     return 0;
   }
   Log("514");
-//  *success = true;
+  *success = true;
   Log("114");
   return result.value;
 }
