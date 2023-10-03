@@ -39,12 +39,12 @@ static struct rule {
   {" +", TK_NOTYPE},    // spaces
   {"[0-9]+", TK_DECINT},// decimal integer
   {"\\+", '+'},         // plus
-//  {"-", '-'},           // minus
-//  {"*", '*'},           // multiply
-//  {"/", '/'},           // divide
+  {"-", '-'},           // minus
+  {"*", '*'},           // multiply
+  {"\\/", '/'},           // divide
   {"\\(", '('},           // left parentheses
-//  {")", ')'},           // right parentheses
-//  {"==", TK_EQ},        // equal
+  {")", ')'},           // right parentheses
+  {"==", TK_EQ},        // equal
 };
 
 #define NR_REGEX ARRLEN(rules)
@@ -135,7 +135,7 @@ static bool make_token(char *e) {
 
   return true;
 }
-/*
+
 typedef struct expr_res {
   uint32_t value;
   bool error;
@@ -211,7 +211,7 @@ exprs eval(uint32_t p, uint32_t q) {
   }
   return ret;
 }
-*/
+
 word_t expr(char *e, bool *success) {
   if (!make_token(e)) {
     *success = false;
@@ -219,11 +219,11 @@ word_t expr(char *e, bool *success) {
   }
 
   /* TODO: Insert codes to evaluate the expression. */
-//  exprs result = eval(0, nr_token - 1);
-  if (1) {//result.error) {
+  exprs result = eval(0, nr_token - 1);
+  if (result.error) {
     *success = false;
     return 0;
   }
   *success = true;
-  return 0;//result.value;
+  return result.value;
 }
