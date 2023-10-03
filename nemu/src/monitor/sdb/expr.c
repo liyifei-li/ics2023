@@ -234,7 +234,7 @@ word_t expr(char *e, bool *success) {
     return 0;
   }
   Log("514");
-  *success = true;
+//  *success = true;
   Log("114");
   return result.value;
 }
