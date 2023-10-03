@@ -201,9 +201,9 @@ exprs eval(uint32_t p, uint32_t q) {
     }
   }
   else {
-    if (check_parentheses(p, q - 1))
-      return eval(p + 1, q - 22);
-    uint32_t op = find_mainop(p, q - 1);
+    if (check_parentheses(p, q))
+      return eval(p + 1, q - 1);
+    uint32_t op = find_mainop(p, q);
     exprs subret1 = eval(p, op);
     exprs subret2 = eval(op + 1, q);
     if (subret1.error || subret2.error)
