@@ -121,7 +121,7 @@ static bool make_token(char *e) {
           tokens[nr_token++].type = ')';
           case TK_EQ:
           TODO(); 
-          default: TODO();
+//          default: TODO();
         }
         break;
       }
