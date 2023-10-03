@@ -164,13 +164,15 @@ exprs eval(uint32_t p, uint32_t q) {
 
   if (p > q)
     ret.error = 1;
-  /*
+  
   else if (p == q) {
     if (tokens[p].type != TK_DECINT)
       ret.error = 1;
     else
-//      sscanf(tokens[p].str, "%d", &ret.value);
-*/
+      sscanf(tokens[p].str, "%d", &ret.value);
+  }
+  else {
+  }
   return ret;
 }
 
