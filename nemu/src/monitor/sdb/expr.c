@@ -139,7 +139,7 @@ static bool make_token(char *e) {
 }
 
 typedef struct expr_res {
-  uint32_t result;
+  uint32_t value;
   bool error;
 } exprs;
 
@@ -161,6 +161,15 @@ bool check_parentheses(uint32_t p, uint32_t q) {
 
 exprs eval(uint32_t p, uint32_t q) {
   exprs ret = {0, 0};
+/*
+  if (p > q)
+    ret.error = 1;
+  else if (p == q) {
+    if (tokens[p].type != TK_DECINT)
+      ret.error = 1;
+    else
+//      sscanf(tokens[p].str, "%d", &ret.value);
+*/
   return ret;
 }
 
@@ -174,6 +183,6 @@ word_t expr(char *e, bool *success) {
   exprs result = eval(0, nr_token - 1);
   if (result.error)
     *success = false;
-  else printf("%d\n", result.result);
+  else printf("%d\n", result.value);
   return 0;
 }
