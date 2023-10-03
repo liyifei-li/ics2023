@@ -100,7 +100,12 @@ int main(int argc, char *argv[]) {
   }
   int i;
 
+  memset(buf, 0, sizeof(buf));
+  len = 0;
+
   for (i = 0; i < loop; i ++) {
+    len = 0;
+    memset(buf, 0, sizeof(buf));
     gen_rand_expr();
 
     while (len >= 128) {
@@ -123,9 +128,13 @@ int main(int argc, char *argv[]) {
     assert(fp != NULL);
 
     int result;
+    int retval;
     ret = fscanf(fp, "%d", &result);
-    pclose(fp);
-
+    retval = pclose(fp);
+    if (retval != 0) {
+      i--;
+      continue;
+    }
     printf("%u %s\n", result, buf);
   }
   return 0;
