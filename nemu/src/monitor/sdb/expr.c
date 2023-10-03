@@ -101,6 +101,24 @@ static bool make_token(char *e) {
          */
 
         switch (rules[i].token_type) {
+          case TK_NOTYPE:
+          TODO(); 
+          case TK_DECINT:
+          TODO(); 
+          case '+':
+          TODO(); 
+          case '-':
+          TODO();  
+          case '*':
+          TODO(); 
+          case '/':
+          TODO(); 
+          case '(':
+          TODO(); 
+          case ')':
+          TODO(); 
+          case TK_EQ:
+          TODO(); 
           default: TODO();
         }
 
