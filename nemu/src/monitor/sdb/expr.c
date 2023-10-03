@@ -217,7 +217,7 @@ word_t expr(char *e, bool *success) {
     *success = false;
     return 0;
   }
-
+  Log("114514\n");
   /* TODO: Insert codes to evaluate the expression. */
   exprs result = eval(0, nr_token - 1);
   if (result.error) {
