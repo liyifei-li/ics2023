@@ -110,6 +110,7 @@ static bool make_token(char *e) {
             Log("2");
             tokens[nr_token].type = TK_DECINT;
             Log("3");
+            printf("%s\n", substr_start);
             strcpy(tokens[nr_token++].str, substr_start);
             Log("4");
             break;
