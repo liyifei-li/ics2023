@@ -123,6 +123,7 @@ static bool make_token(char *e) {
           Log("1919810\n"); 
           default: Log("1145141919810\n");
         }
+        Log("%d\n", tokens[nr_token - 1].type);
         break;
       }
     }
