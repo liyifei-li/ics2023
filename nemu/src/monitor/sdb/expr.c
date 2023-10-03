@@ -192,8 +192,8 @@ exprs eval(uint32_t p, uint32_t q) {
 
   if (p > q)
     ret.error = 1;
-  
   else if (p == q) {
+    Log("114514");
     if (tokens[p].type != TK_DECINT)
       ret.error = 1;
     else
@@ -224,7 +224,6 @@ word_t expr(char *e, bool *success) {
     *success = false;
     return 0;
   }
-  Log("114514\n");
   /* TODO: Insert codes to evaluate the expression. */
   exprs result = eval(0, nr_token - 1);
   if (result.error) {
