@@ -193,14 +193,11 @@ exprs eval(uint32_t p, uint32_t q) {
   if (p > q)
     ret.error = 1;
   else if (p == q) {
-    Log("114514");
     if (tokens[p].type != TK_DECINT) {
       ret.error = 1;
-      Log("114");
     }
     else {
       sscanf(tokens[p].str, "%d", &ret.value);
-      Log("514");
     }
   }
   else {
@@ -230,11 +227,11 @@ word_t expr(char *e, bool *success) {
   }
   /* TODO: Insert codes to evaluate the expression. */
   exprs result = eval(0, nr_token - 1);
-  Log("1919810");
   if (result.error) {
     *success = false;
     return 0;
   }
   *success = true;
+  Log("114");
   return result.value;
 }
