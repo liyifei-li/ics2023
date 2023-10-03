@@ -40,7 +40,7 @@ static struct rule {
   {"[0-9]+", TK_DECINT},// decimal integer
   {"\\+", '+'},         // plus
   {"-", '-'},           // minus
-  {"*", '*'},           // multiply
+  {"\\*", '*'},           // multiply
   {"/", '/'},           // divide
   {"\\(", '('},           // left parentheses
   {"\\)", ')'},           // right parentheses
