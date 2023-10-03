@@ -187,6 +187,7 @@ uint32_t find_mainop(uint32_t p, uint32_t q) {
 }
 
 exprs eval(uint32_t p, uint32_t q) {
+    Log("%d %d", p, q);
   exprs ret = {0, 0};
   if (p > q)
     ret.error = 1;
@@ -202,7 +203,6 @@ exprs eval(uint32_t p, uint32_t q) {
     if (check_parentheses(p, q))
       return eval(p + 1, q - 1);
     uint32_t op = find_mainop(p, q);
-    Log("%d %d %d", p, q, op);
     exprs subret1 = eval(p, op - 1);
     exprs subret2 = eval(op + 1, q);
     if (subret1.error || subret2.error)
