@@ -153,11 +153,10 @@ bool check_parentheses(uint32_t p, uint32_t q) {
   for (int i = p; i < q; i++) {
     if (tokens[p].type == '(')
       cnt++;
-    if (tokens[p].type == ')') {
-      if (cnt == 0)
-        return false;
+    if (tokens[p].type == ')')
       cnt--;
-    } 
+    if (cnt == 0)
+      return false;
   }
   if (cnt != 1 || tokens[q].type != ')')
     return false;
@@ -189,7 +188,6 @@ uint32_t find_mainop(uint32_t p, uint32_t q) {
 
 exprs eval(uint32_t p, uint32_t q) {
   exprs ret = {0, 0};
-
   if (p > q)
     ret.error = 1;
   else if (p == q) {
@@ -204,6 +202,7 @@ exprs eval(uint32_t p, uint32_t q) {
     if (check_parentheses(p, q))
       return eval(p + 1, q - 1);
     uint32_t op = find_mainop(p, q);
+    Log("what");
     exprs subret1 = eval(p, op - 1);
     exprs subret2 = eval(op + 1, q);
     if (subret1.error || subret2.error)
