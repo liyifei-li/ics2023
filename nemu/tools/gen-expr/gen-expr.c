@@ -132,6 +132,7 @@ int main(int argc, char *argv[]) {
     ret = fscanf(fp, "%d", &result);
     retval = pclose(fp);
     if (retval != 0) {
+      i--;
       continue;
     }
     printf("%u %s\n", result, buf);
