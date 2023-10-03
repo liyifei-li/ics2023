@@ -121,20 +121,15 @@ int main(int argc, char *argv[]) {
     fputs(code_buf, fp);
     fclose(fp);
 
-    int ret = system("gcc /tmp/.code.c -o /tmp/.expr");
+    int ret = system("gcc /tmp/.code.c -o -Wall -Werror /tmp/.expr");
     if (ret != 0) continue;
 
     fp = popen("/tmp/.expr", "r");
     assert(fp != NULL);
 
     int result;
-    int retval;
     ret = fscanf(fp, "%d", &result);
-    retval = pclose(fp);
-    if (retval != 0) {
-      i--;
-      continue;
-    }
+    pclose(fp);
     printf("%u %s\n", result, buf);
   }
   return 0;
