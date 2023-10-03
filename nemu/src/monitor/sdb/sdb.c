@@ -121,7 +121,7 @@ static int cmd_p(char *args) {
     return 0;
   word_t result = expr(args, &success);
   if (success == false)
-    printf("Failed to interpret expression");
+    printf("Failed to interpret expression\n");
   else
     printf("%d\n", result);
   return 0;
