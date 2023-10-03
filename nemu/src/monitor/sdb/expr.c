@@ -159,6 +159,29 @@ bool check_parentheses(uint32_t p, uint32_t q) {
   return true;
 }
 
+uint32_t find_mainop(uint32_t p, uint32_t q) {
+  uint32_t ret = p, pri = 0, cnt = 0;
+  for (uint32_t i = p; i <= q; i++) {
+    if (tokens[i].type == '(')
+      cnt++;
+    if (tokens[i].type == ')')
+      cnt--;
+    if (tokens[i].type == '+' || tokens[i].type == '-') {
+      if (cnt == 0) {
+        ret = i;
+        pri = 2;
+      }
+    }
+    if (tokens[i].type == '*' || tokens[i].type == '/') {
+      if (cnt == 0 && pri < 2) {
+        ret = i;
+        pri = 1;
+      }
+    }
+  }
+  return ret; 
+}
+
 exprs eval(uint32_t p, uint32_t q) {
   exprs ret = {0, 0};
 
@@ -172,6 +195,21 @@ exprs eval(uint32_t p, uint32_t q) {
       sscanf(tokens[p].str, "%d", &ret.value);
   }
   else {
+    if (check_parentheses(p, q))
+      return eval(p + 1, q - 1);
+    uint32_t op = find_mainop(p, q);
+    exprs subret1 = eval(p, op - 1);
+    exprs subret2 = eval(op + 1, q);
+    if (subret1.error || subret2.error)
+      ret.error = 1;
+    else {
+      switch (tokens[op].type) {
+        case '+': ret.value = subret1.value + subret2.value; 
+        case '-': ret.value = subret1.value - subret2.value; 
+        case '*': ret.value = subret1.value * subret2.value; 
+        case '/': ret.value = subret1.value / subret2.value;
+      }
+    }
   }
   return ret;
 }
@@ -186,6 +224,7 @@ word_t expr(char *e, bool *success) {
   exprs result = eval(0, nr_token - 1);
   if (result.error)
     *success = false;
-  else printf("%d\n", result.value);
+  else
+    printf("%d\n", result.value);
   return 0;
 }
