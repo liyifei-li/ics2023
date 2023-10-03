@@ -160,7 +160,7 @@ bool check_parentheses(uint32_t p, uint32_t q) {
       return false;
   }
   if (cnt != 1 || tokens[q - 1].type != ')') {
-    Log("what");
+    Log("%d %d", cnt, tokens[q - 1].type);
     return false;
   }
   return true;
