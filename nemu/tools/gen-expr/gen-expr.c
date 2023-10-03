@@ -32,26 +32,27 @@ static char *code_format =
 "}";
 
 char *loc = buf;
-uint32_t len = 0;
+uint32_t len;
 
 uint32_t choose(uint32_t n) {
   return rand() % n;
 }
 
 void gen(char ch) {
-  if (len < 16384) {
+  if (len >= 128) return;
   *(loc + len) = ch;
   len++;
-  }
 }
 
 void gen_num() {
+  if (len >= 128) return;
   uint32_t num = choose(10);
   gen(num + '0');
   return;
 }
 
 void gen_rand_op() {
+  if (len >= 128) return;
   switch(choose(4)) {
     case 0:
       gen('+');
@@ -71,6 +72,7 @@ void gen_rand_op() {
 
 static void gen_rand_expr() {
 //  buf[0] = '\0';
+  if (len >= 128) return;
   switch(choose(3)) {
     case 0:
       gen_num();
@@ -97,8 +99,15 @@ int main(int argc, char *argv[]) {
     sscanf(argv[1], "%d", &loop);
   }
   int i;
+
   for (i = 0; i < loop; i ++) {
     gen_rand_expr();
+
+    while (len >= 128) {
+      len = 0;
+      memset(buf, 0, sizeof(buf));
+      gen_rand_expr();
+    }
 
     sprintf(code_buf, code_format, buf);
 
