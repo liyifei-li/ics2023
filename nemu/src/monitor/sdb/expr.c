@@ -100,11 +100,14 @@ static bool make_token(char *e) {
          * of tokens, some extra actions should be performed.
          */
 
+        tokens[nr_token].type = rules[i].token_type;
         switch (rules[i].token_type) {
           case TK_NOTYPE:
           TODO(); 
           case TK_DECINT:
-          TODO(); 
+          if (substr_len >= 32)
+            assert(0);
+          strcpy(tokens[nr_token].str, substr_start);
           case '+':
           TODO(); 
           case '-':
