@@ -151,16 +151,14 @@ typedef struct expr_res {
 bool check_parentheses(uint32_t p, uint32_t q) {
   uint32_t cnt = 0;
   for (int i = p; i < q - 1; i++) {
-    Log("%d %d %d %d", p, q, i, tokens[i].type);
-    if (tokens[p].type == '(')
+    if (tokens[i].type == '(')
       cnt++;
-    if (tokens[p].type == ')')
+    if (tokens[i].type == ')')
       cnt--;
     if (cnt == 0)
       return false;
   }
   if (cnt != 1 || tokens[q - 1].type != ')') {
-    Log("%d %d", cnt, tokens[q - 1].type);
     return false;
   }
   return true;
