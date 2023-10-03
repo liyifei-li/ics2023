@@ -130,9 +130,9 @@ static bool make_token(char *e) {
           case TK_EQ:
             TODO();
             break;
-          default: TODO(); 
+          default: TODO();
         }
-        Log("%d\n", tokens[nr_token - 1].type);
+        Log("%d", tokens[nr_token - 1].type);
         break;
       }
     }
@@ -142,7 +142,7 @@ static bool make_token(char *e) {
       return false;
     }
   }
-
+  Log("1919810");
   return true;
 }
 
