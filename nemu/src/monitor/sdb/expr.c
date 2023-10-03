@@ -108,20 +108,27 @@ static bool make_token(char *e) {
           tokens[nr_token].type = TK_DECINT;
           strcpy(tokens[nr_token++].str, substr_start);
           case '+':
-          tokens[nr_token++].type = '+';
+            tokens[nr_token++].type = '+';
+            break;
           case '-':
-          tokens[nr_token++].type = '-';
+            tokens[nr_token++].type = '-';
+            break;
           case '*':
-          tokens[nr_token++].type = '*';
+            tokens[nr_token++].type = '*';
+            break;
           case '/':
-          tokens[nr_token++].type = '/';
+            tokens[nr_token++].type = '/';
+            break;
           case '(':
-          tokens[nr_token++].type = '(';
+            tokens[nr_token++].type = '(';
+            break;
           case ')':
-          tokens[nr_token++].type = ')';
+            tokens[nr_token++].type = ')';
+            break;
           case TK_EQ:
-          Log("1919810\n"); 
-          default: Log("1145141919810\n");
+            TODO();
+            break;
+          default: TODO(); 
         }
         Log("%d\n", tokens[nr_token - 1].type);
         break;
