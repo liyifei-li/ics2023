@@ -116,11 +116,11 @@ static int cmd_x(char *args) {
 
 
 static int cmd_p(char *args) {
-  bool *success = 0;
+  bool *success = NULL;
   if (args == NULL)
     return 0;
   word_t result = expr(args, success);
-  if (*success == false)
+  if (success == false)
     printf("Failed to interpret expression");
   else
     printf("%d\n", result);
