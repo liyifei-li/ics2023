@@ -104,15 +104,10 @@ static bool make_token(char *e) {
           case TK_NOTYPE:
             break;
           case TK_DECINT:
-            Log("1");
             if (substr_len >= 32)
               panic("decimal integer too long");
-            Log("2");
             tokens[nr_token].type = TK_DECINT;
-            Log("3");
-            printf("%s\n", substr_start);
-            strcpy(tokens[nr_token++].str, substr_start);
-            Log("4");
+            strncpy(tokens[nr_token++].str, substr_start, substr_len);
             break;
           case '+':
             tokens[nr_token++].type = '+';
