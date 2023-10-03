@@ -73,7 +73,7 @@ typedef struct token {
   char str[32];
 } Token;
 
-static Token tokens[1024] __attribute__((used)) = {};
+static Token tokens[256] __attribute__((used)) = {};
 static int nr_token __attribute__((used))  = 0;
 
 static bool make_token(char *e) {
@@ -104,10 +104,14 @@ static bool make_token(char *e) {
           case TK_NOTYPE:
             break;
           case TK_DECINT:
+            Log("1");
             if (substr_len >= 32)
-              panic("decimal integer too long"); 
+              panic("decimal integer too long");
+            Log("2");
             tokens[nr_token].type = TK_DECINT;
+            Log("3");
             strcpy(tokens[nr_token++].str, substr_start);
+            Log("4");
             break;
           case '+':
             tokens[nr_token++].type = '+';
