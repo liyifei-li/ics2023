@@ -114,6 +114,7 @@ static int cmd_x(char *args) {
 }
 */
 
+/*
 static int cmd_p(char *args) {
   char *token;
   bool *success = 0;
@@ -127,6 +128,7 @@ static int cmd_p(char *args) {
     printf("%d\n", result);
   return 0;
 }
+*/
 
 static struct {
   const char *name;
@@ -139,7 +141,7 @@ static struct {
   { "si", "Step one instruction exactly. si [N] steps N instructions.", cmd_si },
   { "info", "Generic command for showing things about the program being debugged.", cmd_info },
   { "x", "Examine memory: x N EXPR.", cmd_x },
-  { "p", "Print value of expression EXPR.", cmd_p},
+//  { "p", "Print value of expression EXPR.", cmd_p },
   /* TODO: Add more commands */
 };
 
