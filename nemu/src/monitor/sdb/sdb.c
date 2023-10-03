@@ -123,7 +123,7 @@ static int cmd_p(char *args) {
   if (success == false)
     printf("Failed to interpret expression\n");
   else
-    printf("%d\n", result);
+    printf("%u\n", result);
   return 0;
 }
 
