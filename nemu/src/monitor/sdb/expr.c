@@ -171,6 +171,7 @@ uint32_t find_mainop(uint32_t p, uint32_t q) {
     if (tokens[i].type == ')')
       cnt--;
     if (tokens[i].type == '+' || tokens[i].type == '-') {
+      Log("%d %d %d", p, q, i);
       if (cnt == 0) {
         ret = i;
         pri = 2;
