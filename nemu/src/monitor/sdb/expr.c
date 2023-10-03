@@ -188,7 +188,6 @@ uint32_t find_mainop(uint32_t p, uint32_t q) {
 }
 
 exprs eval(uint32_t p, uint32_t q) {
-    Log("%d %d", p, q);
   exprs ret = {0, 0};
   if (p >= q)
     ret.error = 1;
