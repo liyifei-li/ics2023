@@ -230,6 +230,7 @@ word_t expr(char *e, bool *success) {
   }
   /* TODO: Insert codes to evaluate the expression. */
   exprs result = eval(0, nr_token - 1);
+  Log("1919810");
   if (result.error) {
     *success = false;
     return 0;
