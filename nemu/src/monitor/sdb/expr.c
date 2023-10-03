@@ -159,8 +159,10 @@ bool check_parentheses(uint32_t p, uint32_t q) {
     if (cnt == 0)
       return false;
   }
-  if (cnt != 1 || tokens[q - 1].type != ')')
+  if (cnt != 1 || tokens[q - 1].type != ')') {
+    Log("what");
     return false;
+  }
   return true;
 }
 
