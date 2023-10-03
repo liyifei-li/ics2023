@@ -150,7 +150,7 @@ typedef struct expr_res {
 
 bool check_parentheses(uint32_t p, uint32_t q) {
   uint32_t cnt = 0;
-  for (int i = p; i < q; i++) {
+  for (int i = p; i < q - 1; i++) {
     if (tokens[p].type == '(')
       cnt++;
     if (tokens[p].type == ')')
@@ -158,14 +158,14 @@ bool check_parentheses(uint32_t p, uint32_t q) {
     if (cnt == 0)
       return false;
   }
-  if (cnt != 1 || tokens[q].type != ')')
+  if (cnt != 1 || tokens[q - 1].type != ')')
     return false;
   return true;
 }
 
 uint32_t find_mainop(uint32_t p, uint32_t q) {
   uint32_t ret = p, pri = 0, cnt = 0;
-  for (uint32_t i = p; i <= q; i++) {
+  for (uint32_t i = p; i < q; i++) {
     if (tokens[i].type == '(')
       cnt++;
     if (tokens[i].type == ')')
@@ -189,9 +189,9 @@ uint32_t find_mainop(uint32_t p, uint32_t q) {
 exprs eval(uint32_t p, uint32_t q) {
     Log("%d %d", p, q);
   exprs ret = {0, 0};
-  if (p > q)
+  if (p >= q)
     ret.error = 1;
-  else if (p == q) {
+  else if (p + 1 == q) {
     if (tokens[p].type != TK_DECINT) {
       ret.error = 1;
     }
@@ -200,19 +200,28 @@ exprs eval(uint32_t p, uint32_t q) {
     }
   }
   else {
-    if (check_parentheses(p, q))
-      return eval(p + 1, q - 1);
-    uint32_t op = find_mainop(p, q);
-    exprs subret1 = eval(p, op - 1);
+    if (check_parentheses(p, q - 1))
+      return eval(p + 1, q - 22);
+    uint32_t op = find_mainop(p, q - 1);
+    exprs subret1 = eval(p, op);
     exprs subret2 = eval(op + 1, q);
     if (subret1.error || subret2.error)
       ret.error = 1;
     else {
       switch (tokens[op].type) {
-        case '+': ret.value = subret1.value + subret2.value; 
-        case '-': ret.value = subret1.value - subret2.value; 
-        case '*': ret.value = subret1.value * subret2.value; 
-        case '/': ret.value = subret1.value / subret2.value;
+        case '+':
+          ret.value = subret1.value + subret2.value;
+          break; 
+        case '-':
+          ret.value = subret1.value - subret2.value;
+          break;
+        case '*':
+          ret.value = subret1.value * subret2.value;
+          break;
+        case '/':
+          ret.value = subret1.value / subret2.value;
+          break;
+        default: TODO();
       }
     }
   }
@@ -227,9 +236,7 @@ word_t expr(char *e, bool *success) {
   /* TODO: Insert codes to evaluate the expression. */
   exprs result = eval(0, nr_token - 1);
   if (result.error) {
-    Log("1919");
     *success = false;
-    Log("810");
     return 0;
   }
   *success = true;
