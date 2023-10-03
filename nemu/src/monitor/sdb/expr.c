@@ -37,14 +37,14 @@ static struct rule {
    */
 
   {" +", TK_NOTYPE},    // spaces
-  {"[0-9]+", TK_DECINT},// decimal integer
+//  {"[0-9]+", TK_DECINT},// decimal integer
   {"\\+", '+'},         // plus
-  {"-", '-'},           // minus
-  {"*", '*'},           // multiply
-  {"/", '/'},           // divide
-  {"(", '('},           // left parentheses
-  {")", ')'},           // right parentheses
-  {"==", TK_EQ},        // equal
+//  {"-", '-'},           // minus
+//  {"*", '*'},           // multiply
+//  {"/", '/'},           // divide
+//  {"(", '('},           // left parentheses
+//  {")", ')'},           // right parentheses
+//  {"==", TK_EQ},        // equal
 };
 
 #define NR_REGEX ARRLEN(rules)
