@@ -235,7 +235,7 @@ word_t expr(char *e, bool *success) {
     return 0;
   }
   /* TODO: Insert codes to evaluate the expression. */
-  exprs result = eval(0, nr_token - 1);
+  exprs result = eval(0, nr_token);
   if (result.error) {
     *success = false;
     return 0;
