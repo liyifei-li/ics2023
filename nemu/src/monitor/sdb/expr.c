@@ -105,7 +105,7 @@ static bool make_token(char *e) {
           TODO(); 
           case TK_DECINT:
           if (substr_len >= 32)
-            assert(0);
+            panic("decimal integer too long"); 
           tokens[nr_token].type = TK_DECINT;
           strcpy(tokens[nr_token].str, substr_start);
           case '+':
