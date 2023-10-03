@@ -31,23 +31,24 @@ static char *code_format =
 "  return 0; "
 "}";
 
-char *loc;
+char *loc = buf;
+uint32_t len = 0;
 
 uint32_t choose(uint32_t n) {
   return rand() % n;
 }
 
 void gen(char ch) {
-  *loc = ch;
-  loc++;
+  if (len < 16384) {
+  *(loc + len) = ch;
+  len++;
+  }
 }
 
 void gen_num() {
-  uint32_t num = choose(1000);
-  while (num) {
-    gen(num % 10 + '0');
-    num /= 10;
-  }
+  uint32_t num = choose(10);
+  gen(num + '0');
+  return;
 }
 
 void gen_rand_op() {
@@ -65,6 +66,7 @@ void gen_rand_op() {
       gen('/');
       break;
   }
+  return;
 }
 
 static void gen_rand_expr() {
@@ -84,6 +86,7 @@ static void gen_rand_expr() {
       gen_rand_expr();
       break;
   }
+  return;
 }
 
 int main(int argc, char *argv[]) {
