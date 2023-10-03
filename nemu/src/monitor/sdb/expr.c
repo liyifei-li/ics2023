@@ -42,7 +42,7 @@ static struct rule {
 //  {"-", '-'},           // minus
 //  {"*", '*'},           // multiply
 //  {"/", '/'},           // divide
-  {"(", '('},           // left parentheses
+  {"\(", '('},           // left parentheses
 //  {")", ')'},           // right parentheses
 //  {"==", TK_EQ},        // equal
 };
