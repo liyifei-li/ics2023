@@ -143,6 +143,22 @@ typedef struct expr_res {
   bool error;
 } exprs;
 
+bool check_parentheses(uint32_t p, uint32_t q) {
+  uint32_t cnt = 0;
+  for (int i = p; i < q; i++) {
+    if (tokens[p].type == '(')
+      cnt++;
+    if (tokens[p].type == ')') {
+      if (cnt == 0)
+        return false;
+      cnt--;
+    } 
+  }
+  if (cnt != 1 || tokens[q].type != ')')
+    return false;
+  return true;
+}
+
 exprs eval(uint32_t p, uint32_t q) {
   exprs ret = {0, 0};
   return ret;
