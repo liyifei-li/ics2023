@@ -102,29 +102,27 @@ static bool make_token(char *e) {
 
         switch (rules[i].token_type) {
           case TK_NOTYPE:
-          TODO(); 
           case TK_DECINT:
           if (substr_len >= 32)
             panic("decimal integer too long"); 
           tokens[nr_token].type = TK_DECINT;
-          strcpy(tokens[nr_token].str, substr_start);
+          strcpy(tokens[nr_token++].str, substr_start);
           case '+':
-          tokens[nr_token].type = '+';
+          tokens[nr_token++].type = '+';
           case '-':
-          tokens[nr_token].type = '-';
+          tokens[nr_token++].type = '-';
           case '*':
-          tokens[nr_token].type = '*';
+          tokens[nr_token++].type = '*';
           case '/':
-          tokens[nr_token].type = '/';
+          tokens[nr_token++].type = '/';
           case '(':
-          tokens[nr_token].type = '(';
+          tokens[nr_token++].type = '(';
           case ')':
-          tokens[nr_token].type = ')';
+          tokens[nr_token++].type = ')';
           case TK_EQ:
           TODO(); 
           default: TODO();
         }
-        nr_token++;
         break;
       }
     }
@@ -222,9 +220,9 @@ word_t expr(char *e, bool *success) {
 
   /* TODO: Insert codes to evaluate the expression. */
   exprs result = eval(0, nr_token - 1);
-  if (result.error)
+  if (result.error) {
     *success = false;
-  else
-    printf("%d\n", result.value);
-  return 0;
+    return 0;
+  }
+  return result.value;
 }
