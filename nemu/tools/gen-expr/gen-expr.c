@@ -33,6 +33,10 @@ static char *code_format =
 
 char *loc;
 
+uint32_t choose(uint32_t n) {
+  return rand() % n;
+}
+
 void gen(char ch) {
   *loc = ch;
   loc++;
