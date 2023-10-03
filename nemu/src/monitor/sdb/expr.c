@@ -161,9 +161,10 @@ bool check_parentheses(uint32_t p, uint32_t q) {
 
 exprs eval(uint32_t p, uint32_t q) {
   exprs ret = {0, 0};
-/*
+
   if (p > q)
     ret.error = 1;
+  /*
   else if (p == q) {
     if (tokens[p].type != TK_DECINT)
       ret.error = 1;
