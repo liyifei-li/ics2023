@@ -41,9 +41,9 @@ static struct rule {
   {"\\+", '+'},         // plus
   {"-", '-'},           // minus
   {"*", '*'},           // multiply
-  {"\\/", '/'},           // divide
+  {"/", '/'},           // divide
   {"\\(", '('},           // left parentheses
-  {")", ')'},           // right parentheses
+  {"\\)", ')'},           // right parentheses
   {"==", TK_EQ},        // equal
 };
 
