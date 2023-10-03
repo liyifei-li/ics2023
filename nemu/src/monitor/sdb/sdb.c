@@ -116,12 +116,10 @@ static int cmd_x(char *args) {
 
 
 static int cmd_p(char *args) {
-  char *token;
   bool *success = 0;
-  token = strtok(args, " ");
-  if (token == NULL)
+  if (args == NULL)
     return 0;
-  word_t result = expr(token, success);
+  word_t result = expr(args, success);
   if (*success == false)
     printf("Failed to interpret expression");
   else
