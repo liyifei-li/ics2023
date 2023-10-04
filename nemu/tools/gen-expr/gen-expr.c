@@ -26,28 +26,50 @@ static char code_buf[65536 + 128] = {}; // a little larger than `buf`
 static char *code_format =
 "#include <stdio.h>\n"
 "int main() { "
-"  unsigned result = (unsigned)%s; "
+"  unsigned result = %s; "
 "  printf(\"%%u\", result); "
 "  return 0; "
 "}";
 
 char *loc = buf;
-uint32_t len;
+uint32_t len, lenlen;
+static char bufbuf[65536] = {};
+char *locloc = bufbuf;
+
 
 uint32_t choose(uint32_t n) {
   return rand() % n;
 }
-
 void gen(char ch) {
   if (len >= 128) return;
   *(loc + len) = ch;
   len++;
+  *(locloc + lenlen) = ch;
+  lenlen++;
+}
+
+void gengen(char ch) {
+  if (len >= 128) return;
+  *(locloc + lenlen) = ch;
+  lenlen++;
 }
 
 void gen_num() {
   if (len >= 128) return;
   uint32_t num = choose(10);
+  gengen('(');
+  gengen('u');
+  gengen('n');
+  gengen('s');
+  gengen('i');
+  gengen('g');
+  gengen('n');
+  gengen('e');
+  gengen('d');
+  gengen(')');
+  gengen('(');
   gen(num + '0');
+  gengen(')');
   return;
 }
 
@@ -91,6 +113,13 @@ static void gen_rand_expr() {
   return;
 }
 
+void init() {
+  len = 0;
+  lenlen = 0;
+  memset(buf, 0, sizeof(buf));
+  memset(bufbuf, 0, sizeof(bufbuf));
+}
+
 int main(int argc, char *argv[]) {
   int seed = time(0);
   srand(seed);
@@ -100,21 +129,18 @@ int main(int argc, char *argv[]) {
   }
   int i;
 
-  memset(buf, 0, sizeof(buf));
-  len = 0;
-
+  init();
   for (i = 0; i < loop; i ++) {
-    len = 0;
-    memset(buf, 0, sizeof(buf));
+    init();
     gen_rand_expr();
 
     while (len >= 128) {
-      len = 0;
-      memset(buf, 0, sizeof(buf));
+      init();
       gen_rand_expr();
     }
 
-    sprintf(code_buf, code_format, buf);
+
+    sprintf(code_buf, code_format, bufbuf);
 
     FILE *fp = fopen("/tmp/.code.c", "w");
     assert(fp != NULL);
