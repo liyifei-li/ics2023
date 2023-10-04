@@ -19,6 +19,7 @@
 
 typedef struct watchpoint {
   int NO;
+  char str[32];
   struct watchpoint *next;
 
   /* TODO: Add more members if necessary */
@@ -41,3 +42,22 @@ void init_wp_pool() {
 
 /* TODO: Implement the functionality of watchpoint */
 
+WP* new_wp(char *expr) {
+  WP *ret = free_;
+  if (free_ == NULL)
+    panic("Watchpoint number limit exceeded");
+  if (head == NULL) {
+    head = free_;
+    free_ = free_->next;
+  }
+  else {
+    free_ = free_->next;
+    ret->next = head;
+    head = ret;
+  }
+  return ret;
+}
+
+void free_wp(WP *wp) {
+  return;
+}

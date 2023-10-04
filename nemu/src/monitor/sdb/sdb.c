@@ -87,7 +87,7 @@ static int cmd_x(char *args) {
   sscanf(token, "%d", &N);
   token = strtok(NULL, " ");
   uint32_t result = expr(token, &success);
-  if (success == 0)
+  if (success == false)
     Log("Failed to interpret expression");
   else {
     for (uint32_t i = 0; i < N; i++) {
