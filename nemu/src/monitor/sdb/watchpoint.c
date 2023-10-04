@@ -31,6 +31,7 @@ static WP wp_pool[NR_WP] = {};
 static WP *head = NULL, *free_ = NULL;
 
 void init_wp_pool() {
+  Log("can you see me");
   int i;
   for (i = 0; i < NR_WP; i ++) {
     wp_pool[i].NO = i;
@@ -79,4 +80,17 @@ void free_wp(WP *wp) {
   free_ = fnxt;
   Log("Watchpoint %d freed", free_->NO);
   return;
+}
+
+void wp_traverse() {
+  WP *cur = head;
+  uint32_t value;
+  bool success;
+  while (cur != NULL) {
+    value = expr(cur->str, &success);
+    if (value != cur->value) {
+      Log("NO:%d Expression: %s Value(old): %d Value(new): %d", cur->NO, cur->str, cur->value, value);
+      nemu_state.state = NEMU_STOP;
+    }
+  }
 }

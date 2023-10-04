@@ -18,9 +18,6 @@
 #include <cpu/difftest.h>
 #include <locale.h>
 
-#include <isa.h>
-#include <config/watchpoint.h>
-
 /* The assembly code of instructions executed is only output to the screen
  * when the number of instructions executed is less than this value.
  * This is useful when you use the `si' command.
