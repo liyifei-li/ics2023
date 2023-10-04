@@ -21,7 +21,7 @@
 #include <regex.h>
 
 enum {
-  TK_NOTYPE = 256, TK_EQ, TK_NEQ, TK_AND, TK_DECINT, TK_HEXINT, TK_REG,
+  TK_NOTYPE = 256, TK_EQ, TK_NEQ, TK_AND, TK_DECINT, TK_HEXINT, TK_REG, DEREF,
 
   /* TODO: Add more token types */
 
@@ -114,6 +114,18 @@ static bool make_token(char *e) {
             tokens[nr_token].type = TK_DECINT;
             strncpy(tokens[nr_token++].str, substr_start, substr_len);
             break;
+          case TK_HEXINT:
+            if (substr_len >= 32)
+              panic("hexadecimal integer too long");
+            tokens[nr_token].type = TK_HEXINT;
+            strncpy(tokens[nr_token++].str, substr_start, substr_len);
+            break;
+          case TK_REG:
+            if (substr_len >= 32)
+              panic("register name too long");
+            tokens[nr_token].type = TK_REG;
+            strncpy(tokens[nr_token++].str, substr_start, substr_len);
+            break;
           case '+':
             tokens[nr_token++].type = '+';
             break;
@@ -133,7 +145,13 @@ static bool make_token(char *e) {
             tokens[nr_token++].type = ')';
             break;
           case TK_EQ:
-            TODO();
+            tokens[nr_token++].type = TK_EQ;
+            break;
+          case TK_NEQ:
+            tokens[nr_token++].type = TK_NEQ;
+            break;
+          case TK_AND:
+            tokens[nr_token++].type = TK_AND;
             break;
           default: TODO();
         }
@@ -142,10 +160,16 @@ static bool make_token(char *e) {
     }
     if (i == NR_REGEX) {
       printf("no match at position %d\n%s\n%*.s^\n", position, e, position, "");
-      printf("%d %d", e[position], '\0');
-      assert(e[position] != '\0');
       return false;
     }
+  }
+  for (i = 0; i < nr_token; i++) {
+    if (tokens[i].type == '*' && (i == 0 || tokens[i - 1].type == '('
+    || tokens[i - 1].type == '+' || tokens[i - 1].type == '-'
+    || tokens[i - 1].type == '*' || tokens[i - 1].type == '/'
+    || tokens[i - 1].type == TK_EQ || tokens[i - 1].type == TK_NEQ
+    || tokens[i - 1].type == TK_AND))
+      tokens[i].type = DEREF;
   }
   return true;
 }
