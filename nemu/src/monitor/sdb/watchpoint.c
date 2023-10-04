@@ -19,7 +19,7 @@
 
 typedef struct watchpoint {
   int NO;
-  char str[32];
+  char str[1024];
   struct watchpoint *next;
 
   /* TODO: Add more members if necessary */
@@ -48,7 +48,8 @@ WP* new_wp(char *expr) {
     //return NULL;
     assert(0);
   }
-  WP *ret = free_;
+    WP *ret = free_;
+    strcpy(ret->str, expr);
     head = ret;
     free_ = free_->next;
     ret->next = head;
