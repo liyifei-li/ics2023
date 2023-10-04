@@ -30,25 +30,26 @@ enum {
 static struct rule {
   const char *regex;
   int token_type;
+  int precedence;
 } rules[] = {
 
   /* TODO: Add more rules.
    * Pay attention to the precedence level of different rules.
    */
 
-  {" +", TK_NOTYPE},      // spaces
-  {"[0-9]+", TK_DECINT},  // decimal integer
-  {"\\+", '+'},           // plus
-  {"\\-", '-'},           // minus
-  {"\\*", '*'},           // multiply OR pointer
-  {"/", '/'},             // divide
-  {"\\(", '('},           // left parentheses
-  {"\\)", ')'},           // right parentheses
-  {"0x[0-9]+", TK_HEXINT},// hexadecimal integer
-  {"\\$(0|ra|[sgt]p|[astx][0-9]+)", TK_REG}, // register (no error handle)
-  {"==", TK_EQ},          // equal
-  {"!=", TK_NEQ},         // not equal
-  {"&&", TK_AND},         // logical and
+  {" +", TK_NOTYPE, 0},      // spaces
+  {"[0-9]+", TK_DECINT, 0},  // decimal integer
+  {"\\+", '+', 4},           // plus
+  {"\\-", '-', 4},           // minus
+  {"\\*", '*', 3},           // multiply OR pointer
+  {"/", '/', 3},             // divide
+  {"\\(", '(', 1},           // left parentheses
+  {"\\)", ')', 1},           // right parentheses
+  {"0x[0-9]+", TK_HEXINT, 0},// hexadecimal integer
+  {"\\$(0|ra|[sgt]p|[astx][0-9]+)", TK_REG, 0}, // register (no error handle)
+  {"==", TK_EQ, 7},          // equal
+  {"!=", TK_NEQ, 7},         // not equal
+  {"&&", TK_AND, 11},         // logical and
 };
 
 #define NR_REGEX ARRLEN(rules)
