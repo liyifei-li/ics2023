@@ -114,21 +114,21 @@ static bool make_token(char *e) {
           case TK_DECINT:
             if (substr_len >= 32)
               panic("decimal integer too long");
-            tokens[nr_token].precedence = 16;
+            tokens[nr_token].precedence = 0;
             tokens[nr_token].type = TK_DECINT;
             strncpy(tokens[nr_token++].str, substr_start, substr_len);
             break;
           case TK_HEXINT:
             if (substr_len >= 32)
               panic("hexadecimal integer too long");
-            tokens[nr_token].precedence = 16;
+            tokens[nr_token].precedence = 0;
             tokens[nr_token].type = TK_HEXINT;
             strncpy(tokens[nr_token++].str, substr_start, substr_len);
             break;
           case TK_REG:
             if (substr_len >= 32)
               panic("register name too long");
-            tokens[nr_token].precedence = 16;
+            tokens[nr_token].precedence = 0;
             tokens[nr_token].type = TK_REG;
             strncpy(tokens[nr_token++].str, substr_start, substr_len);
             break;
