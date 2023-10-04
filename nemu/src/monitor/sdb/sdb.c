@@ -223,7 +223,8 @@ void expr_test() {
   for (int i = 0; i < 10000; i++) {
     Log("%d", i);
     ret = fscanf(fp, "%u", &result);
-    fgets_loc = fgets(expr_ptr, 1024, fp); 
+    fgets_loc = fgets(expr_ptr, 1024, fp);
+    expr_ptr[strlen(expr_ptr) - 1] = '\0';
     Log("%u %s", result, expr_ptr);
     word_t output = expr(expr_ptr, &success);
     if (success == 0) panic("unsuccessful");
