@@ -214,14 +214,16 @@ void expr_test() {
   FILE *fp = fopen("/home/e7cf09/ics2023/nemu/tools/gen-expr/input", "r");
   assert (fp != NULL);
   uint32_t result;
-  char expr_ptr[256] = {};
+  char *fgets_loc = NULL;
+  char expr_ptr[1024] = {};
   bool success;
   int ret;
   ret = ret;
+  *fgets_loc = *fgets_loc;
   for (int i = 0; i < 10000; i++) {
     Log("%d", i);
     ret = fscanf(fp, "%u", &result);
-    ret = fscanf(fp, "%s", expr_ptr);
+    fgets_loc = fgets(expr_ptr, 1024, fp); 
     Log("%u %s", result, expr_ptr);
     word_t true_result = expr(expr_ptr, &success);
     if (true_result != result) panic("unsucessful at %d, result=%u, output=%u\n", i + 1, result, true_result);
