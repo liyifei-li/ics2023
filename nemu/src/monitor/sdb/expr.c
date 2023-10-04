@@ -46,7 +46,7 @@ static struct rule {
   {"\\)", ')'},           // right parentheses
   {"==", TK_EQ},          // equal
   {"0x[0-9]+", TK_HEXINT},// hexadecimal integer
-  {"\\$", TK_REG},        // register
+  {"\\$(0|ra|[sgt]p", TK_REG},        // register
 };
 
 #define NR_REGEX ARRLEN(rules)
