@@ -228,15 +228,14 @@ uint32_t find_mainop(uint32_t p, uint32_t q) {
   return ret; 
 }
 
-uint32_t deval(uint32_t p) {
+uint32_t deval(uint32_t p, bool *success) {
   uint32_t ret;
-  bool success;
   if (tokens[p].type == TK_DECINT)
     sscanf(tokens[p].str, "%d", &ret);
   else if (tokens[p].type == TK_HEXINT)
     sscanf(tokens[p].str, "%x", &ret);
   else
-    ret = isa_reg_str2val(tokens[p].str, &success);
+    ret = isa_reg_str2val(tokens[p].str, success);
   return ret;
 }
 
@@ -246,7 +245,8 @@ exprs eval(uint32_t p, uint32_t q) {
     ret.error = 1;
   else if (p + 1 == q) {
     if (tokens[p].type == TK_DECINT || tokens[p].type == TK_HEXINT || tokens[p].type == TK_REG) {
-      ret.value = deval(p);
+      bool success = 0;
+      ret.value = deval(p, &success);
     }
     else {
       ret.error = 1;
