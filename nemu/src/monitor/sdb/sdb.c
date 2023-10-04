@@ -213,7 +213,7 @@ void sdb_mainloop() {
 void expr_test() {
   FILE *fp = fopen("/home/e7cf09/ics2023/nemu/tools/gen-expr/input", "r");
   assert (fp != NULL);
-  word_t result;
+  uint32_t result;
   char expr_ptr[256] = {};
   bool success;
   int ret;
