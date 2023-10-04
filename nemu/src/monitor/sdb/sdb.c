@@ -218,7 +218,6 @@ void expr_test() {
   bool success;
   int ret;
   ret = ret;
-  Log("114");
   for (int i = 0; i < 10000; i++) {
     Log("%d", i);
     ret = fscanf(fp, "%d", &result);
@@ -226,7 +225,6 @@ void expr_test() {
     Log("%d %s", result, expr_ptr);
     word_t true_result = expr(expr_ptr, &success);
     if (true_result != result) printf("unsucessful at %d\n", i + 1);
-    printf("end\n");
   }
   fclose(fp);
 }
