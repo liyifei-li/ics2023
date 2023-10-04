@@ -17,6 +17,8 @@
 #include <cpu/decode.h>
 #include <cpu/difftest.h>
 #include <locale.h>
+
+#include <isa.h>
 #include <config/watchpoint.h>
 
 /* The assembly code of instructions executed is only output to the screen
