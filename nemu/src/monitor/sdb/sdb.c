@@ -81,16 +81,20 @@ static int cmd_info(char *args) {
 static int cmd_x(char *args) {
   char *token;
   uint32_t N;
-  uint32_t EXPR;
   uint32_t *data;
+  bool success = true;
   token = strtok(args, " ");
   sscanf(token, "%d", &N);
   token = strtok(NULL, " ");
-  sscanf(token, "%x", &EXPR);
-  for (uint32_t i = 0; i < N; i++) {
-    data = (uint32_t *)guest_to_host(EXPR);
-    printf("0x%08x: 0x%08x\n", EXPR, *data);
-    EXPR += 4;
+  uint32_t result = expr(token, &success);
+  if (success == 0)
+    Log("Failed to interpret expression");
+  else {
+    for (uint32_t i = 0; i < N; i++) {
+      data = (uint32_t *)guest_to_host(result);
+      printf("0x%08x: 0x%08x\n", result, *data);
+      result += 4;
+    }
   }
   return 0;
 }
@@ -121,7 +125,7 @@ static int cmd_p(char *args) {
     return 0;
   word_t result = expr(args, &success);
   if (success == false)
-    printf("Failed to interpret expression\n");
+    Log("Failed to interpret expression");
   else
     printf("%u\n", result);
   return 0;
