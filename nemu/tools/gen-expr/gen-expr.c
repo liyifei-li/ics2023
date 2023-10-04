@@ -40,6 +40,7 @@ char *locloc = bufbuf;
 uint32_t choose(uint32_t n) {
   return rand() % n;
 }
+
 void gen(char ch) {
   if (len >= 128) return;
   *(loc + len) = ch;
@@ -49,14 +50,23 @@ void gen(char ch) {
 }
 
 void gengen(char ch) {
-  if (len >= 128) return;
+  if (len >= 128)
+    return;
   *(locloc + lenlen) = ch;
   lenlen++;
 }
 
+void putspace() {
+  uint32_t num = choose(3);
+  for (int i = 0; i < num; i++) 
+    gen(' ');
+}
+
 void gen_num() {
-  if (len >= 128) return;
+  if (len >= 128)
+    return;
   uint32_t num = choose(10);
+  putspace();
   gengen('(');
   gengen('u');
   gengen('n');
@@ -69,12 +79,15 @@ void gen_num() {
   gengen(')');
   gengen('(');
   gen(num + '0');
+  putspace();
   gengen(')');
   return;
 }
 
 void gen_rand_op() {
-  if (len >= 128) return;
+  if (len >= 128)
+    return;
+  putspace();
   switch(choose(4)) {
     case 0:
       gen('+');
@@ -94,7 +107,9 @@ void gen_rand_op() {
 
 static void gen_rand_expr() {
 //  buf[0] = '\0';
-  if (len >= 128) return;
+  if (len >= 128)
+    return;
+  putspace();
   switch(choose(3)) {
     case 0:
       gen_num();
@@ -138,7 +153,6 @@ int main(int argc, char *argv[]) {
       init();
       gen_rand_expr();
     }
-
 
     sprintf(code_buf, code_format, bufbuf);
 
