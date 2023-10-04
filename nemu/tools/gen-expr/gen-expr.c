@@ -129,8 +129,13 @@ int main(int argc, char *argv[]) {
 
     int result;
     int retval;
+    retval = retval;
     ret = fscanf(fp, "%d", &result);
-    retval = pclose(fp);
+    if (ret == 0) {
+      i--;
+      continue;
+    }
+    pclose(fp);
     if (retval != 0) {
       i--;
       continue;
