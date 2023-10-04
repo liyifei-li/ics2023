@@ -27,7 +27,7 @@ uint32_t regsize = sizeof(regs) / sizeof(regs[0]);
 
 void isa_reg_display() {
   for (uint32_t i = 0; i < regsize; i++) { 
-    printf("%-15s0x%-20x%d\n", reg_name(i), gpr(i), gpr(i));
+    printf("%-15s0x%-20x%u\n", reg_name(i), gpr(i), gpr(i));
   } 
 }
 
