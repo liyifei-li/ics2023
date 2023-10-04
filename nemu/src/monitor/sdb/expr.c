@@ -30,27 +30,26 @@ enum {
 static struct rule {
   const char *regex;
   int token_type;
-  int precedence;
 } rules[] = {
 
   /* TODO: Add more rules.
    * Pay attention to the precedence level of different rules.
    */
 
-  {" +", TK_NOTYPE, 0},      // spaces
-  {"[0-9]+", TK_DECINT, 0},  // decimal integer
-  {"\\+", '+', 4},           // plus
-  {"\\-", '-', 4},           // minus
-  {"\\*", '*', 3},           // multiply OR pointer
-  {"/", '/', 3},             // divide
-  {"\\(", '(', 1},           // left parentheses
-  {"\\)", ')', 1},           // right parentheses
-  {"0x[0-9]+", TK_HEXINT, 0},// hexadecimal integer
-  {"\\$(0|ra|[sgt]p|[astx][0-9]+)", TK_REG, 0}, // register (no error handle)
-  {"==", TK_EQ, 7},          // equal
-  {"!=", TK_NEQ, 7},         // not equal
-  {"&&", TK_AND, 11},        // logical and
-  {"$a", DEREF, 2},          // dereference, will never match
+  {" +", TK_NOTYPE},      // spaces
+  {"[0-9]+", TK_DECINT},  // decimal integer
+  {"\\+", '+'},           // plus
+  {"\\-", '-'},           // minus
+  {"\\*", '*'},           // multiply OR pointer
+  {"/", '/'},             // divide
+  {"\\(", '('},           // left parentheses
+  {"\\)", ')'},           // right parentheses
+  {"0x[0-9]+", TK_HEXINT},// hexadecimal integer
+  {"\\$(0|ra|[sgt]p|[astx][0-9]+)", TK_REG}, // register (no error handle)
+  {"==", TK_EQ},          // equal
+  {"!=", TK_NEQ},         // not equal
+  {"&&", TK_AND},         // logical and
+  {"$a", DEREF},          // dereference, will never match
 };
 
 #define NR_REGEX ARRLEN(rules)
@@ -76,6 +75,7 @@ void init_regex() {
 
 typedef struct token {
   int type;
+  int precedence;
   char str[32];
 } Token;
 
@@ -112,46 +112,58 @@ static bool make_token(char *e) {
           case TK_DECINT:
             if (substr_len >= 32)
               panic("decimal integer too long");
+            tokens[nr_token].precedence = 16;
             tokens[nr_token].type = TK_DECINT;
             strncpy(tokens[nr_token++].str, substr_start, substr_len);
             break;
           case TK_HEXINT:
             if (substr_len >= 32)
               panic("hexadecimal integer too long");
+            tokens[nr_token].precedence = 16;
             tokens[nr_token].type = TK_HEXINT;
             strncpy(tokens[nr_token++].str, substr_start, substr_len);
             break;
           case TK_REG:
             if (substr_len >= 32)
               panic("register name too long");
+            tokens[nr_token].precedence = 16;
             tokens[nr_token].type = TK_REG;
             strncpy(tokens[nr_token++].str, substr_start, substr_len);
             break;
           case '+':
+            tokens[nr_token].precedence = 4;
             tokens[nr_token++].type = '+';
             break;
           case '-':
+            tokens[nr_token].precedence = 4;
             tokens[nr_token++].type = '-';
             break;
           case '*':
+            tokens[nr_token].precedence = 3;
             tokens[nr_token++].type = '*';
             break;
           case '/':
+            tokens[nr_token].precedence = 3;
             tokens[nr_token++].type = '/';
             break;
           case '(':
+            tokens[nr_token].precedence = 1;
             tokens[nr_token++].type = '(';
             break;
           case ')':
+            tokens[nr_token].precedence = 1;
             tokens[nr_token++].type = ')';
             break;
           case TK_EQ:
+            tokens[nr_token].precedence = 7;
             tokens[nr_token++].type = TK_EQ;
             break;
           case TK_NEQ:
+            tokens[nr_token].precedence = 7;
             tokens[nr_token++].type = TK_NEQ;
             break;
           case TK_AND:
+            tokens[nr_token].precedence = 11;
             tokens[nr_token++].type = TK_AND;
             break;
           default: TODO();
@@ -169,8 +181,10 @@ static bool make_token(char *e) {
     || tokens[i - 1].type == '+' || tokens[i - 1].type == '-'
     || tokens[i - 1].type == '*' || tokens[i - 1].type == '/'
     || tokens[i - 1].type == TK_EQ || tokens[i - 1].type == TK_NEQ
-    || tokens[i - 1].type == TK_AND))
+    || tokens[i - 1].type == TK_AND)) {
       tokens[i].type = DEREF;
+      tokens[i].precedence = 2;
+    }
   }
   return true;
 }
@@ -197,23 +211,15 @@ bool check_parentheses(uint32_t p, uint32_t q) {
 }
 
 uint32_t find_mainop(uint32_t p, uint32_t q) {
-  uint32_t ret = p, pri = 0, cnt = 0;
+  uint32_t ret = p, pre = 0, cnt = 0;
   for (uint32_t i = p; i < q; i++) {
     if (tokens[i].type == '(')
       cnt++;
     if (tokens[i].type == ')')
       cnt--;
-    if (tokens[i].type == '+' || tokens[i].type == '-') {
-      if (cnt == 0) {
-        ret = i;
-        pri = 2;
-      }
-    }
-    if (tokens[i].type == '*' || tokens[i].type == '/') {
-      if (cnt == 0 && pri < 2) {
-        ret = i;
-        pri = 1;
-      }
+    if (cnt == 0 && pre <= tokens[i].precedence) {
+      ret = i;
+      pre = tokens[i].precedence;
     }
   }
   return ret; 
