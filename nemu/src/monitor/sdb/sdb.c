@@ -226,6 +226,7 @@ void expr_test() {
     fgets_loc = fgets(expr_ptr, 1024, fp); 
     Log("%u %s", result, expr_ptr);
     word_t true_result = expr(expr_ptr, &success);
+    if (success == 0) panic("unsuccessful");
     if (true_result != result) panic("unsucessful at %d, result=%u, output=%u\n", i + 1, result, true_result);
   }
   fclose(fp);
