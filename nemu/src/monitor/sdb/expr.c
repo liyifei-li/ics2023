@@ -20,6 +20,8 @@
  */
 #include <regex.h>
 
+#include <memory/paddr.h>
+
 enum {
   TK_NOTYPE = 256, TK_EQ, TK_NEQ, TK_AND, TK_DECINT, TK_HEXINT, TK_REG, DEREF,
 
@@ -181,7 +183,7 @@ static bool make_token(char *e) {
     || tokens[i - 1].type == '+' || tokens[i - 1].type == '-'
     || tokens[i - 1].type == '*' || tokens[i - 1].type == '/'
     || tokens[i - 1].type == TK_EQ || tokens[i - 1].type == TK_NEQ
-    || tokens[i - 1].type == TK_AND)) {
+    || tokens[i - 1].type == TK_AND || tokens[i - 1].type == DEREF)) {
       tokens[i].type = DEREF;
       tokens[i].precedence = 2;
     }
@@ -225,41 +227,71 @@ uint32_t find_mainop(uint32_t p, uint32_t q) {
   return ret; 
 }
 
+uint32_t deval(uint32_t p) {
+  uint32_t ret;
+  bool success;
+  if (tokens[p].type == TK_DECINT)
+    sscanf(tokens[p].str, "%d", &ret);
+  else if (tokens[p].type == TK_HEXINT)
+    sscanf(tokens[p].str, "%x", &ret);
+  else
+    ret = isa_reg_str2val(tokens[p].str, &success);
+  return ret;
+}
+
 exprs eval(uint32_t p, uint32_t q) {
   exprs ret = {0, 0};
   if (p >= q)
     ret.error = 1;
   else if (p + 1 == q) {
-    if (tokens[p].type != TK_DECINT) {
-      ret.error = 1;
+    if (tokens[p].type == TK_DECINT || tokens[p].type == TK_HEXINT || tokens[p].type == TK_REG) {
+      ret.value = deval(p);
     }
     else {
-      sscanf(tokens[p].str, "%d", &ret.value);
+      ret.error = 1;
     }
   }
   else {
     if (check_parentheses(p, q))
       return eval(p + 1, q - 1);
     uint32_t op = find_mainop(p, q);
-    exprs subret1 = eval(p, op);
-    exprs subret2 = eval(op + 1, q);
-    if (subret1.error || subret2.error)
-      ret.error = 1;
+    if (tokens[op].type == DEREF) {
+      ret = eval(p + 1, q);
+      if (ret.error == 1)
+        ret.value = 0;
+      else
+        ret.value = *guest_to_host(ret.value);
+    }
     else {
-      switch (tokens[op].type) {
-        case '+':
-          ret.value = subret1.value + subret2.value;
-          break; 
-        case '-':
-          ret.value = subret1.value - subret2.value;
-          break;
-        case '*':
-          ret.value = subret1.value * subret2.value;
-          break;
-        case '/':
-          ret.value = subret1.value / subret2.value;
-          break;
-        default: //TODO();
+      exprs subret1 = eval(p, op);
+      exprs subret2 = eval(op + 1, q);
+      if (subret1.error || subret2.error)
+        ret.error = 1;
+      else {
+        switch (tokens[op].type) {
+          case '+':
+            ret.value = subret1.value + subret2.value;
+            break; 
+          case '-':
+            ret.value = subret1.value - subret2.value;
+            break;
+          case '*':
+            ret.value = subret1.value * subret2.value;
+            break;
+          case '/':
+            ret.value = subret1.value / subret2.value;
+            break;
+          case TK_EQ:
+            ret.value = subret1.value == subret2.value;
+            break;
+          case TK_NEQ:
+            ret.value = subret1.value != subret2.value;
+            break;
+          case TK_AND:
+            ret.value = subret1.value && subret2.value;
+            break;
+          default: TODO();
+        }
       }
     }
   }
