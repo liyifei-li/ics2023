@@ -47,7 +47,7 @@ static struct rule {
   {"/", '/'},             // divide
   {"\\(", '('},           // left parentheses
   {"\\)", ')'},           // right parentheses
-  {"\\$(0|ra|[sgt]p|[astx][0-9]+)", TK_REG}, // register (no error handle)
+  {"\\$(0|ra|[sgt]p|([astx][0-9]+))", TK_REG}, // register (no error handle)
   {"==", TK_EQ},          // equal
   {"!=", TK_NEQ},         // not equal
   {"&&", TK_AND},         // logical and
@@ -225,6 +225,7 @@ uint32_t find_mainop(uint32_t p, uint32_t q) {
       pre = tokens[i].precedence;
     }
   }
+  Log("ret = %d", ret);
   return ret; 
 }
 
