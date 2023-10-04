@@ -224,7 +224,7 @@ uint32_t find_mainop(uint32_t p, uint32_t q) {
       pre = tokens[i].precedence;
     }
   }
-  Log("ret = %d", ret);
+//  Log("ret = %d", ret);
   return ret; 
 }
 
@@ -240,7 +240,7 @@ uint32_t deval(uint32_t p, bool *success) {
 }
 
 exprs eval(uint32_t p, uint32_t q) {
-  Log("p = %d, q = %d", p, q);
+//  Log("p = %d, q = %d", p, q);
   exprs ret = {0, 0};
   if (p >= q)
     ret.error = 1;
@@ -259,7 +259,6 @@ exprs eval(uint32_t p, uint32_t q) {
       return eval(p + 1, q - 1);
     uint32_t op = find_mainop(p, q);
     if (tokens[op].type == DEREF) {
-      Log("here");
       ret = eval(p + 1, q);
       if (ret.error == 1)
         ret.value = 0;
@@ -267,7 +266,6 @@ exprs eval(uint32_t p, uint32_t q) {
         ret.value = *(uint32_t *)guest_to_host(ret.value);
     }
     else {
-      Log("there");
       exprs subret1 = eval(p, op);
       exprs subret2 = eval(op + 1, q);
       if (subret1.error || subret2.error)
