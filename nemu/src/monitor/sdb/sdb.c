@@ -224,7 +224,7 @@ void expr_test() {
     ret = fscanf(fp, "%s", expr_ptr);
     Log("%u %s", result, expr_ptr);
     word_t true_result = expr(expr_ptr, &success);
-    if (true_result != result) panic("unsucessful at %d, result=%d, output=%d\n", i + 1, result, true_result);
+    if (true_result != result) panic("unsucessful at %d, result=%u, output=%u\n", i + 1, result, true_result);
   }
   fclose(fp);
 }
