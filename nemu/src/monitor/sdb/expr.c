@@ -45,7 +45,7 @@ static struct rule {
   {"\\(", '('},           // left parentheses
   {"\\)", ')'},           // right parentheses
   {"0x[0-9]+", TK_HEXINT},// hexadecimal integer
-  {"\\$(0|ra|[sgt]p|[astx][0-9]+", TK_REG}, // register (no error handle)
+  {"\\$(0|ra|[sgt]p|[astx][0-9]+)", TK_REG}, // register (no error handle)
   {"==", TK_EQ},          // equal
   {"!=", TK_NEQ},         // not equal
   {"&&", TK_AND},         // logical and
