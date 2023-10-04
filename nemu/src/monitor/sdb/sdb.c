@@ -210,10 +210,28 @@ void sdb_mainloop() {
   }
 }
 
+void expr_test() {
+  FILE *fp = fopen("$NEMU_HOME/tools/gen_expr/input", "r");
+  assert (fp != NULL);
+  word_t result;
+  char *expr_ptr = NULL;
+  bool success;
+  int ret;
+  ret = ret;
+  for (int i = 0; i < 10000; i++) {
+    ret = fscanf(fp, "%d%s", &result, expr_ptr);
+    word_t true_result = expr(expr_ptr, &success);
+    if (true_result != result) printf("unsucessful at %d\n", i + 1);
+    printf("end\n");
+  }
+}
+
 void init_sdb() {
   /* Compile the regular expressions. */
   init_regex();
 
   /* Initialize the watchpoint pool. */
   init_wp_pool();
+
+  expr_test();
 }
