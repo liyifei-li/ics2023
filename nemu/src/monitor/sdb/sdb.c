@@ -220,9 +220,9 @@ void expr_test() {
   ret = ret;
   for (int i = 0; i < 10000; i++) {
     Log("%d", i);
-    ret = fscanf(fp, "%d", &result);
+    ret = fscanf(fp, "%u", &result);
     ret = fscanf(fp, "%s", expr_ptr);
-    Log("%d %s", result, expr_ptr);
+    Log("%u %s", result, expr_ptr);
     word_t true_result = expr(expr_ptr, &success);
     if (true_result != result) panic("unsucessful at %d\n", i + 1);
   }
