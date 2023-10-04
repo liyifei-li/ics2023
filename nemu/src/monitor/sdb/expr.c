@@ -213,7 +213,6 @@ bool check_parentheses(uint32_t p, uint32_t q) {
 }
 
 uint32_t find_mainop(uint32_t p, uint32_t q) {
-  Log("p = %d, q = %d", p, q);
   uint32_t ret = p, pre = 0, cnt = 0;
   for (uint32_t i = p; i < q; i++) {
     if (tokens[i].type == '(')
@@ -241,6 +240,7 @@ uint32_t deval(uint32_t p, bool *success) {
 }
 
 exprs eval(uint32_t p, uint32_t q) {
+  Log("p = %d, q = %d", p, q);
   exprs ret = {0, 0};
   if (p >= q)
     ret.error = 1;
