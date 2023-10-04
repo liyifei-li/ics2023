@@ -247,6 +247,7 @@ exprs eval(uint32_t p, uint32_t q) {
     if (tokens[p].type == TK_DECINT || tokens[p].type == TK_HEXINT || tokens[p].type == TK_REG) {
       bool success = 0;
       ret.value = deval(p, &success);
+      ret.error = !success;
     }
     else {
       ret.error = 1;
