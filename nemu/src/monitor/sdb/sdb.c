@@ -86,7 +86,7 @@ static int cmd_x(char *args) {
   token = strtok(args, " ");
   sscanf(token, "%d", &N);
   token = strtok(NULL, " ");
-  uint32_t result = expr(token, &success);
+  word_t result = expr(token, &success);
   if (success == false)
     Log("Failed to interpret expression");
   else {
@@ -130,7 +130,6 @@ static int cmd_p(char *args) {
     printf("%u\n", result);
   return 0;
 }
-
 
 static struct {
   const char *name;
