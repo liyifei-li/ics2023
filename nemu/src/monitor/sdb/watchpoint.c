@@ -68,5 +68,6 @@ void free_wp(WP *wp) {
   find->next = find->next->next;
   fnxt->next = free_;
   free_ = fnxt;
+  Log("Watchpoint %d freed", free_->NO);
   return;
 }
