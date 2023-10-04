@@ -43,21 +43,29 @@ void init_wp_pool() {
 /* TODO: Implement the functionality of watchpoint */
 
 WP* new_wp(char *expr) {
-  WP *ret = free_;
-  if (free_ == NULL)
-    panic("Watchpoint number limit exceeded");
-  if (head == NULL) {
-    head = free_;
-    free_ = free_->next;
+  if (free_ == NULL) {
+    Log("Watchpoint number limit exceeded");
+    //return NULL;
+    assert(0);
   }
-  else {
+  WP *ret = free_;
+    head = ret;
     free_ = free_->next;
     ret->next = head;
-    head = ret;
-  }
   return ret;
 }
 
 void free_wp(WP *wp) {
+  WP *find = head;
+  while (find != NULL && find->next != wp)
+    find = find->next;
+  if (find == NULL) {
+    Log("Watchpoint did not found");
+    return;
+  }
+  WP *fnxt = find->next;
+  find->next = find->next->next;
+  fnxt->next = free_;
+  free_ = fnxt;
   return;
 }
