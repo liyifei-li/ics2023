@@ -261,7 +261,7 @@ exprs eval(uint32_t p, uint32_t q) {
       if (ret.error == 1)
         ret.value = 0;
       else
-        ret.value = *guest_to_host(ret.value);
+        ret.value = *(uint32_t *)guest_to_host(ret.value);
     }
     else {
       exprs subret1 = eval(p, op);
