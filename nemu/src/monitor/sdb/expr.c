@@ -259,6 +259,7 @@ exprs eval(uint32_t p, uint32_t q) {
       return eval(p + 1, q - 1);
     uint32_t op = find_mainop(p, q);
     if (tokens[op].type == DEREF) {
+      Log("here");
       ret = eval(p + 1, q);
       if (ret.error == 1)
         ret.value = 0;
@@ -266,6 +267,7 @@ exprs eval(uint32_t p, uint32_t q) {
         ret.value = *(uint32_t *)guest_to_host(ret.value);
     }
     else {
+      Log("there");
       exprs subret1 = eval(p, op);
       exprs subret2 = eval(op + 1, q);
       if (subret1.error || subret2.error)
