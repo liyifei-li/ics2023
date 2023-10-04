@@ -49,6 +49,7 @@ static void trace_and_difftest(Decode *_this, vaddr_t dnpc) {
       Log("Value of expression %d (%s) changed", cur->NO, cur->str);
       nemu_state.state = NEMU_STOP;
     }
+  }
 #endif
 }
 
