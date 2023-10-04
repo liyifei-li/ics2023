@@ -49,7 +49,8 @@ static struct rule {
   {"\\$(0|ra|[sgt]p|[astx][0-9]+)", TK_REG, 0}, // register (no error handle)
   {"==", TK_EQ, 7},          // equal
   {"!=", TK_NEQ, 7},         // not equal
-  {"&&", TK_AND, 11},         // logical and
+  {"&&", TK_AND, 11},        // logical and
+  {"$a", DEREF, 2},          // dereference, will never match
 };
 
 #define NR_REGEX ARRLEN(rules)
@@ -104,7 +105,6 @@ static bool make_token(char *e) {
          * to record the token in the array `tokens'. For certain types
          * of tokens, some extra actions should be performed.
          */
-
 
         switch (rules[i].token_type) {
           case TK_NOTYPE:
