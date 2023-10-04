@@ -215,7 +215,7 @@ void expr_test() {
   assert (fp != NULL);
   uint32_t result;
   char *fgets_loc = NULL;
-  char expr_ptr[1024] = {};
+  char expr_ptr[1024];
   bool success;
   int ret;
   ret = ret;
@@ -225,9 +225,9 @@ void expr_test() {
     ret = fscanf(fp, "%u", &result);
     fgets_loc = fgets(expr_ptr, 1024, fp); 
     Log("%u %s", result, expr_ptr);
-    word_t true_result = expr(expr_ptr, &success);
+    word_t output = expr(expr_ptr, &success);
     if (success == 0) panic("unsuccessful");
-    if (true_result != result) panic("unsucessful at %d, result=%u, output=%u\n", i + 1, result, true_result);
+    if (output != result) panic("unsucessful at %d, result=%u, output=%u\n", i + 1, result, output);
   }
   fclose(fp);
 }
