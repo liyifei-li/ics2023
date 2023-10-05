@@ -156,6 +156,7 @@ static int cmd_d(char *args) {
   int N;
   sscanf(args, "%d", &N);
   free_wp(N);
+  assert(0);
   return 0;
 }
 
