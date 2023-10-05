@@ -66,7 +66,7 @@ int new_wp(char *exprloc) {
 
 void free_wp(int N) {
   WP *cur = head;
-  while (cur != NULL && cur->NO != N) {
+  while (cur != NULL) {
     cur = cur->next;
     Log("%d", cur->NO);
     assert(cur == NULL);
