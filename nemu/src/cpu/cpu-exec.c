@@ -32,6 +32,7 @@ static bool g_print_step = false;
 
 void device_update();
 
+
 static void trace_and_difftest(Decode *_this, vaddr_t dnpc) {
 #ifdef CONFIG_ITRACE_COND
   if (ITRACE_COND) { log_write("%s\n", _this->logbuf); }
@@ -40,16 +41,7 @@ static void trace_and_difftest(Decode *_this, vaddr_t dnpc) {
   IFDEF(CONFIG_DIFFTEST, difftest_step(_this->pc, dnpc));
 
 #ifdef CONFIG_WATCHPOINT
-  WP *cur = head;
-  uint32_t value;
-  bool success;
-  while (cur != NULL) {
-    value = expr(cur->str, &success);
-    if (value != cur->value) {
-      Log("Value of expression %d (%s) changed", cur->NO, cur->str);
-      nemu_state.state = NEMU_STOP;
-    }
-  }
+  wp_traverse();
 #endif
 }
 

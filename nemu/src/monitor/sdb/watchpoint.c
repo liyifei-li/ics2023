@@ -92,5 +92,6 @@ void wp_traverse() {
       nemu_state.state = NEMU_STOP;
     }
     cur->value = value;
+    cur = cur->next;
   }
 }
