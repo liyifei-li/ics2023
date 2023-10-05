@@ -32,6 +32,7 @@ static bool g_print_step = false;
 
 void device_update();
 
+void wp_traverse();
 
 static void trace_and_difftest(Decode *_this, vaddr_t dnpc) {
 #ifdef CONFIG_ITRACE_COND
