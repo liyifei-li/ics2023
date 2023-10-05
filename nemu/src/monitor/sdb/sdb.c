@@ -26,6 +26,10 @@ static int is_batch_mode = false;
 void init_regex();
 void init_wp_pool();
 
+uint32_t new_wp(char *exprloc);
+void free_wp(uint32_t N);
+void wp_display();
+
 /* We use the `readline' library to provide more flexibility to read from stdin. */
 static char* rl_gets() {
   static char *line_read = NULL;
@@ -73,8 +77,12 @@ static int cmd_info(char *args) {
   token = strtok(args, " ");
   if (token == NULL)
     return 0;
-  if (strcmp(token, "r") == 0)
+  else if (strcmp(token, "r") == 0)
     isa_reg_display();
+  else if (strcmp(token, "w") == 0)
+    wp_display();
+  else
+    Log("Info command not found");
   return 0;
 }
 
@@ -120,14 +128,34 @@ static int cmd_x(char *args) {
 
 
 static int cmd_p(char *args) {
-  bool success = true;
   if (args == NULL)
     return 0;
+  bool success = true;
   word_t result = expr(args, &success);
   if (success == false)
     Log("Failed to interpret expression");
   else
     printf("%u\n", result);
+  return 0;
+}
+
+static int cmd_w(char *args) {
+  if (args == NULL)
+    return 0;
+  uint32_t new = new_wp(args);
+  if (new != 0)
+    Log("Watchpoint NO.%d created", new);
+  else
+    Log("Invalid expression");
+  return 0;
+}
+
+static int cmd_d(char *args) {
+  if (args == NULL)
+    return 0;
+  uint32_t N;
+  sscanf(args, "%d", &N);
+  free_wp(N);
   return 0;
 }
 
@@ -143,6 +171,8 @@ static struct {
   { "info", "Generic command for showing things about the program being debugged.", cmd_info },
   { "x", "Examine memory: x N EXPR.", cmd_x },
   { "p", "Print value of expression EXPR.", cmd_p },
+  { "w", "Set watchpoint, w EXPR sets watchpoint for EXPR.", cmd_w },
+  { "d", "Delete watchpoint, d N deletes the watchpoint numbered N.", cmd_d },
   /* TODO: Add more commands */
 };
 

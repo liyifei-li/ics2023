@@ -43,7 +43,7 @@ void init_wp_pool() {
 
 /* TODO: Implement the functionality of watchpoint */
 
-WP* new_wp(char *exprloc) {
+uint32_t new_wp(char *exprloc) {
   if (free_ == NULL) {
     Log("Watchpoint number limit exceeded");
     //return NULL;
@@ -53,8 +53,7 @@ WP* new_wp(char *exprloc) {
     bool success;
     value = expr(exprloc, &success);
     if (success == 0) {
-      Log("Invalid expression");
-      return NULL;
+      return 0;
     }
     WP *ret = free_;
     strcpy(ret->str, exprloc);
@@ -62,12 +61,12 @@ WP* new_wp(char *exprloc) {
     free_ = free_->next;
     ret->next = head;
     ret->value = value;
-  return ret;
+  return ret->NO;
 }
 
-void free_wp(WP *wp) {
+void free_wp(uint32_t N) {
   WP *find = head;
-  while (find != NULL && find->next != wp)
+  while (find != NULL && find->NO != N)
     find = find->next;
   if (find == NULL) {
     Log("Watchpoint did not found");
@@ -82,7 +81,6 @@ void free_wp(WP *wp) {
 }
 
 void wp_traverse() {
-  Log("test");
   WP *cur = head;
   uint32_t value;
   bool success;
@@ -95,4 +93,20 @@ void wp_traverse() {
     cur->value = value;
     cur = cur->next;
   }
+}
+
+void wp_display() {
+  if (head == NULL) {
+    Log("There are no watchpoints");
+    return;
+  }
+  WP *cur = head;
+  uint32_t value;
+  bool success;
+  while (cur != NULL) {
+    value = expr(cur->str, &success);
+    assert(success == 1);
+    Log("Watchpoint NO.%d has value %d", cur->NO, value);
+  }
+  return;
 }
