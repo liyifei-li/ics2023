@@ -68,9 +68,9 @@ void free_wp(int N) {
   WP *cur = head;
   while (cur != NULL) {
     cur = cur->next;
-    Log("%d", cur->NO);
+    Log("aaa");
     assert(cur == NULL);
-    Log("%d", cur->NO);
+    Log("bbb");
   }
   if (cur == NULL) {
     Log("Watchpoint did not found");
