@@ -68,6 +68,7 @@ void free_wp(uint32_t N) {
   WP *find = head;
   while (find != NULL && find->NO != N) {
     find = find->next;
+    Log("%d", find->NO);
     assert(find == NULL);
     Log("%d", find->NO);
   }
