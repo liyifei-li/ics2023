@@ -61,7 +61,7 @@ int new_wp(char *exprloc) {
     ret->next = head;
     ret->value = value;
     head = ret;
-  return ret->NO;
+  return head->NO;
 }
 
 void free_wp(uint32_t N) {
