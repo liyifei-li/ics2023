@@ -153,7 +153,7 @@ static int cmd_w(char *args) {
 static int cmd_d(char *args) {
   if (args == NULL)
     return 0;
-  uint32_t N;
+  int N;
   sscanf(args, "%d", &N);
   free_wp(N);
   return 0;
