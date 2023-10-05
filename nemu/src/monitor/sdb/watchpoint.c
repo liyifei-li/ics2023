@@ -66,10 +66,9 @@ int new_wp(char *exprloc) {
 
 void free_wp(uint32_t N) {
   WP *find = head;
-  assert(find != NULL && find->NO != N);
   while (find != NULL && find->NO != N) {
     find = find->next;
-    assert(0);
+    assert(find == NULL);
     Log("%d", find->NO);
   }
   if (find == NULL) {
