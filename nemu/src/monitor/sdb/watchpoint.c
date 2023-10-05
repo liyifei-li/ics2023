@@ -68,7 +68,7 @@ void free_wp(uint32_t N) {
   WP *find = head;
   while (find != NULL && find->NO != N) {
     find = find->next;
-    Log("a");
+    Log("%d", find->NO);
   }
   if (find == NULL) {
     Log("Watchpoint did not found");
