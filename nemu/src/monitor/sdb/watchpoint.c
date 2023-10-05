@@ -77,6 +77,7 @@ void free_wp(int N) {
     cur = cur->next;
     cnxt = cnxt->next;
     assert(cur != NULL);
+    Log("%d %d", cur->NO, cnxt->NO);
   }
   if (cnxt == NULL) {
     Log("Watchpoint did not found");
