@@ -74,6 +74,7 @@ void free_wp(int N) {
     head = head->next;
     cur->next = free_;
     free_ = cur;
+    assert(0);
     return;
   }
   WP *cnxt = cur->next;
