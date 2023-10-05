@@ -102,7 +102,7 @@ void wp_traverse() {
   while (cur != NULL) {
     value = expr(cur->str, &success);
     if (value != cur->value) {
-      Log("NO:%d Expression: %s Value(old): %d Value(new): %d", cur->NO, cur->str, cur->value, value);
+      Log("NO:%d Expression: %s Value(old): %u Value(new): %u", cur->NO, cur->str, cur->value, value);
       nemu_state.state = NEMU_STOP;
     }
     cur->value = value;
@@ -121,7 +121,7 @@ void wp_display() {
   while (cur != NULL) {
     value = expr(cur->str, &success);
     assert(success == 1);
-    Log("Watchpoint NO.%d has value %d", cur->NO, value);
+    Log("Watchpoint NO.%d has value %u", cur->NO, value);
     cur = cur->next;
   }
   return;
