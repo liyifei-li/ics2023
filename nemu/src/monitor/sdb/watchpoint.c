@@ -57,10 +57,10 @@ int new_wp(char *exprloc) {
     }
     WP *ret = free_;
     strcpy(ret->str, exprloc);
-    head = ret;
     free_ = free_->next;
     ret->next = head;
     ret->value = value;
+    head = ret;
   return ret->NO;
 }
 
