@@ -65,19 +65,19 @@ int new_wp(char *exprloc) {
 }
 
 void free_wp(uint32_t N) {
-  WP *find = head;
-  while (find != NULL && find->NO != N) {
-    find = find->next;
-    Log("%d", find->NO);
-    assert(find == NULL);
-    Log("%d", find->NO);
+  WP *find_ = head;
+  while (find_ != NULL && find_->NO != N) {
+    find_ = find_->next;
+    Log("%d", find_->NO);
+    assert(find_ == NULL);
+    Log("%d", find_->NO);
   }
-  if (find == NULL) {
+  if (find_ == NULL) {
     Log("Watchpoint did not found");
     return;
   }
-  WP *fnxt = find->next;
-  find->next = find->next->next;
+  WP *fnxt = find_->next;
+  find_->next = find_->next->next;
   fnxt->next = free_;
   free_ = fnxt;
   Log("Watchpoint %d freed", free_->NO);
