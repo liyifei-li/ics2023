@@ -82,6 +82,7 @@ void free_wp(WP *wp) {
 }
 
 void wp_traverse() {
+  Log("test");
   WP *cur = head;
   uint32_t value;
   bool success;
