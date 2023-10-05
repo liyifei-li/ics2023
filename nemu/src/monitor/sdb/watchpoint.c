@@ -66,7 +66,7 @@ int new_wp(char *exprloc) {
 
 void free_wp(int N) {
   WP *cur = head;
-  while (cur != NULL) {
+  while (cur != NULL && cur->NO != N) {
     cur = cur->next;
     Log("aaa");
     assert(cur == NULL);
@@ -76,6 +76,7 @@ void free_wp(int N) {
     Log("Watchpoint did not found");
     return;
   }
+  Log("ccc");
   WP *fnxt = cur->next;
   cur->next = cur->next->next;
   fnxt->next = free_;
