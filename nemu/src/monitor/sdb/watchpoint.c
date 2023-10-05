@@ -66,8 +66,10 @@ int new_wp(char *exprloc) {
 
 void free_wp(uint32_t N) {
   WP *find = head;
-  while (find != NULL && find->NO != N)
+  while (find != NULL && find->NO != N) {
     find = find->next;
+    Log("a");
+  }
   if (find == NULL) {
     Log("Watchpoint did not found");
     return;
