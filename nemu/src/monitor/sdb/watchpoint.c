@@ -43,7 +43,7 @@ void init_wp_pool() {
 
 /* TODO: Implement the functionality of watchpoint */
 
-uint32_t new_wp(char *exprloc) {
+int new_wp(char *exprloc) {
   if (free_ == NULL) {
     Log("Watchpoint number limit exceeded");
     //return NULL;
@@ -53,7 +53,7 @@ uint32_t new_wp(char *exprloc) {
     bool success;
     value = expr(exprloc, &success);
     if (success == 0) {
-      return 0;
+      return -1;
     }
     WP *ret = free_;
     strcpy(ret->str, exprloc);
@@ -107,6 +107,7 @@ void wp_display() {
     value = expr(cur->str, &success);
     assert(success == 1);
     Log("Watchpoint NO.%d has value %d", cur->NO, value);
+    cur = cur->next;
   }
   return;
 }

@@ -143,7 +143,7 @@ static int cmd_w(char *args) {
   if (args == NULL)
     return 0;
   uint32_t new = new_wp(args);
-  if (new != 0)
+  if (new != -1)
     Log("Watchpoint NO.%d created", new);
   else
     Log("Invalid expression");
