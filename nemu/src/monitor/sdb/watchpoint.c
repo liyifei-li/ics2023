@@ -65,6 +65,10 @@ int new_wp(char *exprloc) {
 }
 
 void free_wp(int N) {
+  if (head == NULL) {
+    Log("Watchpoint did not found");
+    return;
+  }
   WP *cur = head;
   if (cur->NO == N) {
     head = head->next;
