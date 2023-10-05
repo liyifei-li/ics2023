@@ -74,6 +74,7 @@ void free_wp(int N) {
     head = head->next;
     cur->next = free_;
     free_ = cur;
+    Log("Watchpoint %d freed", free_->NO);
     return;
   }
   WP *cnxt = cur->next;
