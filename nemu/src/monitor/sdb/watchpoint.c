@@ -112,15 +112,17 @@ void wp_traverse() {
 
 void wp_display() {
   if (head == NULL) {
-    Log("There are no watchpoints");
+    printf("No watchpoints.");
     return;
   }
+  printf("Num     What\n");
   WP *cur = head;
   uint32_t value;
   bool success;
   while (cur != NULL) {
     value = expr(cur->str, &success);
     assert(success == 1);
+    printf("%-8d%s", cur->NO, cur->str);
     Log("Watchpoint NO.%d has value %u", cur->NO, value);
     cur = cur->next;
   }
