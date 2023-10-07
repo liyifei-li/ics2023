@@ -122,7 +122,7 @@ void wp_display() {
   while (cur != NULL) {
     value = expr(cur->str, &success);
     assert(success == 1);
-    printf("%-8d%-10u%s", cur->NO, value, cur->str);
+    printf("%-8d%-10u%s\n", cur->NO, value, cur->str);
     cur = cur->next;
   }
   return;
