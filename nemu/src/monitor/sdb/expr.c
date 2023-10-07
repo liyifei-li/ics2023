@@ -117,6 +117,7 @@ static bool make_token(char *e) {
               panic("decimal integer too long");
             tokens[nr_token].precedence = 0;
             tokens[nr_token].type = TK_DECINT;
+            memset(tokens[nr_token].str, 0, sizeof(tokens[nr_token].str));
             strncpy(tokens[nr_token++].str, substr_start, substr_len);
             break;
           case TK_HEXINT:
@@ -124,6 +125,7 @@ static bool make_token(char *e) {
               panic("hexadecimal integer too long");
             tokens[nr_token].precedence = 0;
             tokens[nr_token].type = TK_HEXINT;
+            memset(tokens[nr_token].str, 0, sizeof(tokens[nr_token].str));
             strncpy(tokens[nr_token++].str, substr_start, substr_len);
             break;
           case TK_REG:
@@ -131,6 +133,7 @@ static bool make_token(char *e) {
               panic("register name too long");
             tokens[nr_token].precedence = 0;
             tokens[nr_token].type = TK_REG;
+            memset(tokens[nr_token].str, 0, sizeof(tokens[nr_token].str));
             strncpy(tokens[nr_token++].str, substr_start, substr_len);
             break;
           case '+':
