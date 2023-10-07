@@ -227,15 +227,19 @@ bool check_parentheses(uint32_t p, uint32_t q) {
 }
 
 uint32_t find_mainop(uint32_t p, uint32_t q) {
-  uint32_t ret = p, pre = 0, cnt = 0;
+  uint32_t ret = p, pre = 0, cnt = 0, unary = 0x3f3f3f3f;
   for (uint32_t i = p; i < q; i++) {
     if (tokens[i].type == '(')
       cnt++;
     if (tokens[i].type == ')')
       cnt--;
-    if (cnt == 0 && pre <= tokens[i].precedence) {
-      ret = i;
-      pre = tokens[i].precedence;
+    if (cnt == 0) {
+      if (pre <= tokens[i].precedence) {
+        ret = i;
+        pre = tokens[i].precedence;
+      }
+      if (unary == 0x3f3f3f3f && tokens[i].precedence == 2)
+        unary = p;
     }
   }
 //  Log("ret = %d", ret);
