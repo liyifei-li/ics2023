@@ -115,15 +115,14 @@ void wp_display() {
     printf("No watchpoints.");
     return;
   }
-  printf("Num     What\n");
+  printf("Num     Value     What\n");
   WP *cur = head;
   uint32_t value;
   bool success;
   while (cur != NULL) {
     value = expr(cur->str, &success);
     assert(success == 1);
-    printf("%-8d%s", cur->NO, cur->str);
-    Log("Watchpoint NO.%d has value %u", cur->NO, value);
+    printf("%-8d%-10u%s", cur->NO, value, cur->str);
     cur = cur->next;
   }
   return;
