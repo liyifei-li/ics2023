@@ -276,7 +276,7 @@ exprs eval(uint32_t p, uint32_t q) {
       else
         ret.value = *(uint32_t *)guest_to_host(ret.value);
     }
-    if (tokens[op].type == UMINUS) {
+    else if (tokens[op].type == UMINUS) {
       ret = eval(p + 1, q);
       if (ret.error == 1)
         ret.value = 0;
