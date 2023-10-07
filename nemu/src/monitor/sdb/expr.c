@@ -251,7 +251,7 @@ uint32_t deval(uint32_t p, bool *success) {
 }
 
 exprs eval(uint32_t p, uint32_t q) {
-//  Log("p = %d, q = %d", p, q);
+  Log("p = %d, q = %d", p, q);
   exprs ret = {0, 0};
   if (p >= q)
     ret.error = 1;
