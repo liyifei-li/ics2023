@@ -250,12 +250,11 @@ uint32_t deval(uint32_t p, bool *success) {
     sscanf(tokens[p].str, "%x", &ret);
   else
     ret = isa_reg_str2val(tokens[p].str, success);
-  Log("%s", tokens[p].str);
   return ret;
 }
 
 exprs eval(uint32_t p, uint32_t q) {
-  Log("p = %d, q = %d", p, q);
+//  Log("p = %d, q = %d", p, q);
   exprs ret = {0, 0};
   if (p >= q)
     ret.error = 1;
