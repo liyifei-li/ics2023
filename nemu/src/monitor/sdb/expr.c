@@ -239,10 +239,12 @@ uint32_t find_mainop(uint32_t p, uint32_t q) {
         pre = tokens[i].precedence;
       }
       if (unary == 0x3f3f3f3f && tokens[i].precedence == 2)
-        unary = p;
+        unary = i;
     }
   }
 //  Log("ret = %d", ret);
+  if (tokens[ret].precedence == 2)
+    return unary;
   return ret; 
 }
 
