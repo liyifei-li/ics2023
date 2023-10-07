@@ -247,6 +247,7 @@ uint32_t deval(uint32_t p, bool *success) {
     sscanf(tokens[p].str, "%x", &ret);
   else
     ret = isa_reg_str2val(tokens[p].str, success);
+  Log("%s", tokens[p].str);
   return ret;
 }
 
