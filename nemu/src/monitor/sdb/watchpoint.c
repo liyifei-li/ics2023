@@ -102,7 +102,7 @@ void wp_traverse() {
   while (cur != NULL) {
     value = expr(cur->str, &success);
     if (value != cur->value) {
-      Log("NO:%d Expression: %s Value(old): %u Value(new): %u", cur->NO, cur->str, cur->value, value);
+      printf("Watchpoint %d: %s\n\nOld value = %u\nNew value = %u", cur->NO, cur->str, cur->value, value);
       nemu_state.state = NEMU_STOP;
     }
     cur->value = value;
