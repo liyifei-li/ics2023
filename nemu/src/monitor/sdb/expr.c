@@ -23,7 +23,7 @@
 #include <memory/paddr.h>
 
 enum {
-  TK_NOTYPE = 256, TK_EQ, TK_NEQ, TK_AND, TK_DECINT, TK_HEXINT, TK_REG, DEREF,
+  TK_NOTYPE = 256, TK_EQ, TK_NEQ, TK_AND, TK_DECINT, TK_HEXINT, TK_REG, DEREF, UMINUS,
 
   /* TODO: Add more token types */
 
@@ -52,6 +52,7 @@ static struct rule {
   {"!=", TK_NEQ},         // not equal
   {"&&", TK_AND},         // logical and
   {"$a", DEREF},          // dereference, will never match
+  {"$a", UMINUS},         // unary minus, will never match
 };
 
 #define NR_REGEX ARRLEN(rules)
@@ -183,8 +184,18 @@ static bool make_token(char *e) {
     || tokens[i - 1].type == '+' || tokens[i - 1].type == '-'
     || tokens[i - 1].type == '*' || tokens[i - 1].type == '/'
     || tokens[i - 1].type == TK_EQ || tokens[i - 1].type == TK_NEQ
-    || tokens[i - 1].type == TK_AND || tokens[i - 1].type == DEREF)) {
+    || tokens[i - 1].type == TK_AND || tokens[i - 1].type == DEREF
+    || tokens[i - 1].type == UMINUS)) {
       tokens[i].type = DEREF;
+      tokens[i].precedence = 2;
+    }
+    if (tokens[i].type == '-' && (i == 0 || tokens[i - 1].type == '('
+    || tokens[i - 1].type == '+' || tokens[i - 1].type == '-'
+    || tokens[i - 1].type == '*' || tokens[i - 1].type == '/'
+    || tokens[i - 1].type == TK_EQ || tokens[i - 1].type == TK_NEQ
+    || tokens[i - 1].type == TK_AND || tokens[i - 1].type == DEREF
+    || tokens[i - 1].type == UMINUS)) {
+      tokens[i].type = UMINUS;
       tokens[i].precedence = 2;
     }
   }
@@ -264,6 +275,13 @@ exprs eval(uint32_t p, uint32_t q) {
         ret.value = 0;
       else
         ret.value = *(uint32_t *)guest_to_host(ret.value);
+    }
+    if (tokens[op].type == UMINUS) {
+      ret = eval(p + 1, q);
+      if (ret.error == 1)
+        ret.value = 0;
+      else
+        ret.value = -ret.value;
     }
     else {
       exprs subret1 = eval(p, op);
