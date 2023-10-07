@@ -112,7 +112,7 @@ void wp_traverse() {
 
 void wp_display() {
   if (head == NULL) {
-    printf("No watchpoints.");
+    printf("No watchpoints.\n");
     return;
   }
   printf("Num     Value     What\n");
