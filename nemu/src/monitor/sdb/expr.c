@@ -25,18 +25,12 @@
 enum {
   TK_NOTYPE = 256, TK_EQ, TK_NEQ, TK_AND, TK_DECINT, TK_HEXINT, TK_REG, DEREF, UMINUS,
 
-  /* TODO: Add more token types */
-
 };
 
 static struct rule {
   const char *regex;
   int token_type;
 } rules[] = {
-
-  /* TODO: Add more rules.
-   * Pay attention to the precedence level of different rules.
-   */
 
   {" +", TK_NOTYPE},      // spaces
   {"0x[0-9a-f]+", TK_HEXINT},// hexadecimal integer
@@ -103,11 +97,6 @@ static bool make_token(char *e) {
             i, rules[i].regex, position, substr_len, substr_len, substr_start);
 
         position += substr_len;
-
-        /* TODO: Now a new token is recognized with rules[i]. Add codes
-         * to record the token in the array `tokens'. For certain types
-         * of tokens, some extra actions should be performed.
-         */
 
         switch (rules[i].token_type) {
           case TK_NOTYPE:
@@ -260,7 +249,6 @@ uint32_t deval(uint32_t p, bool *success) {
 }
 
 exprs eval(uint32_t p, uint32_t q) {
-//  Log("p = %d, q = %d", p, q);
   exprs ret = {0, 0};
   if (p >= q)
     ret.error = 1;
@@ -333,7 +321,6 @@ word_t expr(char *e, bool *success) {
     success = false;
     return 0;
   }
-  /* TODO: Insert codes to evaluate the expression. */
   exprs result = eval(0, nr_token);
   if (result.error) {
     *success = false;

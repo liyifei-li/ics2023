@@ -173,7 +173,6 @@ static struct {
   { "p", "Print value of expression EXPR.", cmd_p },
   { "w", "Set watchpoint, w EXPR sets watchpoint for EXPR.", cmd_w },
   { "d", "Delete watchpoint, d N deletes the watchpoint numbered N.", cmd_d },
-  /* TODO: Add more commands */
 };
 
 #define NR_CMD ARRLEN(cmd_table)
