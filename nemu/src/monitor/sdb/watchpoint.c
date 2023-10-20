@@ -22,9 +22,6 @@ typedef struct watchpoint {
   char str[1024];
   uint32_t value;
   struct watchpoint *next;
-
-  /* TODO: Add more members if necessary */
-
 } WP;
 
 static WP wp_pool[NR_WP] = {};
@@ -41,12 +38,9 @@ void init_wp_pool() {
   free_ = wp_pool;
 }
 
-/* TODO: Implement the functionality of watchpoint */
-
 int new_wp(char *exprloc) {
   if (free_ == NULL) {
     Log("Watchpoint number limit exceeded");
-    //return NULL;
     assert(0);
   }
     uint32_t value; 
