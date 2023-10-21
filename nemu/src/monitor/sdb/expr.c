@@ -41,7 +41,7 @@ static struct rule {
   {"/", '/'},             // divide
   {"\\(", '('},           // left parentheses
   {"\\)", ')'},           // right parentheses
-  {"\\$(0|ra|[sgt]p|([astx][0-9]+))", TK_REG}, // register (no error handle)
+  {"\\$(0|pc|ra|[sgt]p|([astx][0-9]+))", TK_REG}, // register (no error handle)
   {"==", TK_EQ},          // equal
   {"!=", TK_NEQ},         // not equal
   {"&&", TK_AND},         // logical and
