@@ -14,10 +14,12 @@ int vsprintf(char *out, const char *fmt, va_list ap) {
 }
 
 int sprintf(char *str, const char *format, ...) {
-  size_t i = 0, j = 0;
+  size_t i = 0, j = 0, k;
   int dptr;
   char *sptr;
-  char minint[15] = {'-', '2', '1', '4', '7', '4', '8', '3', '6', '4', '8'};
+  char minint[15] = {'2', '1', '4', '7', '4', '8', '3', '6', '4', '8'};
+  char dtos[15] = {0};
+  bool isneg = 0;
   va_list ap;
   va_start(ap, format);
   while (format[j] != '\0') {
@@ -37,22 +39,29 @@ int sprintf(char *str, const char *format, ...) {
         case 'd':
           dptr = va_arg(ap, int);
           if (dptr == 0) {
-            str[i++] = '0';
+            strcpy(dtos, "0");
+            k = 1;
           }
           else if (dptr == 0x80000000) {
-            strcpy(str + i, minint);
-            i += 11;
+            strcpy(dtos, minint);
+            isneg = 1;
+            k = 10;
           }
           else {
+            k = 0;
             if (dptr < 0) {
               dptr = -dptr;
-              str[i++] = '-';
+              isneg = 1;
             }
             while (dptr) {
-              str[i++] = dptr % 10 + '0';
+              dtos[k++] = dptr % 10 + '0';
               dptr /= 10;
             }
           }
+          if (isneg)
+            str[i++] = '-';
+          while (k)
+            str[i++] = dtos[--k];
           j += 2;
           break;
         default:
