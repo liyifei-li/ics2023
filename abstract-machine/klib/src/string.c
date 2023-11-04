@@ -27,6 +27,7 @@ char *strncpy(char *dst, const char *src, size_t n) {
     dst[i] = src[i];
   for (; i < n; i++)
     dst[i] = '\0';
+  printf("%s", dst);
   return dst;
 }
 
