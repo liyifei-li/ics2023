@@ -61,7 +61,6 @@ int strncmp(const char *s1, const char *s2, size_t n) {
 }
 
 void *memset(void *s, int c, size_t n) {
-//  uint8_t ch = c;
   size_t i = 0;
   while (i < n) {
     *(uint8_t *)(s + i) = c;
@@ -71,7 +70,8 @@ void *memset(void *s, int c, size_t n) {
 }
 
 void *memmove(void *dst, const void *src, size_t n) {
-  panic("Not implemented");
+  if (dst < src) return dst;
+  return dst;
 }
 
 void *memcpy(void *out, const void *in, size_t n) {
