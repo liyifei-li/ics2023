@@ -74,14 +74,14 @@ void *memmove(void *dst, const void *src, size_t n) {
   if (dst > src) {
     i = 0;
     while (i < n) {
-      *(uint8_t *)(dst + i) = *(uint8_t *)src + i;
+      *(uint8_t *)(dst + i) = *(uint8_t *)(src + i);
       i++;
     }
   }
   else {
     i = n - 1;
     while (i > 0) {
-      *(uint8_t *)(dst + i) = *(uint8_t *)src + i;
+      *(uint8_t *)(dst + i) = *(uint8_t *)(src + i);
       i--;
     }
     *(uint8_t *)dst = *(uint8_t *)src;
