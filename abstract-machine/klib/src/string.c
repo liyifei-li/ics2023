@@ -99,7 +99,13 @@ void *memcpy(void *out, const void *in, size_t n) {
 }
 
 int memcmp(const void *s1, const void *s2, size_t n) {
-  panic("Not implemented");
+  size_t i = 0;
+  while (i < n) {
+    if (*(uint8_t *)s1 - *(uint8_t *)s2 != 0) return *(uint8_t *)s1 - *(uint8_t *)s2;
+    if (*(uint8_t *)s1 == '\0' && *(uint8_t *)s2 == '\0') return 0;
+    i++;
+  }
+  return 0;
 }
 
 #endif
