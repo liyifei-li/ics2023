@@ -27,6 +27,7 @@ int sprintf(char *str, const char *format, ...) {
       j++;
     }
     else {
+      j++;
       /*
       switch(format[j + 1]) {
         case 's':
