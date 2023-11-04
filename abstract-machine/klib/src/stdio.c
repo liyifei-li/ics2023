@@ -35,7 +35,7 @@ int sprintf(char *str, const char *format, ...) {
           j += 2;
           break;
         case 'd':
-          dptr = *va_arg(ap, int*);
+          dptr = va_arg(ap, int);
           if (dptr == 0) {
             str[i++] = '0';
           }
