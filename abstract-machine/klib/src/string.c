@@ -61,10 +61,10 @@ int strncmp(const char *s1, const char *s2, size_t n) {
 }
 
 void *memset(void *s, int c, size_t n) {
-  uint8_t ch = c;
+//  uint8_t ch = c;
   size_t i = 0;
   while (i < n) {
-    *(uint8_t *)(s + i) = ch;
+    *(uint8_t *)(s + i) = c;
     i++;
   }
   return s;
