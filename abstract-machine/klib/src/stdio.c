@@ -15,9 +15,9 @@ int vsprintf(char *out, const char *fmt, va_list ap) {
 
 int sprintf(char *str, const char *format, ...) {
   size_t i = 0, j = 0;
-  int dptr;
-  char *sptr;
-  char minint[15] = {'-', '2', '1', '4', '7', '4', '8', '3', '6', '4', '8'};
+//  int dptr;
+//  char *sptr;
+//  char minint[15] = {'-', '2', '1', '4', '7', '4', '8', '3', '6', '4', '8'};
   va_list ap;
   va_start(ap, format);
   while (format[j] != '\0') {
@@ -27,6 +27,7 @@ int sprintf(char *str, const char *format, ...) {
       j++;
     }
     else {
+      /*
       switch(format[j + 1]) {
         case 's':
           sptr = va_arg(ap, char*);
@@ -61,6 +62,7 @@ int sprintf(char *str, const char *format, ...) {
           panic("Not implemented");
           break;
       }
+    */
     }
   }
   str[i] = '\0';
