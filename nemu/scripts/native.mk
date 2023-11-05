@@ -28,7 +28,7 @@ override ARGS ?= --log=$(BUILD_DIR)/nemu-log.txt
 override ARGS += $(ARGS_DIFF)
 
 #I'm not sure
-override ARGS += -d
+override ARGS += d
 
 # Command to execute NEMU
 IMG ?=
