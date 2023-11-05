@@ -40,6 +40,7 @@ static void trace_and_difftest(Decode *_this, vaddr_t dnpc) {
     log_write("%s\n", _this->logbuf);
     memcpy(_this->iringbuf[_this->iringpos], "  --> ", 6);
     memcpy(_this->iringbuf[_this->iringpos == 0 ? 15 : _this->iringpos - 1], "      ", 6);
+    memcpy(_this->iringbuf[_this->iringpos] + 6, _this->logbuf, 122);
   }
 #endif
   if (g_print_step) { IFDEF(CONFIG_ITRACE, puts(_this->logbuf)); }
