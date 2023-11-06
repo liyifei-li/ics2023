@@ -30,18 +30,18 @@ uint64_t g_nr_guest_inst = 0;
 static uint64_t g_timer = 0; // unit: us
 static bool g_print_step = false;
 
+#ifdef CONFIG_ITRACE
+  static char iringbuf[16][128] = {0};
+  static uint32_t iringpos = 0;
+#endif
+
 void device_update();
 
 void wp_traverse();
 
 static void trace_and_difftest(Decode *_this, vaddr_t dnpc) {
 #ifdef CONFIG_ITRACE_COND
-  if (ITRACE_COND) {
-    log_write("%s\n", _this->logbuf);
-    memcpy(_this->iringbuf[_this->iringpos], "  --> ", 6);
-    memcpy(_this->iringbuf[_this->iringpos == 0 ? 15 : _this->iringpos - 1], "      ", 6);
-    memcpy(_this->iringbuf[_this->iringpos] + 6, _this->logbuf, 122);
-  }
+  if (ITRACE_COND) { log_write("%s\n", _this->logbuf); }
 #endif
   if (g_print_step) { IFDEF(CONFIG_ITRACE, puts(_this->logbuf)); }
   IFDEF(CONFIG_DIFFTEST, difftest_step(_this->pc, dnpc));
@@ -72,6 +72,11 @@ static void exec_once(Decode *s, vaddr_t pc) {
   space_len = space_len * 3 + 1;
   memset(p, ' ', space_len);
   p += space_len;
+
+  memcpy(iringbuf[iringpos == 0 ? 15 : iringpos - 1], "      ", 6);
+  char *pp = iringbuf[iringpos];
+  pp += snprintf(pp, sizeof(iringbuf[iringpos]), "  --> ");
+  pp += snprintf(pp, 12, FMT_WORD ":", s->pc);
 
 #ifndef CONFIG_ISA_loongarch32r
   void disassemble(char *str, int size, uint64_t pc, uint8_t *code, int nbyte);
