@@ -114,12 +114,12 @@ static void load_elf() {
     }
   }
   fseek(fp, shdr.sh_offset, SEEK_SET);
+  /*
   uint32_t num_symbols = shdr.sh_size / shdr.sh_entsize;
 
-  //uint32_t funccnt = 0;
+  uint32_t funccnt = 0;
 
   for (int i = 0; i < num_symbols; i++) {
-    /*
     ret = fread(&sym, sizeof(Elf32_Sym), 1, fp);
     assert(ret == 1);
     if (ELF32_ST_TYPE(sym.st_info) == STT_FUNC) {
@@ -127,8 +127,8 @@ static void load_elf() {
       strcpy(funclist[funccnt].name, strtab + sym.st_name);
       funccnt++;
     }
-    */
   }
+  */
 }
 
 static int parse_args(int argc, char *argv[]) {
