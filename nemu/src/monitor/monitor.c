@@ -93,7 +93,7 @@ static void load_elf() {
 
   Elf32_Ehdr ehdr;
   Elf32_Shdr shdr;
-  Elf32_Sym sym;
+//  Elf32_Sym sym;
   char *strtab = NULL;
   int ret;
 
@@ -119,9 +119,9 @@ static void load_elf() {
   //uint32_t funccnt = 0;
 
   for (int i = 0; i < num_symbols; i++) {
+    /*
     ret = fread(&sym, sizeof(Elf32_Sym), 1, fp);
     assert(ret == 1);
-    /*
     if (ELF32_ST_TYPE(sym.st_info) == STT_FUNC) {
       funclist[funccnt].addr = sym.st_value;
       strcpy(funclist[funccnt].name, strtab + sym.st_name);
