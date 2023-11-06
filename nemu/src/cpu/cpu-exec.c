@@ -137,7 +137,7 @@ void cpu_exec(uint64_t n) {
   uint64_t timer_end = get_time();
   g_timer += timer_end - timer_start;
 
-  if (nemu_state.state == NEMU_END && nemu_state.halt_ret != 0) {
+  if (nemu_state.state == NEMU_END && nemu_state.halt_ret == 0) {
     for (int i = 0; i < 16; i++) {
       printf("%s\n", iringbuf[i]);
     }
