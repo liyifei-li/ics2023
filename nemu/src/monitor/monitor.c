@@ -93,7 +93,7 @@ static void load_elf() {
 
   Elf32_Ehdr ehdr;
   Elf32_Shdr shdr;
-//  Elf32_Sym sym;
+  Elf32_Sym sym;
   char *strtab = NULL;
   int ret;
 
@@ -114,8 +114,9 @@ static void load_elf() {
     }
   }
   fseek(fp, shdr.sh_offset, SEEK_SET);
-  /*
+
   uint32_t num_symbols = shdr.sh_size / shdr.sh_entsize;
+  assert (shdr.sh_entsize != 0);
 
   uint32_t funccnt = 0;
 
@@ -128,7 +129,6 @@ static void load_elf() {
       funccnt++;
     }
   }
-  */
 }
 
 static int parse_args(int argc, char *argv[]) {
