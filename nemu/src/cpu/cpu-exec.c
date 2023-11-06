@@ -89,7 +89,7 @@ static void exec_once(Decode *s, vaddr_t pc) {
 #endif
   pp = iringbuf[iringpos] + 48;
   for (i = 0; i < 48; i++) {
-    if (iringbuf[iringpos][i] == '\0' || iringbuf[iringpos][i] == 9)
+    if (iringbuf[iringpos][i] == '\0' || iringbuf[iringpos][i] == 9) //9 is tab
       iringbuf[iringpos][i] = ' ';
   }
   for (i = ilen - 1; i >= 0; i --) {
