@@ -114,9 +114,9 @@ static void load_elf() {
     }
   }
   fseek(fp, shdr.sh_offset, SEEK_SET);
-  /*
   int num_symbols = shdr.sh_size / shdr.sh_entsize;
-
+  num_symbols = num_symbols;
+  /*
   uint32_t funccnt = 0;
   for (int i = 0; i < num_symbols; i++) {
     ret = fread(&sym, sizeof(Elf32_Sym), 1, fp);
