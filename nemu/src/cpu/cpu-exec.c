@@ -30,12 +30,10 @@ uint64_t g_nr_guest_inst = 0;
 static uint64_t g_timer = 0; // unit: us
 static bool g_print_step = false;
 
-/*
 #ifdef CONFIG_ITRACE
   static char iringbuf[16][128] = {0};
   static uint32_t iringpos = 0;
 #endif
-*/
 
 void device_update();
 
@@ -75,25 +73,20 @@ static void exec_once(Decode *s, vaddr_t pc) {
   memset(p, ' ', space_len);
   p += space_len;
 
-  /*
   memcpy(iringbuf[iringpos == 0 ? 15 : iringpos - 1], "      ", 6);
   char *pp = iringbuf[iringpos];
   pp += snprintf(pp, sizeof(iringbuf[iringpos]), "  --> ");
   pp += snprintf(pp, 13, FMT_WORD ": ", s->pc);
-  */
 
 #ifndef CONFIG_ISA_loongarch32r
   void disassemble(char *str, int size, uint64_t pc, uint8_t *code, int nbyte);
   disassemble(p, s->logbuf + sizeof(s->logbuf) - p,
       MUXDEF(CONFIG_ISA_x86, s->snpc, s->pc), (uint8_t *)&s->isa.inst.val, ilen);
-  /*
   disassemble(pp, iringbuf[iringpos] + sizeof(iringbuf[iringpos]) - pp,
       MUXDEF(CONFIG_ISA_x86, s->snpc, s->pc), (uint8_t *)&s->isa.inst.val, ilen);
-  */
 #else
   p[0] = '\0'; // the upstream llvm does not support loongarch32r
 #endif
-  /*
   pp = iringbuf[iringpos] + 48;
   for (i = 0; i < 48; i++) {
     if (iringbuf[iringpos][i] == '\0' || iringbuf[iringpos][i] == 9) //9 is tab
@@ -102,8 +95,7 @@ static void exec_once(Decode *s, vaddr_t pc) {
   for (i = ilen - 1; i >= 0; i --) {
     pp += snprintf(pp, 4, " %02x", inst[i]);
   }
-  iringpos++;
-  */
+  iringpos = iringpos == 15 ? 0 : iringpos + 1;
 #endif
 }
 
@@ -149,7 +141,6 @@ void cpu_exec(uint64_t n) {
   uint64_t timer_end = get_time();
   g_timer += timer_end - timer_start;
 
-  /*
   #ifdef CONFIG_ITRACE
   if (nemu_state.state == NEMU_END && nemu_state.halt_ret == 0) {
     for (int i = 0; i < 16; i++) {
@@ -157,7 +148,6 @@ void cpu_exec(uint64_t n) {
     }
   }
   #endif
-  */
 
   switch (nemu_state.state) {
     case NEMU_RUNNING: nemu_state.state = NEMU_STOP; break;
