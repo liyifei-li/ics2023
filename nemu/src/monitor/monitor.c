@@ -115,8 +115,8 @@ static void load_elf() {
   }
   fseek(fp, shdr.sh_offset, SEEK_SET);
 
-  uint32_t num_symbols = shdr.sh_size / shdr.sh_entsize;
   assert (shdr.sh_entsize != 0);
+  uint32_t num_symbols = shdr.sh_size / shdr.sh_entsize;
 
   uint32_t funccnt = 0;
 
