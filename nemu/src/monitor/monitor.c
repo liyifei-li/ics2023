@@ -72,6 +72,7 @@ static void load_elf() {
   
   FILE *fp = fopen(elf_file, "rb");
   Assert(fp, "Can not open '%s'", img_file);
+  Log("114514");
 }
 
 static int parse_args(int argc, char *argv[]) {
