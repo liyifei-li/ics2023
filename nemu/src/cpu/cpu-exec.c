@@ -92,7 +92,6 @@ static void exec_once(Decode *s, vaddr_t pc) {
   for (i = ilen - 1; i >= 0; i --) {
     pp += snprintf(pp, 4, " %02x", inst[i]);
   }
-
 #endif
 }
 
@@ -137,6 +136,12 @@ void cpu_exec(uint64_t n) {
 
   uint64_t timer_end = get_time();
   g_timer += timer_end - timer_start;
+
+  if (nemu_state.state == NEMU_END && nemu_state.halt_ret != 0) {
+    for (int i = 0; i < 16; i++) {
+      printf("%s\n", iringbuf[i]);
+    }
+  }
 
   switch (nemu_state.state) {
     case NEMU_RUNNING: nemu_state.state = NEMU_STOP; break;
