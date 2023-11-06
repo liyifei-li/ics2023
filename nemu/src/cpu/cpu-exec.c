@@ -76,7 +76,7 @@ static void exec_once(Decode *s, vaddr_t pc) {
   memcpy(iringbuf[iringpos == 0 ? 15 : iringpos - 1], "      ", 6);
   char *pp = iringbuf[iringpos];
   pp += snprintf(pp, sizeof(iringbuf[iringpos]), "  --> ");
-  pp += snprintf(pp, 12, FMT_WORD ":", s->pc);
+  pp += snprintf(pp, 13, FMT_WORD ": ", s->pc);
 
 #ifndef CONFIG_ISA_loongarch32r
   void disassemble(char *str, int size, uint64_t pc, uint8_t *code, int nbyte);
