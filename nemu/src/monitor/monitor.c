@@ -16,6 +16,8 @@
 #include <isa.h>
 #include <memory/paddr.h>
 
+#include <elf.h>
+
 void init_rand();
 void init_log(const char *log_file);
 void init_mem();
@@ -67,12 +69,65 @@ static long load_img() {
   return size;
 }
 
+#define fnamelen 64
+#define fnum 256
+
+struct funclist {
+  char name[fnamelen];
+  vaddr_t addr;
+  uint32_t size;
+} funclist[fnum];
+
 static void load_elf() {
   if (elf_file == NULL) return;
   
   FILE *fp = fopen(elf_file, "rb");
   Assert(fp, "Can not open '%s'", elf_file);
-  Log("%s", elf_file);
+
+  fseek(fp, 0, SEEK_END);
+  long size = ftell(fp);
+
+  Log("The elf is %s, size = %ld", elf_file, size);
+
+  fseek(fp, 0, SEEK_SET);
+
+  Elf32_Ehdr ehdr;
+  Elf32_Shdr shdr;
+  Elf32_Sym sym;
+  char *strtab = NULL;
+  int ret;
+
+  ret = fread(&ehdr, sizeof(Elf32_Ehdr), 1, fp);
+  assert(ret == 1);
+
+  fseek(fp, ehdr.e_shoff, SEEK_SET);
+
+  for (int i = 0; i < ehdr.e_shnum; i++) {
+    ret = fread(&shdr, sizeof(Elf32_Shdr), 1, fp);
+    assert(ret == 1);
+    if (shdr.sh_type == SHT_STRTAB) {
+      strtab = malloc(shdr.sh_size);
+      fseek(fp, shdr.sh_offset, SEEK_SET);
+      ret = fread(strtab, shdr.sh_size, 1, fp);
+      assert(ret == 1);
+      break;
+    }
+  }
+
+  fseek(fp, shdr.sh_offset, SEEK_SET);
+  int num_symbols = shdr.sh_size / shdr.sh_entsize;
+
+  uint32_t funccnt = 0;
+
+  for (int i = 0; i < num_symbols; i++) {
+    ret = fread(&sym, sizeof(Elf32_Sym), 1, fp);
+    assert(ret == 1);
+    if (ELF32_ST_TYPE(sym.st_info) == STT_FUNC) {
+      funclist[funccnt].addr = sym.st_value;
+      strcpy(funclist[funccnt].name, strtab + sym.st_name);
+      funccnt++;
+    }
+  }
 }
 
 static int parse_args(int argc, char *argv[]) {
