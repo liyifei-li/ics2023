@@ -102,6 +102,8 @@ static void load_elf() {
 
   fseek(fp, ehdr.e_shoff, SEEK_SET);
 
+  int temp = 0;
+
   for (int i = 0; i < ehdr.e_shnum; i++) {
     ret = fread(&shdr, sizeof(Elf32_Shdr), 1, fp);
     assert(ret == 1);
@@ -112,7 +114,10 @@ static void load_elf() {
       assert(ret == 1);
       break;
     }
+    temp = 1;
   }
+
+  assert(temp);
   fseek(fp, shdr.sh_offset, SEEK_SET);
 
   assert (shdr.sh_entsize != 0);
