@@ -80,7 +80,7 @@ struct funclist {
 
 static void load_elf() {
   if (elf_file == NULL) return;
-  
+  /*
   FILE *fp = fopen(elf_file, "rb");
   Assert(fp, "Can not open '%s'", elf_file);
 
@@ -128,6 +128,7 @@ static void load_elf() {
       funccnt++;
     }
   }
+  */
 }
 
 static int parse_args(int argc, char *argv[]) {
