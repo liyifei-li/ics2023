@@ -87,13 +87,10 @@ static void exec_once(Decode *s, vaddr_t pc) {
 #else
   p[0] = '\0'; // the upstream llvm does not support loongarch32r
 #endif
-  
-  //pp = iringpos[iringbuf] + 48;
-  /*
+  pp = iringpos[iringbuf] + 48;
   for (i = ilen - 1; i >= 0; i --) {
     pp += snprintf(pp, 4, " %02x", inst[i]);
   }
-  */
   iringpos++;
 #endif
 }
