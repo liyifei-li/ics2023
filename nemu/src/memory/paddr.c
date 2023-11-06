@@ -35,6 +35,7 @@ static word_t pmem_read(paddr_t addr, int len) {
 
 static void pmem_write(paddr_t addr, int len, word_t data) {
   host_write(guest_to_host(addr), len, data);
+  IFDEF(CONFIG_MTRACE, printf("write memory address: 0x%08x, length: %d, data(dec): %d, data(hex): 0x%08x\n", addr, len, data, data));
 }
 
 static void out_of_bound(paddr_t addr) {
