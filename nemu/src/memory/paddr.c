@@ -29,7 +29,7 @@ paddr_t host_to_guest(uint8_t *haddr) { return haddr - pmem + CONFIG_MBASE; }
 
 static word_t pmem_read(paddr_t addr, int len) {
   word_t ret = host_read(guest_to_host(addr), len);
-  IFDEF(CONFIG_MTRACE, printf("read memory address: 0x%09x, length: %d\n", addr, len));
+  IFDEF(CONFIG_MTRACE, printf("read memory address: 0x%08x, length: %d\n", addr, len));
   return ret;
 }
 
