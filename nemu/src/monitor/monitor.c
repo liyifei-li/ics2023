@@ -67,6 +67,13 @@ static long load_img() {
   return size;
 }
 
+static void load_elf() {
+  if (elf_file == NULL) return;
+  
+  FILE *fp = fopen(elf_file, "rb");
+  Assert(fp, "Can not open '%s'", img_file);
+}
+
 static int parse_args(int argc, char *argv[]) {
   const struct option table[] = {
     {"batch"    , no_argument      , NULL, 'b'},
@@ -92,6 +99,7 @@ static int parse_args(int argc, char *argv[]) {
         printf("\t-l,--log=FILE           output log to FILE\n");
         printf("\t-d,--diff=REF_SO        run DiffTest with reference REF_SO\n");
         printf("\t-p,--port=PORT          run DiffTest with port PORT\n");
+        printf("\t-e,--elf=FILE           enable ftrace");
         printf("\n");
         exit(0);
     }
@@ -122,6 +130,8 @@ void init_monitor(int argc, char *argv[]) {
 
   /* Load the image to memory. This will overwrite the built-in image. */
   long img_size = load_img();
+
+  load_elf();
 
   /* Initialize differential testing. */
   init_difftest(diff_so_file, img_size, difftest_port);
