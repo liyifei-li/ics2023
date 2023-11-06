@@ -143,7 +143,7 @@ void cpu_exec(uint64_t n) {
   g_timer += timer_end - timer_start;
 
   #ifdef CONFIG_ITRACE
-  if (nemu_state.state == NEMU_END && nemu_state.halt_ret != 0) {
+  if (nemu_state.state == NEMU_ABORT || (nemu_state.state == NEMU_END && nemu_state.halt_ret != 0)) {
     for (int i = 0; i < 16; i++) {
       printf("%s\n", iringbuf[i]);
     }
