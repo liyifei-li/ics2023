@@ -122,6 +122,7 @@ static int decode_exec(Decode *s) {
 }
 
 extern uint32_t funccnt;
+extern struct flist funclist;
 
 int isa_exec_once(Decode *s) {
   s->isa.inst.val = inst_fetch(&s->snpc, 4);
