@@ -108,7 +108,6 @@ static void load_elf() {
   fseek(fp, ehdr.e_shoff, SEEK_SET);
 
   for (int i = 0; i < ehdr.e_shnum; i++) {
-    printf("%d\n", ehdr.e_shnum);
     ret = fread(&shdr, sizeof(Elf32_Shdr), 1, fp);
     assert(ret == 1);
     if (shdr.sh_type == SHT_STRTAB) {
@@ -121,6 +120,7 @@ static void load_elf() {
   }
 
   fseek(fp, shdr.sh_offset, SEEK_SET);
+  assert(shdr.sh_type == SHT_STRTAB);
 
   assert (shdr.sh_entsize != 0);
   uint32_t num_symbols = shdr.sh_size / shdr.sh_entsize;
