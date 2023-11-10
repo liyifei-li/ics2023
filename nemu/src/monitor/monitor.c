@@ -110,7 +110,7 @@ static void load_elf() {
   for (int i = 0; i < ehdr.e_shnum; i++) {
     ret = fread(&shdr, sizeof(Elf32_Shdr), 1, fp);
     assert(ret == 1);
-    if (shdr.sh_type == SHT_STRTAB) {
+    if (shdr.sh_type == SHT_SYMTAB) {
       strtab = malloc(shdr.sh_size);
       fseek(fp, shdr.sh_offset, SEEK_SET);
       ret = fread(strtab, shdr.sh_size, 1, fp);
@@ -120,7 +120,7 @@ static void load_elf() {
   }
 
   fseek(fp, shdr.sh_offset, SEEK_SET);
-  assert(shdr.sh_type == SHT_STRTAB);
+  assert(shdr.sh_type == SHT_SYMTAB);
 
   assert (shdr.sh_entsize != 0);
   uint32_t num_symbols = shdr.sh_size / shdr.sh_entsize;
