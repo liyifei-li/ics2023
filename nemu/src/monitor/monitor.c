@@ -69,7 +69,9 @@ static long load_img() {
   return size;
 }
 
-struct funclist {
+uint32_t funccnt;
+
+struct flist {
   char name[64];
   vaddr_t addr;
   uint32_t size;
@@ -130,7 +132,7 @@ static void load_elf() {
   assert (shdr.sh_entsize != 0);
   uint32_t num_symbols = shdr.sh_size / shdr.sh_entsize;
 
-  uint32_t funccnt = 0;
+  funccnt = 0;
 
   for (int i = 0; i < num_symbols; i++) {
     ret = fread(&sym, sizeof(Elf32_Sym), 1, fp);
@@ -144,10 +146,6 @@ static void load_elf() {
   }
   fclose(fp);
   free(strtab);
-
-  for (int i = 0; i < funccnt; i++) {
-    printf("0x%08x %u %s\n", funclist[i].addr, funclist[i].size, funclist[i].name);
-  }
 }
 
 static int parse_args(int argc, char *argv[]) {
