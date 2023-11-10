@@ -5,7 +5,16 @@
 
 #if !defined(__ISA_NATIVE__) || defined(__NATIVE_USE_KLIB__)
 
-//general printf
+int gputch(unsigned char type, char *ch, int c) {
+  switch(type) {
+    case 2:
+    *ch = c;
+    break;
+    default:
+    assert(0);
+  }
+  return c;
+}
 int gprintf(unsigned char type, char *str, const char *fmt, va_list ap) {
   size_t i = 0, j = 0, k;
   int dptr;
@@ -15,6 +24,7 @@ int gprintf(unsigned char type, char *str, const char *fmt, va_list ap) {
   bool isneg = 0;
   while (fmt[j] != '\0') {
     if (fmt[j] != '%') {
+      gputch(type, str + i, fmt[j]);
       str[i] = fmt[j];
       i++;
       j++;
