@@ -132,5 +132,6 @@ int isa_exec_once(Decode *s) {
   s->isa.inst.val = inst_fetch(&s->snpc, 4);
   assert(funccnt != 0);
   assert(funclist[0].size != 0);
+  assert(funclist[5].size == 0);
   return decode_exec(s);
 }
