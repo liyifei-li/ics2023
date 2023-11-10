@@ -105,6 +105,7 @@ int gprintf(unsigned char type, char *str, const char *fmt, va_list ap) {
           int c = va_arg(ap, int);
           gputch(type, strptr, c);
           cnt++;
+          j++;
         break;
         case 's':
           sptr = va_arg(ap, char*);
