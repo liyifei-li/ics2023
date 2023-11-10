@@ -126,7 +126,7 @@ extern struct flist {
   char name[64];
   vaddr_t addr;
   uint32_t size;
-} funclist[256];
+} funclist[];
 
 int isa_exec_once(Decode *s) {
   s->isa.inst.val = inst_fetch(&s->snpc, 4);
