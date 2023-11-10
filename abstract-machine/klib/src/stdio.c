@@ -33,11 +33,11 @@ int gprintf(unsigned char type, char *str, const char *fmt, va_list ap) {
       j++;
     }
     else {
-
+      /*
       while (j++) {
         assert(fmt[j] != '\0');
-
       }
+      */
       switch(fmt[j + 1]) {
         case 's':
           sptr = va_arg(ap, char*);
