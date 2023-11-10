@@ -120,7 +120,6 @@ static void load_elf() {
   }
 
   fseek(fp, shdr.sh_offset, SEEK_SET);
-  assert(shdr.sh_type == SHT_SYMTAB);
 
   assert (shdr.sh_entsize != 0);
   uint32_t num_symbols = shdr.sh_size / shdr.sh_entsize;
@@ -138,6 +137,10 @@ static void load_elf() {
   }
   fclose(fp);
   free(strtab);
+
+  for (int i = 0; i < funccnt; i++) {
+    printf("%08x %s\n", funclist[i].addr, funclist[i].name);
+  }
 }
 
 static int parse_args(int argc, char *argv[]) {
