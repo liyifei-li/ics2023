@@ -25,7 +25,6 @@ int gprintf(unsigned char type, char *str, const char *fmt, va_list ap) {
   while (fmt[j] != '\0') {
     if (fmt[j] != '%') {
       gputch(type, str + i, fmt[j]);
-      str[i] = fmt[j];
       i++;
       j++;
     }
