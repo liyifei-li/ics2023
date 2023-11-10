@@ -18,26 +18,128 @@ int gputch(unsigned char type, char *ch, int c) {
   }
   return c;
 }
+
 int gprintf(unsigned char type, char *str, const char *fmt, va_list ap) {
-  size_t i = 0, j = 0;
-  size_t k;
-  int dptr;
-  char *sptr;
+  size_t cnt = 0;
+  size_t j = 0;
+//  int dptr;
+  char *sptr = NULL;
+  char *strptr = NULL;
+  char flags;
+  uint32_t width;
+  uint32_t precision;
+  uint32_t length;
+/*
   char minint[15] = "2147483638";
   char dtos[15] = {0};
   bool isneg = 0;
+*/
   while (fmt[j] != '\0') {
     if (fmt[j] != '%') {
-      gputch(type, str + i, fmt[j]);
-      i++;
+      gputch(type, strptr, fmt[j]);
+      cnt++;
+      if (strptr != NULL)
+        strptr++;
       j++;
     }
     else {
+      flags = 0;
+      if (flags) {};
+      width = 0;
+      precision = 0;
+      length = 32;
+      if (length) {};
+      if (fmt[j] == '-' || fmt[j] == '+' || fmt[j] == ' ' || fmt[j] == '#' || fmt[j] == '0') {
+        flags = fmt[j];
+        j++;
+      }
+
+      if (fmt[j] == '*') {
+        width = va_arg(ap, uint32_t);
+        j++;
+      }
+      else {
+        while (fmt[j] >= '0' && fmt[j] <= '9') {
+          width = 10 * width + fmt[j] - '0';
+          j++;
+        }
+      }
+
+      if (fmt[j] == '.') {
+        j++;
+        if (fmt[j] == '*') {
+          precision = va_arg(ap, uint32_t);
+          j++;
+        }
+        else {
+          assert(fmt[j] >= '0' && fmt[j] <= '9');
+          while (fmt[j] >= '0' && fmt[j] <= '9') {
+            precision = 10 * precision + fmt[j] - '0';
+            j++;
+          }
+        }
+      }
+
+      if (fmt[j] == 'h') {
+        j++;
+        if (fmt[j] == 'h') {
+          j++;
+          length = 8;
+        }
+        else {
+          length = 16;
+        }
+      }
+      else if (fmt[j] == 'l') {
+        j++;
+        if (fmt[j] == 'l') {
+          j++;
+          length = 64;
+        }
+        else {
+          length = 32;
+        }
+      }
+      switch(fmt[j]) {
+        case 'c':
+          int c = va_arg(ap, int);
+          gputch(type, strptr, c);
+          cnt++;
+        break;
+        case 's':
+          sptr = va_arg(ap, char*);
+          while (*sptr != '\0') {
+            gputch(type, strptr, *sptr);
+            cnt++;
+            if (strptr != NULL)
+              strptr++;
+            j++;
+          }
+          break;
+        case 'd': case 'u':
+          break;
+      }
       /*
       while (j++) {
-        assert(fmt[j] != '\0');
+        switch(fmt[j]) {
+          case '\0':
+            assert(0);
+          case '-': case '+': case ' ': case '#':
+            assert(proc == 0);
+            flags = fmt[j];
+            proc = 1;
+            break;
+          case '0':
+            if (proc == 0) {
+              flags = '0';
+              proc = 1;
+            }
+            else {
+              assert(proc == 1);
+            }
+          case '1': 
+        }
       }
-      */
       switch(fmt[j + 1]) {
         case 's':
           sptr = va_arg(ap, char*);
@@ -77,11 +179,11 @@ int gprintf(unsigned char type, char *str, const char *fmt, va_list ap) {
           panic("Not implemented");
           break;
       }
+    */
     }
   }
-  str[i] = '\0';
   va_end(ap);
-  return i;
+  return cnt;
 }
 
 int printf(const char *fmt, ...) {
