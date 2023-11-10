@@ -121,7 +121,10 @@ static int decode_exec(Decode *s) {
   return 0;
 }
 
+extern uint32_t funccnt;
+
 int isa_exec_once(Decode *s) {
   s->isa.inst.val = inst_fetch(&s->snpc, 4);
+  assert(funccnt != 0);
   return decode_exec(s);
 }
