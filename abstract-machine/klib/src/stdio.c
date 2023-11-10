@@ -8,10 +8,11 @@
 int gputch(unsigned char type, char *ch, int c) {
   switch(type) {
     case 2:
-    *ch = c;
-    break;
+      *ch = c;
+      assert(0);
+      break;
     default:
-    assert(0);
+      assert(0);
   }
   return c;
 }
