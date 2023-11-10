@@ -33,7 +33,7 @@ enum {
 #define immS() do { *imm = (SEXT(BITS(i, 31, 25), 7) << 5) | BITS(i, 11, 7); } while(0)
 #define immB() do { *imm = (SEXT(BITS(i, 31, 31), 1) << 12) | (BITS(i, 7, 7) << 11) | (BITS(i, 30, 25) << 5) | (BITS(i, 11, 8) << 1); } while(0)
 #define immU() do { *imm = SEXT(BITS(i, 31, 12), 20) << 12; } while(0)
-#define immJ() do { *imm = (SEXT(BITS(i, 31, 31), 1) << 20) | (BITS(i, 19, 12) << 12) | (BITS(i, 20, 20) << 11) | (BITS(i, 30, 21) << 1); } while(0) //UNTESTED
+#define immJ() do { *imm = (SEXT(BITS(i, 31, 31), 1) << 20) | (BITS(i, 19, 12) << 12) | (BITS(i, 20, 20) << 11) | (BITS(i, 30, 21) << 1); } while(0)
 
 static void decode_operand(Decode *s, int *rd, word_t *src1, word_t *src2, word_t *imm, int type) {
   uint32_t i = s->isa.inst.val;
@@ -50,8 +50,8 @@ static void decode_operand(Decode *s, int *rd, word_t *src1, word_t *src2, word_
   }
 }
 
-void jal_ftrace();
-void jalr_ftrace();
+void jal_ftrace(int rd, vaddr_t curpc, vaddr_t dnpc);
+void jalr_ftrace(int rd, vaddr_t curpc, vaddr_t dnpc);
 
 static int decode_exec(Decode *s) {
   int rd = 0;
@@ -68,8 +68,8 @@ static int decode_exec(Decode *s) {
 //RV32I Base Instruction Set
   INSTPAT("??????? ????? ????? ??? ????? 01101 11", lui    , U, R(rd) = imm);
   INSTPAT("??????? ????? ????? ??? ????? 00101 11", auipc  , U, R(rd) = s->pc + imm);
-  INSTPAT("??????? ????? ????? ??? ????? 11011 11", jal    , J, R(rd) = s->snpc; s->dnpc = cpu.pc + imm; jal_ftrace());
-  INSTPAT("??????? ????? ????? 000 ????? 11001 11", jalr   , I, R(rd) = s->snpc; s->dnpc = (src1 + imm) & 0xfffffffe; jalr_ftrace());
+  INSTPAT("??????? ????? ????? ??? ????? 11011 11", jal    , J, R(rd) = s->snpc; s->dnpc = cpu.pc + imm; jal_ftrace(rd, s->snpc - 4, s->dnpc));
+  INSTPAT("??????? ????? ????? 000 ????? 11001 11", jalr   , I, R(rd) = s->snpc; s->dnpc = (src1 + imm) & 0xfffffffe; jalr_ftrace(rd, s->snpc - 4, s->dnpc));
   INSTPAT("??????? ????? ????? 000 ????? 11000 11", beq    , B, s->dnpc = (src1 == src2) ? cpu.pc + imm : s->snpc);
   INSTPAT("??????? ????? ????? 001 ????? 11000 11", bne    , B, s->dnpc = (src1 != src2) ? cpu.pc + imm : s->snpc);
   INSTPAT("??????? ????? ????? 100 ????? 11000 11", blt    , B, s->dnpc = ((int32_t)src1 < (int32_t)src2) ? cpu.pc + imm : s->snpc);
@@ -139,10 +139,45 @@ int isa_exec_once(Decode *s) {
   return decode_exec(s);
 }
 
-void jal_ftrace() {
-  return;
+uint32_t ftcnt;
+
+struct ftlist {
+  uint32_t baseaddr;
+  uint32_t targaddr;
+  uint32_t depth;
+  char name[64];
+  char type; //0: call 1: ret
+} ftracelist[256];
+
+uint32_t ffname(vaddr_t addr) {
+  uint32_t ret = 0;
+  while (ret < ftcnt) {
+    if (addr >= funclist[ret].addr && addr < funclist[ret].addr + funclist[ret].size)
+      return ret;
+  }
+  return ret;
 }
 
-void jalr_ftrace() {
-  return;
+uint32_t rec_level;
+
+void call_ftrace(vaddr_t curpc, vaddr_t dnpc, uint32_t name) {
+//  printf(FMT_PADDR ": %*scall [%s@" FMT_PADDR "]\n", curpc, rec_level * 2, name < ftcnt ? ftracelist[name].name : "???", dnpc);
+  rec_level++;
+}
+
+void ret_ftrace(vaddr_t curpc, vaddr_t dnpc, uint32_t name) {
+  assert(rec_level != 0);
+  rec_level--;
+//  printf(FMT_PADDR ": %*sret [%s@" FMT_PADDR "]\n", curpc, rec_level * 2, name < ftcnt ? ftracelist[name].name : "???", dnpc);
+}
+
+void jal_ftrace(int rd, vaddr_t curpc, vaddr_t dnpc) {
+  if (funccnt == 0) return;
+  call_ftrace(curpc, dnpc, ffname(dnpc));
+}
+
+void jalr_ftrace(int rd, vaddr_t curpc, vaddr_t dnpc) {
+  if (funccnt == 0) return;
+//  if (instval == 0x00008067)
+  ret_ftrace(curpc, dnpc, ffname(dnpc));
 }
