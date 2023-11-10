@@ -161,14 +161,14 @@ uint32_t ffname(vaddr_t addr) {
 uint32_t rec_level;
 
 void call_ftrace(vaddr_t curpc, vaddr_t dnpc, uint32_t name) {
-//  printf(FMT_PADDR ": %*scall [%s@" FMT_PADDR "]\n", curpc, rec_level * 2, name < ftcnt ? ftracelist[name].name : "???", dnpc);
+  printf(FMT_PADDR ": %*scall [%s@" FMT_PADDR "]\n", curpc, rec_level * 2, "", name < ftcnt ? ftracelist[name].name : "???", dnpc);
   rec_level++;
 }
 
 void ret_ftrace(vaddr_t curpc, vaddr_t dnpc, uint32_t name) {
   assert(rec_level != 0);
   rec_level--;
-//  printf(FMT_PADDR ": %*sret [%s@" FMT_PADDR "]\n", curpc, rec_level * 2, name < ftcnt ? ftracelist[name].name : "???", dnpc);
+  printf(FMT_PADDR ": %*sret [%s@" FMT_PADDR "]\n", curpc, rec_level * 2, "", name < ftcnt ? ftracelist[name].name : "???", dnpc);
 }
 
 void jal_ftrace(int rd, vaddr_t curpc, vaddr_t dnpc) {
