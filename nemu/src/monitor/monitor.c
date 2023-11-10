@@ -100,9 +100,12 @@ static void load_elf() {
   ret = fread(&ehdr, sizeof(Elf32_Ehdr), 1, fp);
   assert(ret == 1);
 
-  fseek(fp, ehdr.e_shoff, SEEK_SET);
+  Assert(ehdr.e_ident[EI_MAG0] == ELFMAG0 &&
+         ehdr.e_ident[EI_MAG1] == ELFMAG1 &&
+         ehdr.e_ident[EI_MAG2] == ELFMAG2 &&
+         ehdr.e_ident[EI_MAG3] == ELFMAG3, "Not an ELF file");
 
-  int temp = 0;
+  fseek(fp, ehdr.e_shoff, SEEK_SET);
 
   for (int i = 0; i < ehdr.e_shnum; i++) {
     ret = fread(&shdr, sizeof(Elf32_Shdr), 1, fp);
@@ -114,10 +117,8 @@ static void load_elf() {
       assert(ret == 1);
       break;
     }
-    temp = 1;
   }
 
-  assert(temp);
   fseek(fp, shdr.sh_offset, SEEK_SET);
 
   assert (shdr.sh_entsize != 0);
@@ -134,6 +135,8 @@ static void load_elf() {
       funccnt++;
     }
   }
+  fclose(fp);
+  free(strtab);
 }
 
 static int parse_args(int argc, char *argv[]) {
