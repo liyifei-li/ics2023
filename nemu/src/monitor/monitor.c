@@ -137,6 +137,7 @@ static void load_elf() {
     assert(ret == 1);
     if (ELF32_ST_TYPE(sym.st_info) == STT_FUNC) {
       funclist[funccnt].addr = sym.st_value;
+      funclist[funccnt].size = sym.st_size;
       strcpy(funclist[funccnt].name, strtab + sym.st_name);
       funccnt++;
     }
@@ -145,7 +146,7 @@ static void load_elf() {
   free(strtab);
 
   for (int i = 0; i < funccnt; i++) {
-    printf("0x%08x %s\n", funclist[i].addr, funclist[i].name);
+    printf("0x%08x %u %s\n", funclist[i].addr, funclist[i].size, funclist[i].name);
   }
 }
 
@@ -174,7 +175,7 @@ static int parse_args(int argc, char *argv[]) {
         printf("\t-l,--log=FILE           output log to FILE\n");
         printf("\t-d,--diff=REF_SO        run DiffTest with reference REF_SO\n");
         printf("\t-p,--port=PORT          run DiffTest with port PORT\n");
-        printf("\t-e,--elf=FILE           enable ftrace");
+        printf("\t-e,--elf=FILE           run with ftrace");
         printf("\n");
         exit(0);
     }
