@@ -139,21 +139,12 @@ int isa_exec_once(Decode *s) {
   return decode_exec(s);
 }
 
-uint32_t ftcnt;
-
-struct ftlist {
-  uint32_t baseaddr;
-  uint32_t targaddr;
-  uint32_t depth;
-  char name[64];
-  char type; //0: call 1: ret
-} ftracelist[256];
-
 uint32_t ffname(vaddr_t addr) {
   uint32_t ret = 0;
-  while (ret < ftcnt) {
+  while (ret < funccnt) {
     if (addr >= funclist[ret].addr && addr < funclist[ret].addr + funclist[ret].size)
       return ret;
+    ret++;
   }
   return ret;
 }
@@ -161,14 +152,14 @@ uint32_t ffname(vaddr_t addr) {
 uint32_t rec_level;
 
 void call_ftrace(vaddr_t curpc, vaddr_t dnpc, uint32_t name) {
-  printf(FMT_PADDR ": %*scall [%s@" FMT_PADDR "]\n", curpc, rec_level * 2, "", name < ftcnt ? ftracelist[name].name : "???", dnpc);
+  printf(FMT_PADDR ": %*scall [%s@" FMT_PADDR "]\n", curpc, rec_level * 2, "", name < funccnt ? funclist[name].name : "???", dnpc);
   rec_level++;
 }
 
 void ret_ftrace(vaddr_t curpc, vaddr_t dnpc, uint32_t name) {
   assert(rec_level != 0);
   rec_level--;
-  printf(FMT_PADDR ": %*sret [%s@" FMT_PADDR "]\n", curpc, rec_level * 2, "", name < ftcnt ? ftracelist[name].name : "???", dnpc);
+  printf(FMT_PADDR ": %*sret [%s@" FMT_PADDR "]\n", curpc, rec_level * 2, "", name < funccnt ? funclist[name].name : "???", dnpc);
 }
 
 void jal_ftrace(int rd, vaddr_t curpc, vaddr_t dnpc) {
