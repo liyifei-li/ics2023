@@ -69,14 +69,11 @@ static long load_img() {
   return size;
 }
 
-#define fnamelen 64
-#define fnum 256
-
 struct funclist {
-  char name[fnamelen];
+  char name[64];
   vaddr_t addr;
   uint32_t size;
-} funclist[fnum];
+} funclist[256];
 
 static void load_elf() {
   if (elf_file == NULL) return;
@@ -139,7 +136,7 @@ static void load_elf() {
   free(strtab);
 
   for (int i = 0; i < funccnt; i++) {
-    printf("%08x %s\n", funclist[i].addr, funclist[i].name);
+    printf("0x%08x %s\n", funclist[i].addr, funclist[i].name);
   }
 }
 
