@@ -122,10 +122,15 @@ static int decode_exec(Decode *s) {
 }
 
 extern uint32_t funccnt;
-extern struct flist funclist;
+extern struct flist {
+  char name[64];
+  vaddr_t addr;
+  uint32_t size;
+} funclist[256];
 
 int isa_exec_once(Decode *s) {
   s->isa.inst.val = inst_fetch(&s->snpc, 4);
   assert(funccnt != 0);
+  assert(funclist[0].size != 0);
   return decode_exec(s);
 }
