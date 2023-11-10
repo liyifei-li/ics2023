@@ -7,6 +7,9 @@
 
 int gputch(unsigned char type, char *ch, int c) {
   switch(type) {
+    case 0:
+      putch(c);
+      break;
     case 2:
       *ch = c;
       break;
@@ -16,7 +19,8 @@ int gputch(unsigned char type, char *ch, int c) {
   return c;
 }
 int gprintf(unsigned char type, char *str, const char *fmt, va_list ap) {
-  size_t i = 0, j = 0, k;
+  size_t i = 0, j = 0;
+  size_t k;
   int dptr;
   char *sptr;
   char minint[15] = "2147483638";
@@ -29,6 +33,11 @@ int gprintf(unsigned char type, char *str, const char *fmt, va_list ap) {
       j++;
     }
     else {
+
+      while (j++) {
+        assert(fmt[j] != '\0');
+
+      }
       switch(fmt[j + 1]) {
         case 's':
           sptr = va_arg(ap, char*);
@@ -76,7 +85,9 @@ int gprintf(unsigned char type, char *str, const char *fmt, va_list ap) {
 }
 
 int printf(const char *fmt, ...) {
-  panic("Not implemented");
+  va_list ap;
+  va_start(ap, fmt);
+  return gprintf(0, NULL, fmt, ap);
 }
 
 int vsprintf(char *out, const char *fmt, va_list ap) {
