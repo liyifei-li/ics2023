@@ -129,6 +129,7 @@ int gprintf(unsigned char type, char *str, const char *fmt, va_list ap) {
             gputch(type, str + cnt, ' ');
             cnt++;
           }
+          j++;
           /*
           if (flags == 0) {
             for (int i = 0 i < strlen; i++) {
@@ -151,10 +152,9 @@ int gprintf(unsigned char type, char *str, const char *fmt, va_list ap) {
             }
           }
           */
-          cnt++;
-          j++;
         break;
         case 'd':
+          j++;
           switch(length) {
             case 8:  d.d8  = va_arg(ap, int32_t); d.d64 = d.d8;  break;
             case 16: d.d16 = va_arg(ap, int32_t); d.d64 = d.d16; break;
