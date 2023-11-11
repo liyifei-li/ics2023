@@ -169,7 +169,7 @@ void jal_ftrace(vaddr_t curpc, vaddr_t dnpc, int rd) {
 void jalr_ftrace(vaddr_t curpc, vaddr_t dnpc, uint32_t instval, int rd, word_t imm) {
   if (funccnt == 0) return;
   if (instval == 0x00008067)
-    ret_ftrace(curpc, dnpc, ffname(dnpc));
+    ret_ftrace(curpc, dnpc, ffname(curpc));
   else if (rd == 1)
     call_ftrace(curpc, dnpc, ffname(dnpc));
 }
