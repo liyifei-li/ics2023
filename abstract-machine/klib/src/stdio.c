@@ -43,6 +43,7 @@ int gprintf(unsigned char type, char *str, const char *fmt, va_list ap) {
   int32_t dd;
   char ch;
   char *sptr = NULL;
+  bool isneg;
   char numstr[30];
 //  char flags;
   int32_t width;
@@ -187,6 +188,7 @@ int gprintf(unsigned char type, char *str, const char *fmt, va_list ap) {
           }
           */
           dd = va_arg(ap, int);
+          isneg = 0;
           if (dd == 0) {
             numstr[0] = '0';
             slen = 1;
@@ -195,12 +197,15 @@ int gprintf(unsigned char type, char *str, const char *fmt, va_list ap) {
             slen = 0;
             if (dd < 0) {
               dd = -dd;
-              numstr[slen++] = '-';
+              isneg = 1;
             }
             while (dd) {
               numstr[slen++] = dd % 10 + '0';
               printf("%c ", numstr[slen - 1]);
               dd /= 10;
+            }
+            if (isneg) {
+              numstr[slen++] = '-';
             }
           }
           for (int i = 0; i < width - precision && i < width - slen; i++) {
@@ -212,7 +217,7 @@ int gprintf(unsigned char type, char *str, const char *fmt, va_list ap) {
             cnt++;
           }
           for (int i = 0; i < slen; i++) {
-            gputch(type, str + cnt, numstr[i]);
+            gputch(type, str + cnt, numstr[slen - i - 1]);
             cnt++;
           }
           j++;
