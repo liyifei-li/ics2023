@@ -32,19 +32,22 @@ int gprintf(unsigned char type, char *str, const char *fmt, va_list ap) {
     uint8_t u8;
   } u;
   */
+  /*
   union si {
     int64_t d64;
     int32_t d32;
     int16_t d16;
     int8_t d8;
   } d;
+  */
+  int32_t dd;
   char ch;
   char *sptr = NULL;
   char numstr[30];
 //  char flags;
   int32_t width;
   int32_t precision;
-  int32_t length;
+//  int32_t length;
   while (fmt[j] != '\0') {
     if (fmt[j] != '%') {
       gputch(type, str + cnt, fmt[j]);
@@ -56,7 +59,7 @@ int gprintf(unsigned char type, char *str, const char *fmt, va_list ap) {
 //      flags = 0;
       width = 0;
       precision = 0;
-      length = 32;
+//      length = 32;
       /*
       if (fmt[j] == '-' || fmt[j] == '+' || fmt[j] == ' ' || fmt[j] == '#' || fmt[j] == '0') {
         flags = fmt[j];
@@ -88,7 +91,7 @@ int gprintf(unsigned char type, char *str, const char *fmt, va_list ap) {
           }
         }
       }
-
+/*
       if (fmt[j] == 'h') {
         j++;
         if (fmt[j] == 'h') {
@@ -109,7 +112,7 @@ int gprintf(unsigned char type, char *str, const char *fmt, va_list ap) {
           length = 32;
         }
       }
-
+*/
       switch(fmt[j]) {
         case 'c': case 's':
 //          assert(!flags || flags == '-');
@@ -156,6 +159,7 @@ int gprintf(unsigned char type, char *str, const char *fmt, va_list ap) {
         break;
         case 'd':
           j++;
+          /*
           switch(length) {
             case 8:  d.d8  = va_arg(ap, int32_t); d.d64 = d.d8;  break;
             case 16: d.d16 = va_arg(ap, int32_t); d.d64 = d.d16; break;
@@ -180,6 +184,22 @@ int gprintf(unsigned char type, char *str, const char *fmt, va_list ap) {
             while (d.d64) {
               numstr[slen++] = d.d64 % 10 + '0';
               d.d64 /= 10;
+            }
+          }
+          */
+          if (dd == 0) {
+            numstr[0] = '0';
+            slen = 1;
+          }
+          else {
+            slen = 0;
+            if (dd < 0) {
+              dd = -dd;
+              numstr[slen++] = '-';
+            }
+            while (dd) {
+              numstr[slen++] = dd % 10 + '0';
+              dd /= 10;
             }
           }
           for (int i = 0; i < width - precision && i < width - slen; i++) {
