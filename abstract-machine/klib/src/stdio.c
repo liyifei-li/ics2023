@@ -123,13 +123,12 @@ int gprintf(unsigned char type, char *str, const char *fmt, va_list ap) {
             slen = strlen(sptr);
           }
           for (int i = 0; i < slen; i++) {
-            gputch(type, str + cnt, *sptr);
+            gputch(type, str + cnt, *(sptr + i));
             cnt++;
           }
           for (int i = 0; i < width - slen; i++) {
             gputch(type, str + cnt, ' ');
             cnt++;
-            printf("114514\n");
           }
           j++;
           /*
