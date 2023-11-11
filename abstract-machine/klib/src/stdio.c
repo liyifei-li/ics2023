@@ -131,6 +131,7 @@ int gprintf(unsigned char type, char *str, const char *fmt, va_list ap) {
           for (int i = 0; i < width - slen; i++) {
             gputch(type, str + cnt, ' ');
             cnt++;
+            printf("114514\n");
           }
           j++;
           /*
