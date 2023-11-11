@@ -115,13 +115,14 @@ int gprintf(unsigned char type, char *str, const char *fmt, va_list ap) {
         printf("114514\n");
 //          assert(!flags || flags == '-');
           if (fmt[j] == 'c') {
-          ch = va_arg(ap, int);
-          sptr = &ch;
-          slen = 1;
+            ch = va_arg(ap, int);
+            sptr = &ch;
+            slen = 1;
           }
           else {
             sptr = va_arg(ap, char*);
             slen = strlen(sptr);
+            printf("114514\n");
           }
           for (int i = 0; i < slen; i++) {
             gputch(type, str + cnt, *sptr);
