@@ -240,11 +240,13 @@ int sprintf(char *str, const char *format, ...) {
 }
 
 int snprintf(char *out, size_t n, const char *fmt, ...) {
-  panic("Not implemented");
+  va_list ap;
+  va_start(ap, fmt);
+  return gprintf(-1, 3, out, fmt, ap);
 }
 
 int vsnprintf(char *out, size_t n, const char *fmt, va_list ap) {
-  panic("Not implemented");
+  return gprintf(-1, 4, out, fmt, ap);
 }
 
 #endif
