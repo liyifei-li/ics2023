@@ -199,6 +199,7 @@ int gprintf(unsigned char type, char *str, const char *fmt, va_list ap) {
             }
             while (dd) {
               numstr[slen++] = dd % 10 + '0';
+              printf("%c", numstr[slen - 1]);
               dd /= 10;
             }
           }
@@ -210,7 +211,7 @@ int gprintf(unsigned char type, char *str, const char *fmt, va_list ap) {
             gputch(type, str + cnt, '0');
             cnt++;
           }
-          for (int i = 0; i < slen; i++) {\
+          for (int i = 0; i < slen; i++) {
             gputch(type, str + cnt, numstr[i]);
             cnt++;
           }
