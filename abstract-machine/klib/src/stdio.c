@@ -122,10 +122,10 @@ int gprintf(unsigned char type, char *str, const char *fmt, va_list ap) {
           else {
             sptr = va_arg(ap, char*);
             slen = strlen(sptr);
-            printf("114514\n");
           }
           for (int i = 0; i < slen; i++) {
             gputch(type, str + cnt, *sptr);
+            printf("114514\n");
             cnt++;
           }
           for (int i = 0; i < width - slen; i++) {
