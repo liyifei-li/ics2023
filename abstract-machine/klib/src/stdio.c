@@ -22,38 +22,47 @@ int gputch(unsigned char type, char *ch, int c) {
 int gprintf(unsigned char type, char *str, const char *fmt, va_list ap) {
   size_t cnt = 0;
   size_t j = 0;
+  uint32_t slen;
 //  int dptr;
+  /*
+  union un {
+    uint64_t u64;
+    uint32_t u32;
+    uint16_t u16;
+    uint8_t u8;
+  } u;
+  */
+  union si {
+    int64_t d64;
+    int32_t d32;
+    int16_t d16;
+    int8_t d8;
+  } d;
+  char ch;
   char *sptr = NULL;
   char *strptr = NULL;
-  char flags;
+  char numstr[30];
+//  char flags;
   uint32_t width;
   uint32_t precision;
   uint32_t length;
-/*
-  char minint[15] = "2147483638";
-  char dtos[15] = {0};
-  bool isneg = 0;
-*/
   while (fmt[j] != '\0') {
     if (fmt[j] != '%') {
-      gputch(type, strptr, fmt[j]);
+      gputch(type, strptr + cnt, fmt[j]);
       cnt++;
-      if (strptr != NULL)
-        strptr++;
       j++;
     }
     else {
-      flags = 0;
-      if (flags) {};
+//      flags = 0;
       width = 0;
       precision = 0;
       length = 32;
-      if (length) {};
+      /*
       if (fmt[j] == '-' || fmt[j] == '+' || fmt[j] == ' ' || fmt[j] == '#' || fmt[j] == '0') {
         flags = fmt[j];
         j++;
       }
-
+      */
       if (fmt[j] == '*') {
         width = va_arg(ap, uint32_t);
         j++;
@@ -101,53 +110,95 @@ int gprintf(unsigned char type, char *str, const char *fmt, va_list ap) {
         }
       }
       switch(fmt[j]) {
-        case 'c':
-          int c = va_arg(ap, int);
-          gputch(type, strptr, c);
+        case 'c': case 's':
+//          assert(!flags || flags == '-');
+          if (fmt[j] == 'c') {
+          ch = va_arg(ap, int);
+          sptr = &ch;
+          slen = 1;
+          }
+          else {
+            sptr = va_arg(ap, char*);
+            slen = strlen(sptr);
+          }
+          for (int i = 0; i < slen; i++) {
+            gputch(type, strptr + cnt, *sptr);
+            cnt++;
+          }
+          for (int i = 0; i < width - slen; i++) {
+            gputch(type, strptr + cnt, ' ');
+            cnt++;
+          }
+          /*
+          if (flags == 0) {
+            for (int i = 0 i < strlen; i++) {
+              gputch(type, strptr + cnt, sptr);
+              cnt++;
+            }
+            for (int i = 0; i < width - strlen; i++) {
+              gputch(type, strptr + cnt, ' ');
+              cnt++;
+            }
+          }
+          else if (flags == '-') {
+            for (int i = 0; i < width - strlen; i++) {
+              gputch(type, strptr + cnt, ' ');
+              cnt++;
+            }
+            for (int i = 0 i < strlen; i++) {
+              gputch(type, strptr + cnt, sptr);
+              cnt++;
+            }
+          }
+          */
           cnt++;
           j++;
         break;
-        case 's':
-          sptr = va_arg(ap, char*);
-          while (*sptr != '\0') {
-            gputch(type, strptr, *sptr);
+        case 'd':
+          switch(length) {
+            case 8:  d.d8  = va_arg(ap, int32_t); d.d64 = d.d8;  break;
+            case 16: d.d16 = va_arg(ap, int32_t); d.d64 = d.d16; break;
+            case 32: d.d32 = va_arg(ap, int32_t); d.d64 = d.d32; break;
+            case 64: d.d64 = va_arg(ap, int64_t); break;
+            default:
+          }
+          if (d.d64 == 0) {
+            numstr[0] = '0';
+            slen = 1;
+          }
+          else if (d.d64 == 1ll << 63) {
+            strcpy(numstr, "-9223372036854775808");
+            slen = 20;
+          }
+          else {
+            slen = 0;
+            if (d.d64 < 0) {
+              d.d64 = -d.d64;
+              numstr[slen++] = '-';
+            }
+            while (d.d64) {
+              numstr[slen++] = d.d64 % 10 + '0';
+              d.d64 /= 10;
+            }
+          }
+          for (int i = 0; i < width - precision && i < width - slen; i++) {
+            gputch(type, strptr + cnt, ' ');
             cnt++;
-            if (strptr != NULL)
-              strptr++;
-            j++;
+          }
+          for (int i = 0; i < precision - slen; i++) {
+            gputch(type, strptr + cnt, '0');
+            cnt++;
+          }
+          for (int i = 0; i < slen; i++) {
+            gputch(type, strptr + cnt, numstr[i]);
+            cnt++;
           }
           break;
-        case 'd': case 'u':
-          break;
+        default:
+          assert(0);
       }
+
       /*
-      while (j++) {
-        switch(fmt[j]) {
-          case '\0':
-            assert(0);
-          case '-': case '+': case ' ': case '#':
-            assert(proc == 0);
-            flags = fmt[j];
-            proc = 1;
-            break;
-          case '0':
-            if (proc == 0) {
-              flags = '0';
-              proc = 1;
-            }
-            else {
-              assert(proc == 1);
-            }
-          case '1': 
-        }
-      }
-      switch(fmt[j + 1]) {
-        case 's':
-          sptr = va_arg(ap, char*);
-          strcpy(str + i, sptr);
-          i += strlen(sptr);
-          j += 2;
-          break;
         case 'd':
           dptr = va_arg(ap, int);
           if (dptr == 0) {
