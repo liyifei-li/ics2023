@@ -158,7 +158,6 @@ int gprintf(unsigned char type, char *str, const char *fmt, va_list ap) {
           */
         break;
         case 'd':
-          j++;
           /*
           switch(length) {
             case 8:  d.d8  = va_arg(ap, int32_t); d.d64 = d.d8;  break;
@@ -187,6 +186,7 @@ int gprintf(unsigned char type, char *str, const char *fmt, va_list ap) {
             }
           }
           */
+          dd = va_arg(ap, int);
           if (dd == 0) {
             numstr[0] = '0';
             slen = 1;
@@ -214,6 +214,7 @@ int gprintf(unsigned char type, char *str, const char *fmt, va_list ap) {
             gputch(type, str + cnt, numstr[i]);
             cnt++;
           }
+          j++;
           break;
         default:
           assert(0);
