@@ -4,7 +4,7 @@
 
 #if !defined(__ISA_NATIVE__) || defined(__NATIVE_USE_KLIB__)
 static unsigned long int next = 1;
-static char *addr = heap.start;
+static char *addr = NULL;
 
 int rand(void) {
   // RAND_MAX assumed to be 32767
@@ -36,6 +36,7 @@ void *malloc(size_t size) {
   //   panic() -> putchar() -> (glibc) -> malloc() -> panic()
 #if !(defined(__ISA_NATIVE__) && defined(__NATIVE_USE_KLIB__))
 //  panic("Not implemented");
+  if (addr == NULL) addr = heap.start;
   if (size == 0) return NULL;
   size = (size + 3) & ~3;
   void *ret = addr;
