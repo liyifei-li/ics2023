@@ -184,10 +184,12 @@ int gprintf(unsigned char type, char *str, const char *fmt, va_list ap) {
           }
           for (int i = 0; i < width - precision && i < width - slen; i++) {
             gputch(type, str + cnt, ' ');
+            printf("114514\n");
             cnt++;
           }
           for (int i = 0; i < precision - slen; i++) {
             gputch(type, str + cnt, '0');
+            printf("114514\n");
             cnt++;
           }
           for (int i = 0; i < slen; i++) {
