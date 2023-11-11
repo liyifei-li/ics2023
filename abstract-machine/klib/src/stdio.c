@@ -191,7 +191,7 @@ int gprintf(unsigned char type, char *str, const char *fmt, va_list ap) {
             cnt++;
           }
           for (int i = 0; i < slen; i++) {\
-            printf("%c", numstr[i]);
+            printf("%c ", numstr[i]);
             gputch(type, str + cnt, numstr[i]);
             cnt++;
           }
