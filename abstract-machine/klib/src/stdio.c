@@ -40,7 +40,6 @@ int gprintf(unsigned char type, char *str, const char *fmt, va_list ap) {
   } d;
   char ch;
   char *sptr = NULL;
-  char *strptr = NULL;
   char numstr[30];
 //  char flags;
   uint32_t width;
@@ -48,7 +47,7 @@ int gprintf(unsigned char type, char *str, const char *fmt, va_list ap) {
   uint32_t length;
   while (fmt[j] != '\0') {
     if (fmt[j] != '%') {
-      gputch(type, strptr + cnt, fmt[j]);
+      gputch(type, str + cnt, fmt[j]);
       cnt++;
       j++;
     }
@@ -123,11 +122,11 @@ int gprintf(unsigned char type, char *str, const char *fmt, va_list ap) {
             slen = strlen(sptr);
           }
           for (int i = 0; i < slen; i++) {
-            gputch(type, strptr + cnt, *sptr);
+            gputch(type, str + cnt, *sptr);
             cnt++;
           }
           for (int i = 0; i < width - slen; i++) {
-            gputch(type, strptr + cnt, ' ');
+            gputch(type, str + cnt, ' ');
             cnt++;
           }
           /*
@@ -183,15 +182,15 @@ int gprintf(unsigned char type, char *str, const char *fmt, va_list ap) {
             }
           }
           for (int i = 0; i < width - precision && i < width - slen; i++) {
-            gputch(type, strptr + cnt, ' ');
+            gputch(type, str + cnt, ' ');
             cnt++;
           }
           for (int i = 0; i < precision - slen; i++) {
-            gputch(type, strptr + cnt, '0');
+            gputch(type, str + cnt, '0');
             cnt++;
           }
           for (int i = 0; i < slen; i++) {
-            gputch(type, strptr + cnt, numstr[i]);
+            gputch(type, str + cnt, numstr[i]);
             cnt++;
           }
           break;
