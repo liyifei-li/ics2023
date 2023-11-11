@@ -55,7 +55,7 @@ void init_map() {
 word_t map_read(paddr_t addr, int len, IOMap *map) {
   assert(len >= 1 && len <= 8);
   #ifdef CONFIG_DTRACE
-    printf("Read address: " FMT_WORD ", length: %d, name: %s\n", addr, len, map->name);
+    printf("Read address: " FMT_WORD ", length: %d, register name: %s\n", addr, len, map->name);
   #endif
   check_bound(map, addr);
   paddr_t offset = addr - map->low;
