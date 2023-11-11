@@ -112,7 +112,6 @@ int gprintf(unsigned char type, char *str, const char *fmt, va_list ap) {
 
       switch(fmt[j]) {
         case 'c': case 's':
-        printf("114514\n");
 //          assert(!flags || flags == '-');
           if (fmt[j] == 'c') {
             ch = va_arg(ap, int);
@@ -125,7 +124,6 @@ int gprintf(unsigned char type, char *str, const char *fmt, va_list ap) {
           }
           for (int i = 0; i < slen; i++) {
             gputch(type, str + cnt, *sptr);
-            printf("114514\n");
             cnt++;
           }
           for (int i = 0; i < width - slen; i++) {
