@@ -38,12 +38,11 @@ int gprintf(unsigned char type, char *str, const char *fmt, va_list ap) {
     int16_t d16;
     int8_t d8;
   } d;
-//  int32_t dd;
   char ch;
   char *sptr = NULL;
   bool isneg;
   char numstr[30];
-//  char flags;
+  char flags;
   int32_t width;
   int32_t precision;
   int32_t length;
@@ -55,16 +54,16 @@ int gprintf(unsigned char type, char *str, const char *fmt, va_list ap) {
     }
     else {
       j++;
-//      flags = 0;
+      flags = 0;
       width = 0;
       precision = 0;
       length = 32;
-      /*
-      if (fmt[j] == '-' || fmt[j] == '+' || fmt[j] == ' ' || fmt[j] == '#' || fmt[j] == '0') {
+      
+      if (fmt[j] == '0') {
         flags = fmt[j];
         j++;
       }
-      */
+      
       if (fmt[j] == '*') {
         width = va_arg(ap, uint32_t);
         j++;
@@ -90,6 +89,7 @@ int gprintf(unsigned char type, char *str, const char *fmt, va_list ap) {
           }
         }
       }
+
       if (fmt[j] == 'h') {
         j++;
         if (fmt[j] == 'h') {
@@ -110,6 +110,7 @@ int gprintf(unsigned char type, char *str, const char *fmt, va_list ap) {
           length = 32;
         }
       }
+
       switch(fmt[j]) {
         case 'c': case 's':
 //          assert(!flags || flags == '-');
@@ -168,7 +169,7 @@ int gprintf(unsigned char type, char *str, const char *fmt, va_list ap) {
             slen = 1;
           }
           else if (d.d64 == 1ll << 63) {
-            strcpy(numstr, "-9223372036854775808");
+            strcpy(numstr, "8085774586302733229-");
             slen = 20;
           }
           else {
@@ -186,7 +187,12 @@ int gprintf(unsigned char type, char *str, const char *fmt, va_list ap) {
             }
           }
           for (int i = 0; i < width - precision && i < width - slen; i++) {
-            gputch(type, str + cnt, ' ');
+            if (flags == 0) {
+              gputch(type, str + cnt, ' ');
+            }
+            else if (flags == '0') {
+              gputch(type, str + cnt, '0');
+            }
             cnt++;
           }
           for (int i = 0; i < precision - slen; i++) {
@@ -202,41 +208,6 @@ int gprintf(unsigned char type, char *str, const char *fmt, va_list ap) {
         default:
           assert(0);
       }
-
-      /*
-        case 'd':
-          dptr = va_arg(ap, int);
-          if (dptr == 0) {
-            strcpy(dtos, "0");
-            k = 1;
-          }
-          else if (dptr == 0x80000000) {
-            strcpy(dtos, minint);
-            isneg = 1;
-            k = 10;
-          }
-          else {
-            k = 0;
-            if (dptr < 0) {
-              dptr = -dptr;
-              isneg = 1;
-            }
-            while (dptr) {
-              dtos[k++] = dptr % 10 + '0';
-              dptr /= 10;
-            }
-          }
-          if (isneg)
-            str[i++] = '-';
-          while (k)
-            str[i++] = dtos[--k];
-          j += 2;
-          break;
-        default:
-          panic("Not implemented");
-          break;
-      }
-    */
     }
   }
   va_end(ap);
