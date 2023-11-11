@@ -109,8 +109,10 @@ int gprintf(unsigned char type, char *str, const char *fmt, va_list ap) {
           length = 32;
         }
       }
+
       switch(fmt[j]) {
         case 'c': case 's':
+        printf("114514\n");
 //          assert(!flags || flags == '-');
           if (fmt[j] == 'c') {
           ch = va_arg(ap, int);
