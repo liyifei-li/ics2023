@@ -51,7 +51,7 @@ static void decode_operand(Decode *s, int *rd, word_t *src1, word_t *src2, word_
 }
 
 void jal_ftrace(vaddr_t curpc, vaddr_t dnpc, int rd);
-void jalr_ftrace(vaddr_t curpc, vaddr_t dnpc, uint32_t instval, int rd);
+void jalr_ftrace(vaddr_t curpc, vaddr_t dnpc, uint32_t instval, int rd, word_t imm);
 
 static int decode_exec(Decode *s) {
   int rd = 0;
@@ -69,7 +69,7 @@ static int decode_exec(Decode *s) {
   INSTPAT("??????? ????? ????? ??? ????? 01101 11", lui    , U, R(rd) = imm);
   INSTPAT("??????? ????? ????? ??? ????? 00101 11", auipc  , U, R(rd) = s->pc + imm);
   INSTPAT("??????? ????? ????? ??? ????? 11011 11", jal    , J, R(rd) = s->snpc; s->dnpc = cpu.pc + imm; jal_ftrace(s->snpc - 4, s->dnpc, rd));
-  INSTPAT("??????? ????? ????? 000 ????? 11001 11", jalr   , I, R(rd) = s->snpc; s->dnpc = (src1 + imm) & 0xfffffffe; jalr_ftrace(s->snpc - 4, s->dnpc, INSTPAT_INST(s), rd));
+  INSTPAT("??????? ????? ????? 000 ????? 11001 11", jalr   , I, R(rd) = s->snpc; s->dnpc = (src1 + imm) & 0xfffffffe; jalr_ftrace(s->snpc - 4, s->dnpc, INSTPAT_INST(s), rd, imm));
   INSTPAT("??????? ????? ????? 000 ????? 11000 11", beq    , B, s->dnpc = (src1 == src2) ? cpu.pc + imm : s->snpc);
   INSTPAT("??????? ????? ????? 001 ????? 11000 11", bne    , B, s->dnpc = (src1 != src2) ? cpu.pc + imm : s->snpc);
   INSTPAT("??????? ????? ????? 100 ????? 11000 11", blt    , B, s->dnpc = ((int32_t)src1 < (int32_t)src2) ? cpu.pc + imm : s->snpc);
@@ -166,10 +166,10 @@ void jal_ftrace(vaddr_t curpc, vaddr_t dnpc, int rd) {
     call_ftrace(curpc, dnpc, ffname(dnpc));
 }
 
-void jalr_ftrace(vaddr_t curpc, vaddr_t dnpc, uint32_t instval, int rd) {
+void jalr_ftrace(vaddr_t curpc, vaddr_t dnpc, uint32_t instval, int rd, word_t imm) {
   if (funccnt == 0) return;
   if (instval == 0x00008067)
     ret_ftrace(curpc, dnpc, ffname(curpc));
-  else if (rd == 1)
+  else if (rd == 1 || (rd == 0 && imm == 0))
     call_ftrace(curpc, dnpc, ffname(dnpc));
 }
