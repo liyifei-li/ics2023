@@ -263,6 +263,7 @@ int gprintf(unsigned char type, char *str, const char *fmt, va_list ap) {
     }
   }
   va_end(ap);
+  gputch(type, str + cnt, '\0');
   return cnt;
 }
 
