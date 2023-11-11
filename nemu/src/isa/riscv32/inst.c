@@ -50,7 +50,7 @@ static void decode_operand(Decode *s, int *rd, word_t *src1, word_t *src2, word_
   }
 }
 
-void jal_ftrace(vaddr_t curpc, vaddr_t dnpc);
+void jal_ftrace(vaddr_t curpc, vaddr_t dnpc, int rd);
 void jalr_ftrace(vaddr_t curpc, vaddr_t dnpc, uint32_t instval);
 
 static int decode_exec(Decode *s) {
@@ -68,7 +68,7 @@ static int decode_exec(Decode *s) {
 //RV32I Base Instruction Set
   INSTPAT("??????? ????? ????? ??? ????? 01101 11", lui    , U, R(rd) = imm);
   INSTPAT("??????? ????? ????? ??? ????? 00101 11", auipc  , U, R(rd) = s->pc + imm);
-  INSTPAT("??????? ????? ????? ??? ????? 11011 11", jal    , J, R(rd) = s->snpc; s->dnpc = cpu.pc + imm; jal_ftrace(s->snpc - 4, s->dnpc));
+  INSTPAT("??????? ????? ????? ??? ????? 11011 11", jal    , J, R(rd) = s->snpc; s->dnpc = cpu.pc + imm; jal_ftrace(s->snpc - 4, s->dnpc, rd));
   INSTPAT("??????? ????? ????? 000 ????? 11001 11", jalr   , I, R(rd) = s->snpc; s->dnpc = (src1 + imm) & 0xfffffffe; jalr_ftrace(s->snpc - 4, s->dnpc, INSTPAT_INST(s)));
   INSTPAT("??????? ????? ????? 000 ????? 11000 11", beq    , B, s->dnpc = (src1 == src2) ? cpu.pc + imm : s->snpc);
   INSTPAT("??????? ????? ????? 001 ????? 11000 11", bne    , B, s->dnpc = (src1 != src2) ? cpu.pc + imm : s->snpc);
@@ -160,9 +160,10 @@ void ret_ftrace(vaddr_t curpc, vaddr_t dnpc, uint32_t name) {
   printf(FMT_PADDR ": %*sret [%s@" FMT_PADDR "]\n", curpc, rec_level * 2, "", name < funccnt ? funclist[name].name : "???", dnpc);
 }
 
-void jal_ftrace(vaddr_t curpc, vaddr_t dnpc) {
+void jal_ftrace(vaddr_t curpc, vaddr_t dnpc, int rd) {
   if (funccnt == 0) return;
-  call_ftrace(curpc, dnpc, ffname(dnpc));
+  if (rd == 1)
+    call_ftrace(curpc, dnpc, ffname(dnpc));
 }
 
 void jalr_ftrace(vaddr_t curpc, vaddr_t dnpc, uint32_t instval) {
