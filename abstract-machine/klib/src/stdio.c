@@ -53,6 +53,7 @@ int gprintf(unsigned char type, char *str, const char *fmt, va_list ap) {
       j++;
     }
     else {
+      j++;
 //      flags = 0;
       width = 0;
       precision = 0;
