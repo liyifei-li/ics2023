@@ -279,7 +279,7 @@ int vsprintf(char *out, const char *fmt, va_list ap) {
 int sprintf(char *str, const char *format, ...) {
   va_list ap;
   va_start(ap, format);
-  return gprintf(0, str, format, ap);
+  return gprintf(0, NULL, format, ap);
 }
 
 int snprintf(char *out, size_t n, const char *fmt, ...) {
