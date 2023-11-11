@@ -22,7 +22,7 @@ int gputch(unsigned char type, char *ch, int c) {
 int gprintf(unsigned char type, char *str, const char *fmt, va_list ap) {
   size_t cnt = 0;
   size_t j = 0;
-  uint32_t slen;
+  int32_t slen;
 //  int dptr;
   /*
   union un {
@@ -42,9 +42,9 @@ int gprintf(unsigned char type, char *str, const char *fmt, va_list ap) {
   char *sptr = NULL;
   char numstr[30];
 //  char flags;
-  uint32_t width;
-  uint32_t precision;
-  uint32_t length;
+  int32_t width;
+  int32_t precision;
+  int32_t length;
   while (fmt[j] != '\0') {
     if (fmt[j] != '%') {
       gputch(type, str + cnt, fmt[j]);
