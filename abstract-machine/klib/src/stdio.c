@@ -20,6 +20,7 @@ int gputch(unsigned char type, char *ch, int c) {
 }
 
 int gprintf(unsigned char type, char *str, const char *fmt, va_list ap) {
+  gprintf(0, NULL, fmt, ap);
   size_t cnt = 0;
   size_t j = 0;
   int32_t slen;
