@@ -160,16 +160,9 @@ void ret_ftrace(vaddr_t curpc, vaddr_t dnpc, uint32_t name) {
   printf(FMT_PADDR ": %*sret [%s]\n", curpc, rec_level * 2, "", name < funccnt ? funclist[name].name : "???");
 }
 
-bool isfunchead(vaddr_t pc) {
-  for (int i = 0; i < funccnt; i++) {
-    if (pc == funclist[i].addr) return 1;
-  }
-  return 0;
-}
-
 void jal_ftrace(vaddr_t curpc, vaddr_t dnpc, int rd) {
   if (funccnt == 0) return;
-  if (isfunchead(dnpc))
+  if (rd == 1)
     call_ftrace(curpc, dnpc, ffname(dnpc));
 }
 
@@ -177,6 +170,6 @@ void jalr_ftrace(vaddr_t curpc, vaddr_t dnpc, uint32_t instval, int rd) {
   if (funccnt == 0) return;
   if (instval == 0x00008067)
     ret_ftrace(curpc, dnpc, ffname(curpc));
-  else if (isfunchead(dnpc))
+  else if (rd == 1)
     call_ftrace(curpc, dnpc, ffname(dnpc));
 }
