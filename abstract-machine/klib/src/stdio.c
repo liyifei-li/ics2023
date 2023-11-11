@@ -199,7 +199,7 @@ int gprintf(unsigned char type, char *str, const char *fmt, va_list ap) {
             }
             while (dd) {
               numstr[slen++] = dd % 10 + '0';
-              printf("%c", numstr[slen - 1]);
+              printf("%c ", numstr[slen - 1]);
               dd /= 10;
             }
           }
