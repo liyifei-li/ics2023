@@ -157,7 +157,7 @@ void ret_ftrace(vaddr_t curpc, vaddr_t dnpc, uint32_t name) {
 //  assert(rec_level != 0);
   if (rec_level == 0) rec_level = 1;
   rec_level--;
-  printf(FMT_PADDR ": %*sret [%s@" FMT_PADDR "]\n", curpc, rec_level * 2, "", name < funccnt ? funclist[name].name : "???", dnpc);
+  printf(FMT_PADDR ": %*sret [%s]\n", curpc, rec_level * 2, "", name < funccnt ? funclist[name].name : "???");
 }
 
 void jal_ftrace(vaddr_t curpc, vaddr_t dnpc, int rd) {
