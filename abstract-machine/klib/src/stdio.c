@@ -90,7 +90,6 @@ int gprintf(unsigned char type, char *str, const char *fmt, va_list ap) {
           }
         }
       }
-/*
       if (fmt[j] == 'h') {
         j++;
         if (fmt[j] == 'h') {
@@ -111,7 +110,6 @@ int gprintf(unsigned char type, char *str, const char *fmt, va_list ap) {
           length = 32;
         }
       }
-*/
       switch(fmt[j]) {
         case 'c': case 's':
 //          assert(!flags || flags == '-');
