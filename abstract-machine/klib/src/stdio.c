@@ -20,7 +20,6 @@ int gputch(unsigned char type, char *ch, int c) {
 }
 
 int gprintf(unsigned char type, char *str, const char *fmt, va_list ap) {
-  gprintf(0, NULL, fmt, ap);
   size_t cnt = 0;
   size_t j = 0;
   int32_t slen;
@@ -280,7 +279,7 @@ int vsprintf(char *out, const char *fmt, va_list ap) {
 int sprintf(char *str, const char *format, ...) {
   va_list ap;
   va_start(ap, format);
-  return gprintf(2, str, format, ap);
+  return gprintf(0, str, format, ap);
 }
 
 int snprintf(char *out, size_t n, const char *fmt, ...) {
