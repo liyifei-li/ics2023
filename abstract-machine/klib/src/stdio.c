@@ -10,7 +10,7 @@ int gputch(unsigned char type, char *ch, int c) {
     case 0:
       putch(c);
       break;
-    case 2:
+    case 1: case 2: case 3: case 4:
       *ch = c;
       break;
     default:
@@ -19,7 +19,7 @@ int gputch(unsigned char type, char *ch, int c) {
   return c;
 }
 
-int gprintf(unsigned char type, char *str, const char *fmt, va_list ap) {
+int gprintf(size_t n, unsigned char type, char *str, const char *fmt, va_list ap) {
   size_t cnt = 0;
   size_t j = 0;
   int32_t slen;
@@ -47,9 +47,11 @@ int gprintf(unsigned char type, char *str, const char *fmt, va_list ap) {
   int32_t precision;
   int32_t length;
   while (fmt[j] != '\0') {
+    if (cnt == n) break;
     if (fmt[j] != '%') {
       gputch(type, str + cnt, fmt[j]);
       cnt++;
+      if (cnt == n) break;
       j++;
     }
     else {
@@ -126,10 +128,12 @@ int gprintf(unsigned char type, char *str, const char *fmt, va_list ap) {
           for (int i = 0; i < slen; i++) {
             gputch(type, str + cnt, *(sptr + i));
             cnt++;
+            if (cnt == n) break;
           }
           for (int i = 0; i < width - slen; i++) {
             gputch(type, str + cnt, ' ');
             cnt++;
+            if (cnt == n) break;
           }
           j++;
           /*
@@ -189,19 +193,23 @@ int gprintf(unsigned char type, char *str, const char *fmt, va_list ap) {
           for (int i = 0; i < width - precision && i < width - slen; i++) {
             if (flags == 0) {
               gputch(type, str + cnt, ' ');
+              if (cnt == n) break;
             }
             else if (flags == '0') {
               gputch(type, str + cnt, '0');
+              if (cnt == n) break;
             }
             cnt++;
           }
           for (int i = 0; i < precision - slen; i++) {
             gputch(type, str + cnt, '0');
             cnt++;
+            if (cnt == n) break;
           }
           for (int i = 0; i < slen; i++) {
             gputch(type, str + cnt, numstr[slen - i - 1]);
             cnt++;
+            if (cnt == n) break;
           }
           j++;
           break;
@@ -218,17 +226,17 @@ int gprintf(unsigned char type, char *str, const char *fmt, va_list ap) {
 int printf(const char *fmt, ...) {
   va_list ap;
   va_start(ap, fmt);
-  return gprintf(0, NULL, fmt, ap);
+  return gprintf(-1, 0, NULL, fmt, ap);
 }
 
 int vsprintf(char *out, const char *fmt, va_list ap) {
-  panic("Not implemented");
+  return gprintf(-1, 1, out, fmt, ap);
 }
 
 int sprintf(char *str, const char *format, ...) {
   va_list ap;
   va_start(ap, format);
-  return gprintf(2, str, format, ap);
+  return gprintf(-1, 2, str, format, ap);
 }
 
 int snprintf(char *out, size_t n, const char *fmt, ...) {
