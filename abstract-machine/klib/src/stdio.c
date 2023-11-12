@@ -144,7 +144,7 @@ int gprintf(size_t n, unsigned char type, char *str, const char *fmt, va_list ap
           case 'o': case 'd': case 'x': case 'u':
           d = 0;
           u = 0;
-          if (fmt[j] != 'u') {
+          if (fmt[j] == 'd') {
             switch(length) {
               case 8:  d = (int8_t) va_arg(ap, int32_t); break;
               case 16: d = (int16_t)va_arg(ap, int32_t); break;
