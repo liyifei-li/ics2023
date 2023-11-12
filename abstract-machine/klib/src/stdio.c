@@ -63,7 +63,6 @@ int gprintf(size_t n, unsigned char type, char *str, const char *fmt, va_list ap
       else {
         while (fmt[j] >= '0' && fmt[j] <= '9') {
           width = 10 * width + fmt[j] - '0';
-          putch(fmt[j]);
           j++;
         }
       }
