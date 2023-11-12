@@ -19,25 +19,14 @@ int gputch(unsigned char type, char *ch, int c) {
   return c;
 }
 
+static const char numlist[16] = "0123456789ABCDEF";
+
 int gprintf(size_t n, unsigned char type, char *str, const char *fmt, va_list ap) {
   size_t cnt = 0;
   size_t j = 0;
   int32_t slen;
-//  int dptr;
-  /*
-  union un {
-    uint64_t u64;
-    uint32_t u32;
-    uint16_t u16;
-    uint8_t u8;
-  } u;
-  */
-  union si {
-    int64_t d64;
-    int32_t d32;
-    int16_t d16;
-    int8_t d8;
-  } d;
+  uint64_t u;
+  int64_t d;
   char ch;
   char *sptr = NULL;
   bool isneg;
@@ -46,6 +35,7 @@ int gprintf(size_t n, unsigned char type, char *str, const char *fmt, va_list ap
   int32_t width;
   int32_t precision;
   int32_t length;
+  uint32_t son;
   while (fmt[j] != '\0') {
     if (cnt == n) break;
     if (fmt[j] != '%') {
@@ -136,55 +126,50 @@ int gprintf(size_t n, unsigned char type, char *str, const char *fmt, va_list ap
             if (cnt == n) break;
           }
           j++;
-          /*
-          if (flags == 0) {
-            for (int i = 0 i < strlen; i++) {
-              gputch(type, strptr + cnt, sptr);
-              cnt++;
-            }
-            for (int i = 0; i < width - strlen; i++) {
-              gputch(type, strptr + cnt, ' ');
-              cnt++;
-            }
-          }
-          else if (flags == '-') {
-            for (int i = 0; i < width - strlen; i++) {
-              gputch(type, strptr + cnt, ' ');
-              cnt++;
-            }
-            for (int i = 0 i < strlen; i++) {
-              gputch(type, strptr + cnt, sptr);
-              cnt++;
-            }
-          }
-          */
         break;
-        case 'd':
-          isneg = 0;
-          switch(length) {
-            case 8:  d.d8  = va_arg(ap, int32_t); d.d64 = d.d8;  break;
-            case 16: d.d16 = va_arg(ap, int32_t); d.d64 = d.d16; break;
-            case 32: d.d32 = va_arg(ap, int32_t); d.d64 = d.d32; break;
-            case 64: d.d64 = va_arg(ap, int64_t); break;
-            default:
+          case 'o': case 'd': case 'x': case 'u':
+          d = 0;
+          u = 0;
+          if (fmt[j] != 'u') {
+            switch(length) {
+              case 8:  d = (int8_t) va_arg(ap, int32_t); break;
+              case 16: d = (int16_t)va_arg(ap, int32_t); break;
+              case 32: d = (int32_t)va_arg(ap, int32_t); break;
+              case 64: d = (int64_t)va_arg(ap, int64_t); break;
+              default: assert(0);
+            }
+            if (d < 0) {
+              isneg = 1;
+              u = -d;
+            }
+            else {
+              isneg = 0;
+              u = d;
+            }
           }
-          if (d.d64 == 0) {
+          else {
+            switch(length) {
+              case 8:  u = (uint8_t) va_arg(ap, uint32_t); break;
+              case 16: u = (uint16_t)va_arg(ap, uint32_t); break;
+              case 32: u = (uint32_t)va_arg(ap, uint32_t); break;
+              case 64: u = (uint64_t)va_arg(ap, uint64_t); break;
+              default: assert(0);
+            }
+            isneg = 0;
+          }
+          if (u == 0) {
             numstr[0] = '0';
             slen = 1;
           }
-          else if (d.d64 == 1ll << 63) {
-            strcpy(numstr, "8085774586302733229-");
-            slen = 20;
-          }
           else {
             slen = 0;
-            if (d.d64 < 0) {
-              d.d64 = -d.d64;
-              isneg = 1;
-            }
-            while (d.d64) {
-              numstr[slen++] = d.d64 % 10 + '0';
-              d.d64 /= 10;
+            son = fmt[j] == 'o' ? 8
+                : fmt[j] == 'd' || fmt[j] == 'u' ? 10
+                : fmt[j] == 'x' ? 16
+                : 0; 
+            while (u) {
+              numstr[slen++] = numlist[u % son];
+              u /= son;
             }
             if (isneg) {
               numstr[slen++] = '-';
