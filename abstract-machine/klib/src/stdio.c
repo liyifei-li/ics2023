@@ -105,7 +105,7 @@ int gprintf(size_t n, unsigned char type, char *str, const char *fmt, va_list ap
 
       switch(fmt[j]) {
         case 'c': case 's':
-//          assert(!flags || flags == '-');
+          assert(!flags || flags == '-');
           if (fmt[j] == 'c') {
             ch = va_arg(ap, int);
             sptr = &ch;
@@ -115,15 +115,29 @@ int gprintf(size_t n, unsigned char type, char *str, const char *fmt, va_list ap
             sptr = va_arg(ap, char*);
             slen = strlen(sptr);
           }
-          for (int i = 0; i < slen; i++) {
-            gputch(type, str + cnt, *(sptr + i));
-            cnt++;
-            if (cnt == n) break;
+          if (flags == 0) {
+            for (int i = 0; i < slen; i++) {
+              gputch(type, str + cnt, *(sptr + i));
+              cnt++;
+              if (cnt == n) break;
+            }
+            for (int i = 0; i < width - slen; i++) {
+              gputch(type, str + cnt, ' ');
+              cnt++;
+              if (cnt == n) break;
+            }
           }
-          for (int i = 0; i < width - slen; i++) {
-            gputch(type, str + cnt, ' ');
-            cnt++;
-            if (cnt == n) break;
+          else {
+            for (int i = 0; i < width - slen; i++) {
+              gputch(type, str + cnt, ' ');
+              cnt++;
+              if (cnt == n) break;
+            }
+            for (int i = 0; i < slen; i++) {
+              gputch(type, str + cnt, *(sptr + i));
+              cnt++;
+              if (cnt == n) break;
+            }
           }
           j++;
         break;
@@ -166,7 +180,7 @@ int gprintf(size_t n, unsigned char type, char *str, const char *fmt, va_list ap
             son = fmt[j] == 'o' ? 8
                 : fmt[j] == 'd' || fmt[j] == 'u' ? 10
                 : fmt[j] == 'x' ? 16
-                : 0; 
+                : 0;
             while (u) {
               numstr[slen++] = numlist[u % son];
               u /= son;
