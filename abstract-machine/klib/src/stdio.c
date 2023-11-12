@@ -214,6 +214,7 @@ int gprintf(size_t n, unsigned char type, char *str, const char *fmt, va_list ap
           j++;
           break;
         default:
+          printf(" %c unsupported\n", fmt[j]);
           assert(0);
       }
     }
