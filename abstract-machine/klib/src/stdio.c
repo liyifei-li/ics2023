@@ -19,7 +19,7 @@ int gputch(unsigned char type, char *ch, int c) {
   return c;
 }
 
-static const char numlist[16] = "0123456789ABCDEF";
+static const char numlist[16] = "0123456789abcdef";
 
 int gprintf(size_t n, unsigned char type, char *str, const char *fmt, va_list ap) {
   size_t cnt = 0;
