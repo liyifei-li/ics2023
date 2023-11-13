@@ -25,12 +25,10 @@ void __am_gpu_config(AM_GPU_CONFIG_T *cfg) {
 }
 
 void __am_gpu_fbdraw(AM_GPU_FBDRAW_T *ctl) {
-  printf("333");
   if (ctl->sync) {
     outl(SYNC_ADDR, 1);
   }
   else {
-    printf("%d %d\n\n\n\n\n\n\n\n\n\n\n\n%d %d", ctl->h, ctl->w, ctl->h, ctl->w);
     int width = io_read(AM_GPU_CONFIG).width;
     uint32_t *fb = (uint32_t *)(uintptr_t)FB_ADDR;
     uint32_t *p = ctl->pixels;
