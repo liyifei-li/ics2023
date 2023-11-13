@@ -92,7 +92,7 @@ void *memmove(void *dst, const void *src, size_t n) {
 void *memcpy(void *out, const void *in, size_t n) {
   size_t i = 0;
   while (i < n) {
-    *(uint8_t *)(out + i) = *(uint8_t *)in + i;
+    *(uint8_t *)(out + i) = *(uint8_t *)(in + i);
     i++;
   }
   return out;
