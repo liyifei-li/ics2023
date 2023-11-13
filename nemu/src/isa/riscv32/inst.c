@@ -50,8 +50,8 @@ static void decode_operand(Decode *s, int *rd, word_t *src1, word_t *src2, word_
   }
 }
 
-void jal_ftrace(vaddr_t curpc, vaddr_t dnpc, int rd);
-void jalr_ftrace(vaddr_t curpc, vaddr_t dnpc, uint32_t instval, int rd);
+IFDEF(CONFIG_ITRACE, void jal_ftrace(vaddr_t curpc, vaddr_t dnpc, int rd));
+IFDEF(CONFIG_ITRACE, void jalr_ftrace(vaddr_t curpc, vaddr_t dnpc, uint32_t instval, int rd));
 
 static int decode_exec(Decode *s) {
   int rd = 0;
@@ -124,17 +124,19 @@ static int decode_exec(Decode *s) {
   return 0;
 }
 
+int isa_exec_once(Decode *s) {
+  s->isa.inst.val = inst_fetch(&s->snpc, 4);
+  return decode_exec(s);
+}
+
+#ifdef CONFIG_ITRACE
+
 extern uint32_t funccnt;
 extern struct flist {
   char name[64];
   vaddr_t addr;
   uint32_t size;
 } funclist[];
-
-int isa_exec_once(Decode *s) {
-  s->isa.inst.val = inst_fetch(&s->snpc, 4);
-  return decode_exec(s);
-}
 
 uint32_t ffname(vaddr_t addr) {
   uint32_t ret = 0;
@@ -173,3 +175,5 @@ void jalr_ftrace(vaddr_t curpc, vaddr_t dnpc, uint32_t instval, int rd) {
   else if (rd == 1)
     call_ftrace(curpc, dnpc, ffname(dnpc));
 }
+
+#endif

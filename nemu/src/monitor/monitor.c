@@ -44,7 +44,6 @@ void sdb_set_batch_mode();
 static char *log_file = NULL;
 static char *diff_so_file = NULL;
 static char *img_file = NULL;
-static char *elf_file = NULL;
 static int difftest_port = 1234;
 
 static long load_img() {
@@ -68,6 +67,12 @@ static long load_img() {
   fclose(fp);
   return size;
 }
+
+
+
+#ifdef CONFIG_ITRACE
+
+static char *elf_file = NULL;
 
 uint32_t funccnt;
 
@@ -148,6 +153,8 @@ static void load_elf() {
   free(strtab);
 }
 
+#endif
+
 static int parse_args(int argc, char *argv[]) {
   const struct option table[] = {
     {"batch"    , no_argument      , NULL, 'b'},
@@ -165,7 +172,7 @@ static int parse_args(int argc, char *argv[]) {
       case 'p': sscanf(optarg, "%d", &difftest_port); break;
       case 'l': log_file = optarg; break;
       case 'd': diff_so_file = optarg; break;
-      case 'e': elf_file = optarg; break;
+      IFDEF(CONFIG_ITRACE, case 'e': elf_file = optarg; break);
       case 1: img_file = optarg; return 0;
       default:
         printf("Usage: %s [OPTION...] IMAGE [args]\n\n", argv[0]);
@@ -173,7 +180,7 @@ static int parse_args(int argc, char *argv[]) {
         printf("\t-l,--log=FILE           output log to FILE\n");
         printf("\t-d,--diff=REF_SO        run DiffTest with reference REF_SO\n");
         printf("\t-p,--port=PORT          run DiffTest with port PORT\n");
-        printf("\t-e,--elf=FILE           run with ftrace");
+        IFDEF(CONFIG_ITRACE, printf("\t-e,--elf=FILE           run with ftrace"));
         printf("\n");
         exit(0);
     }
@@ -205,7 +212,7 @@ void init_monitor(int argc, char *argv[]) {
   /* Load the image to memory. This will overwrite the built-in image. */
   long img_size = load_img();
 
-  load_elf();
+  IFDEF(CONFIG_ITRACE, load_elf());
 
   /* Initialize differential testing. */
   init_difftest(diff_so_file, img_size, difftest_port);
