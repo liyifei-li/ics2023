@@ -17,7 +17,7 @@ void __am_gpu_init() {
 void __am_gpu_config(AM_GPU_CONFIG_T *cfg) {
   uint32_t wh = inl(VGACTL_ADDR);
   *cfg = (AM_GPU_CONFIG_T) {
-    .present = true, .has_accel = true,
+    .present = true, .has_accel = false,
     .width = wh >> 16, .height = wh & 0xffff,
     .vmemsz = 0
   };
@@ -26,6 +26,11 @@ void __am_gpu_config(AM_GPU_CONFIG_T *cfg) {
 void __am_gpu_fbdraw(AM_GPU_FBDRAW_T *ctl) {
   if (ctl->sync) {
     outl(SYNC_ADDR, 1);
+    int w = io_read(AM_GPU_CONFIG).width;
+    int h = io_read(AM_GPU_CONFIG).height;
+    uint32_t *fb = (uint32_t *)(uintptr_t)FB_ADDR;
+    fb = fb;
+    for (int i = 0; i < w * h; i ++) fb[i] = w * h - i - 1;
   }
   else {
     int width = io_read(AM_GPU_CONFIG).width;
