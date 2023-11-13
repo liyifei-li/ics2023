@@ -5,6 +5,7 @@
 #define SYNC_ADDR (VGACTL_ADDR + 4)
 
 void __am_gpu_init() {
+  printf("1");
 /*
   int i;
   int w = io_read(AM_GPU_CONFIG).width;
@@ -16,6 +17,7 @@ void __am_gpu_init() {
 }
 
 void __am_gpu_config(AM_GPU_CONFIG_T *cfg) {
+  printf("2");
   uint32_t wh = inl(VGACTL_ADDR);
   *cfg = (AM_GPU_CONFIG_T) {
     .present = true, .has_accel = false,
@@ -25,6 +27,7 @@ void __am_gpu_config(AM_GPU_CONFIG_T *cfg) {
 }
 
 void __am_gpu_fbdraw(AM_GPU_FBDRAW_T *ctl) {
+  printf("3");
   if (ctl->sync) {
     outl(SYNC_ADDR, 1);
   }
@@ -37,10 +40,10 @@ void __am_gpu_fbdraw(AM_GPU_FBDRAW_T *ctl) {
         fb[(i + ctl->y) * width + (j + ctl->x)] = p[(i) * ctl->w + (j)];
       }
     }
-    outl(SYNC_ADDR, 1);
   }
 }
 
 void __am_gpu_status(AM_GPU_STATUS_T *status) {
+  printf("4");
   status->ready = true;
 }
