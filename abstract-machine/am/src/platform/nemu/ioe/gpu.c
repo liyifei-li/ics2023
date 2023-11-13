@@ -24,13 +24,15 @@ void __am_gpu_config(AM_GPU_CONFIG_T *cfg) {
 }
 
 void __am_gpu_fbdraw(AM_GPU_FBDRAW_T *ctl) {
+  uint32_t cnt = 0;
   if (ctl->sync) {
     outl(SYNC_ADDR, 1);
     int w = io_read(AM_GPU_CONFIG).width;
     int h = io_read(AM_GPU_CONFIG).height;
     uint32_t *fb = (uint32_t *)(uintptr_t)FB_ADDR;
     fb = fb;
-    for (int i = 0; i < w * h; i ++) fb[i] = w * h - i - 1;
+    for (int i = 0; i < w * h; i ++) fb[i] = (i + cnt) % w * h;
+    cnt++;
   }
   else {
     int width = io_read(AM_GPU_CONFIG).width;
