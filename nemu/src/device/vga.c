@@ -76,6 +76,7 @@ void vga_update_screen() {
   // then zero out the sync register
   if (vgactl_port_base[1] != 0) {
     update_screen();
+    printf("114");
     vgactl_port_base[1] = 0;
   }
 }
