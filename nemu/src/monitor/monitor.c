@@ -90,7 +90,7 @@ static void load_elf() {
 
   fseek(fp, 0, SEEK_END);
   long size = ftell(fp);
-
+printf("111111");
   Log("The elf is %s, size = %ld", elf_file, size);
 printf("111111");
   fseek(fp, 0, SEEK_SET);
