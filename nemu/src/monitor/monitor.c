@@ -80,7 +80,7 @@ struct flist {
   char name[64];
   vaddr_t addr;
   uint32_t size;
-} funclist[256];
+} funclist[1024];
 
 static void load_elf() {
   if (elf_file == NULL) return;
