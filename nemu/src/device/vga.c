@@ -61,7 +61,6 @@ static inline void update_screen() {
   SDL_RenderClear(renderer);
   SDL_RenderCopy(renderer, texture, NULL, NULL);
   SDL_RenderPresent(renderer);
-  printf("114\n");
 }
 #else
 static void init_screen() {}
@@ -78,6 +77,7 @@ void vga_update_screen() {
   if (vgactl_port_base[1] != 0) {
     update_screen();
     vgactl_port_base[1] = 0;
+    printf("114\n");
   }
 }
 
