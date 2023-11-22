@@ -27,10 +27,10 @@ void __am_gpu_config(AM_GPU_CONFIG_T *cfg) {
 void __am_gpu_fbdraw(AM_GPU_FBDRAW_T *ctl) {
 //  int w = io_read(AM_GPU_CONFIG).width;
 //  int h = io_read(AM_GPU_CONFIG).height;
-  uint32_t *fb = (uint32_t *)(uintptr_t)FB_ADDR;
-  for (int i = 0; i < 100; i++)
-    printf("%x ", fb[i]);
-  printf("\n\n\n");
+//  uint32_t *fb = (uint32_t *)(uintptr_t)FB_ADDR;
+//  for (int i = 0; i < 100; i++)
+//    printf("%x ", fb[i]);
+//  printf("\n\n\n");
   if (ctl->sync) {
     outl(SYNC_ADDR, 1);
   }
