@@ -143,8 +143,11 @@ printf("33\n");
       funccnt++;
     }
   }
+printf("33\n");
   fclose(fp);
+printf("33\n");
   free(strtab);
+printf("33\n");
 }
 
 #endif
