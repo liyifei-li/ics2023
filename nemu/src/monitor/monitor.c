@@ -136,6 +136,7 @@ printf("33\n");
   for (int i = 0; i < num_symbols; i++) {
     ret = fread(&sym, sizeof(Elf32_Sym), 1, fp);
     assert(ret == 1);
+printf("33\n");
     if (ELF32_ST_TYPE(sym.st_info) == STT_FUNC) {
       funclist[funccnt].addr = sym.st_value;
       funclist[funccnt].size = sym.st_size;
@@ -143,11 +144,8 @@ printf("33\n");
       funccnt++;
     }
   }
-printf("33\n");
   fclose(fp);
-printf("33\n");
   free(strtab);
-printf("33\n");
 }
 
 #endif
