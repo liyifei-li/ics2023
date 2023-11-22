@@ -122,7 +122,7 @@ static void load_elf() {
       break;
     }
   }
-
+printf("1");
   fseek(fp, ehdr.e_shoff, SEEK_SET);
 
   for (int i = 0; i < ehdr.e_shnum; i++) {
@@ -133,7 +133,7 @@ static void load_elf() {
   }
 
   fseek(fp, shdr.sh_offset, SEEK_SET);
-
+printf("2");
   assert (shdr.sh_entsize != 0);
   uint32_t num_symbols = shdr.sh_size / shdr.sh_entsize;
 
