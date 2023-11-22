@@ -132,11 +132,9 @@ static void load_elf() {
   uint32_t num_symbols = shdr.sh_size / shdr.sh_entsize;
 
   funccnt = 0;
-printf("33\n");
   for (int i = 0; i < num_symbols; i++) {
     ret = fread(&sym, sizeof(Elf32_Sym), 1, fp);
     assert(ret == 1);
-printf("%d %d\n", i, num_symbols);
     if (ELF32_ST_TYPE(sym.st_info) == STT_FUNC) {
       funclist[funccnt].addr = sym.st_value;
       funclist[funccnt].size = sym.st_size;
