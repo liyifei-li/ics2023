@@ -90,9 +90,7 @@ static void load_elf() {
 
   fseek(fp, 0, SEEK_END);
   long size = ftell(fp);
-printf("111111\n");
   Log("The elf is %s, size = %ld", elf_file, size);
-printf("111111\n");
   fseek(fp, 0, SEEK_SET);
 
   Elf32_Ehdr ehdr;
@@ -100,7 +98,6 @@ printf("111111\n");
   Elf32_Sym sym;
   char *strtab = NULL;
   int ret;
-printf("111111\n");
   ret = fread(&ehdr, sizeof(Elf32_Ehdr), 1, fp);
   assert(ret == 1);
 
@@ -123,7 +120,7 @@ printf("111111\n");
     }
   }
   fseek(fp, ehdr.e_shoff, SEEK_SET);
-
+printf("222\n");
   for (int i = 0; i < ehdr.e_shnum; i++) {
     ret = fread(&shdr, sizeof(Elf32_Shdr), 1, fp);
     assert(ret == 1);
