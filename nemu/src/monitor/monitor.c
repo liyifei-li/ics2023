@@ -100,7 +100,7 @@ static void load_elf() {
   Elf32_Sym sym;
   char *strtab = NULL;
   int ret;
-
+printf("111111");
   ret = fread(&ehdr, sizeof(Elf32_Ehdr), 1, fp);
   assert(ret == 1);
 
@@ -122,7 +122,6 @@ static void load_elf() {
       break;
     }
   }
-printf("1");
   fseek(fp, ehdr.e_shoff, SEEK_SET);
 
   for (int i = 0; i < ehdr.e_shnum; i++) {
@@ -133,7 +132,6 @@ printf("1");
   }
 
   fseek(fp, shdr.sh_offset, SEEK_SET);
-printf("2");
   assert (shdr.sh_entsize != 0);
   uint32_t num_symbols = shdr.sh_size / shdr.sh_entsize;
 
