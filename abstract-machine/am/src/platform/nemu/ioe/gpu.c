@@ -36,7 +36,7 @@ void __am_gpu_fbdraw(AM_GPU_FBDRAW_T *ctl) {
   }
   else {
     int width = io_read(AM_GPU_CONFIG).width;
-    uint32_t *fb = (uint32_t *)(uintptr_t)FB_ADDR;
+    uint32_t *fb = (uint32_t *)(uintptr_t)0xa1000000;
     uint32_t *p = ctl->pixels;
     for (int i = 0; i < ctl->h; i++) {
       for (int j = 0; j < ctl->w; j++) {
