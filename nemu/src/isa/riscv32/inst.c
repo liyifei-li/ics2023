@@ -69,7 +69,7 @@ void csrrw_inst(word_t imm, int rd, word_t src1) {
     case ME_REG: R(rd) = MER; MER = src1; break;
     case MS_REG: R(rd) = MSR; MSR = src1; break;
     case MC_REG: R(rd) = MCR; MCR = src1; break;
-    default: printf("%u", imm); assert(0);break;
+    default: printf("%u\n", imm); assert(0);break;
   }
   return;
 }
