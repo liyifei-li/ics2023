@@ -51,7 +51,7 @@ int gprintf(size_t n, unsigned char type, char *str, const char *fmt, va_list ap
       precision = 0;
       length = 32;
       
-      if (fmt[j] == '0') {
+      if (fmt[j] == '0' || fmt[j] == '#') {
         flags = fmt[j];
         j++;
       }
@@ -117,31 +117,31 @@ int gprintf(size_t n, unsigned char type, char *str, const char *fmt, va_list ap
           }
           if (flags == 0) {
             for (int i = 0; i < slen; i++) {
+              if (cnt == n) break;
               gputch(type, str + cnt, *(sptr + i));
               cnt++;
-              if (cnt == n) break;
             }
             for (int i = 0; i < width - slen; i++) {
+              if (cnt == n) break;
               gputch(type, str + cnt, ' ');
               cnt++;
-              if (cnt == n) break;
             }
           }
           else {
             for (int i = 0; i < width - slen; i++) {
+              if (cnt == n) break;
               gputch(type, str + cnt, ' ');
               cnt++;
-              if (cnt == n) break;
             }
             for (int i = 0; i < slen; i++) {
+              if (cnt == n) break;
               gputch(type, str + cnt, *(sptr + i));
               cnt++;
-              if (cnt == n) break;
             }
           }
           j++;
         break;
-          case 'o': case 'd': case 'x': case 'u':
+        case 'o': case 'd': case 'x': case 'u': case 'p':
           d = 0;
           u = 0;
           if (fmt[j] == 'd') {
@@ -179,7 +179,7 @@ int gprintf(size_t n, unsigned char type, char *str, const char *fmt, va_list ap
             slen = 0;
             son = fmt[j] == 'o' ? 8
                 : fmt[j] == 'd' || fmt[j] == 'u' ? 10
-                : fmt[j] == 'x' ? 16
+                : fmt[j] == 'x' || fmt[j] == 'p' ? 16
                 : 0;
             while (u) {
               numstr[slen++] = numlist[u % son];
@@ -189,26 +189,34 @@ int gprintf(size_t n, unsigned char type, char *str, const char *fmt, va_list ap
               numstr[slen++] = '-';
             }
           }
+          if (fmt[j] == 'p') flags = '#';
+          if (flags == '#') {
+            assert(fmt[j] == 'x' || fmt[j] == 'p');
+            if (cnt == n) break;
+            gputch(type, str + cnt, '0');
+            if (cnt == n) break;
+            gputch(type, str + cnt, 'x');
+          }
           for (int i = 0; i < width - precision && i < width - slen; i++) {
             if (flags == 0) {
-              gputch(type, str + cnt, ' ');
               if (cnt == n) break;
+              gputch(type, str + cnt, ' ');
             }
             else if (flags == '0') {
-              gputch(type, str + cnt, '0');
               if (cnt == n) break;
+              gputch(type, str + cnt, '0');
             }
             cnt++;
           }
           for (int i = 0; i < precision - slen; i++) {
+            if (cnt == n) break;
             gputch(type, str + cnt, '0');
             cnt++;
-            if (cnt == n) break;
           }
           for (int i = 0; i < slen; i++) {
+            if (cnt == n) break;
             gputch(type, str + cnt, numstr[slen - i - 1]);
             cnt++;
-            if (cnt == n) break;
           }
           j++;
           break;
