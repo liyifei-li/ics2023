@@ -8,17 +8,10 @@ Context* __am_irq_handle(Context *c) {
   if (user_handler) {
     Event ev = {0};
     switch (c->mcause) {
+      case EVENT_YIELD: ev.event = EVENT_YIELD; break;
       default: ev.event = EVENT_ERROR; break;
     }
-    for (int i = 0; i < 32; i++) printf("%x\n", c->gpr[i]);
-    printf("%x\n", c->mcause);
-    printf("%x\n", c->mstatus);
-    printf("%x\n", c->mepc);
     c = user_handler(ev, c);
-    for (int i = 0; i < 32; i++) printf("%x\n", c->gpr[i]);
-    printf("%x\n", c->mcause);
-    printf("%x\n", c->mstatus);
-    printf("%x\n", c->mepc);
     assert(c != NULL);
   }
 
