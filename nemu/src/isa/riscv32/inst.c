@@ -18,9 +18,11 @@
 #include <cpu/ifetch.h>
 #include <cpu/decode.h>
 
+#define MTR cpu.mtvec
 #define MER cpu.mepc
 #define MSR cpu.mstatus
 #define MCR cpu.mcause
+#define MT_REG 305
 #define ME_REG 341
 #define MS_REG 300
 #define MC_REG 342
@@ -63,6 +65,7 @@ IFDEF(CONFIG_ITRACE, extern uint32_t funccnt);
 
 void csrrw_inst(word_t imm, int rd, word_t src1) {
   switch (imm) {
+    case MT_REG: R(rd) = MTR; MTR = src1; break;
     case ME_REG: R(rd) = MER; MER = src1; break;
     case MS_REG: R(rd) = MSR; MSR = src1; break;
     case MC_REG: R(rd) = MCR; MCR = src1; break;
