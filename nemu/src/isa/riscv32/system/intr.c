@@ -21,6 +21,7 @@ word_t isa_raise_intr(word_t NO, vaddr_t epc) {
    */
   cpu.pc = epc;
   printf("0x%x\n", epc);
+  nemu_state.state = NEMU_STOP;
   return epc;
 }
 
