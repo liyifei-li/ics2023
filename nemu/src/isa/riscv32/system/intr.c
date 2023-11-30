@@ -21,6 +21,9 @@ word_t isa_raise_intr(word_t NO, vaddr_t epc) {
    */
   cpu.mepc = epc;
   cpu.mcause = NO;
+  #ifdef CONFIG_ETRACE
+    printf("intr NO.%u raised at pc=%08x\n", NO, epc);
+  #endif
   return cpu.mtvec;
 }
 
