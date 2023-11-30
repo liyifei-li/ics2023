@@ -18,6 +18,13 @@
 #include <cpu/ifetch.h>
 #include <cpu/decode.h>
 
+#define MER cpu.mepc
+#define MSR cpu.mstatus
+#define MCR cpu.mcause
+#define ME_REG 341
+#define MS_REG 300
+#define MC_REG 342
+
 #define R(i) gpr(i)
 #define Mr vaddr_read
 #define Mw vaddr_write
@@ -53,6 +60,16 @@ static void decode_operand(Decode *s, int *rd, word_t *src1, word_t *src2, word_
 IFDEF(CONFIG_ITRACE, void jal_ftrace(vaddr_t curpc, vaddr_t dnpc, int rd));
 IFDEF(CONFIG_ITRACE, void jalr_ftrace(vaddr_t curpc, vaddr_t dnpc, uint32_t instval, int rd));
 IFDEF(CONFIG_ITRACE, extern uint32_t funccnt);
+
+void csrrw_inst(word_t imm, int rd, word_t src1) {
+  switch (imm) {
+    case ME_REG: R(rd) = MER; MER = src1; break;
+    case MS_REG: R(rd) = MSR; MSR = src1; break;
+    case MC_REG: R(rd) = MCR; MCR = src1; break;
+    default: assert(0);                   break;
+  }
+  return;
+}
 
 static int decode_exec(Decode *s) {
   int rd = 0;
@@ -118,6 +135,7 @@ static int decode_exec(Decode *s) {
 // Special
 //  INSTPAT("0000000 00000 00000 000 00000 11100 11", ecall  , N, R(0) = 0);
   INSTPAT("0000000 00001 00000 000 00000 11100 11", ebreak , N, NEMUTRAP(s->pc, R(10))); // R(10) is $a0
+  INSTPAT("??????? ????? ????? 001 ????? 11100 11", csrrw  , I, csrrw_inst(imm, rd, src1));
   INSTPAT("??????? ????? ????? ??? ????? ????? ??", inv    , N, INV(s->pc));
   INSTPAT_END();
 
