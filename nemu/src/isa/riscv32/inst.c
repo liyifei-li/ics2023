@@ -22,10 +22,10 @@
 #define MER cpu.mepc
 #define MSR cpu.mstatus
 #define MCR cpu.mcause
-#define MT_REG 305
-#define ME_REG 341
-#define MS_REG 300
-#define MC_REG 342
+#define MT_REG 0x305
+#define ME_REG 0x341
+#define MS_REG 0x300
+#define MC_REG 0x342
 
 #define R(i) gpr(i)
 #define Mr vaddr_read
@@ -69,7 +69,7 @@ void csrrw_inst(word_t imm, int rd, word_t src1) {
     case ME_REG: R(rd) = MER; MER = src1; break;
     case MS_REG: R(rd) = MSR; MSR = src1; break;
     case MC_REG: R(rd) = MCR; MCR = src1; break;
-    default: printf("%u\n", imm); assert(0);break;
+    default: assert(0); break;
   }
   return;
 }
