@@ -74,6 +74,28 @@ void csrrw_inst(word_t imm, int rd, word_t src1) {
   return;
 }
 
+void csrrs_inst(word_t imm, int rd, word_t src1) {
+  switch (imm) {
+    case MT_REG: R(rd) = MTR; MTR |= src1; break;
+    case ME_REG: R(rd) = MER; MER |= src1; break;
+    case MS_REG: R(rd) = MSR; MSR |= src1; break;
+    case MC_REG: R(rd) = MCR; MCR |= src1; break;
+    default: assert(0); break;
+  }
+  return;
+}
+
+void csrrc_inst(word_t imm, int rd, word_t src1) {
+  switch (imm) {
+    case MT_REG: R(rd) = MTR; MTR &= ~src1; break;
+    case ME_REG: R(rd) = MER; MER &= ~src1; break;
+    case MS_REG: R(rd) = MSR; MSR &= ~src1; break;
+    case MC_REG: R(rd) = MCR; MCR &= ~src1; break;
+    default: assert(0); break;
+  }
+  return;
+}
+
 static int decode_exec(Decode *s) {
   int rd = 0;
   word_t src1 = 0, src2 = 0, imm = 0;
@@ -139,6 +161,8 @@ static int decode_exec(Decode *s) {
   INSTPAT("0000000 00000 00000 000 00000 11100 11", ecall  , N, s->dnpc = isa_raise_intr(1, s->snpc - 4));
   INSTPAT("0000000 00001 00000 000 00000 11100 11", ebreak , N, NEMUTRAP(s->pc, R(10))); // R(10) is $a0
   INSTPAT("??????? ????? ????? 001 ????? 11100 11", csrrw  , I, csrrw_inst(imm, rd, src1));
+  INSTPAT("??????? ????? ????? 010 ????? 11100 11", csrrs  , I, csrrs_inst(imm, rd, src1));
+  INSTPAT("??????? ????? ????? 011 ????? 11100 11", csrrc  , I, csrrc_inst(imm, rd, src1));
   INSTPAT("??????? ????? ????? ??? ????? ????? ??", inv    , N, INV(s->pc));
   INSTPAT_END();
 
