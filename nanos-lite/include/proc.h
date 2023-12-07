@@ -28,4 +28,7 @@ size_t get_ramdisk_size();
 
 void naive_uload(PCB *pcb, const char *filename);
 
+extern uint8_t ramdisk_start;
+extern uint8_t ramdisk_end;
+
 #endif
