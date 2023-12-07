@@ -3,7 +3,9 @@
 void do_syscall(Context *c) {
   uintptr_t a[4];
   a[0] = c->GPR1;
-
+  #ifdef CONFIG_STRACE
+    printf("Syscall NO.%u", a[0]);
+  #endif
   switch (a[0]) {
     case 0: halt(0); break;
     case 1: yield(); c->GPRx = 0; break;
