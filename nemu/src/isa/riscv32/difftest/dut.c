@@ -22,7 +22,7 @@ bool isa_difftest_checkregs(CPU_state *ref_r, vaddr_t pc) {
   for (int i = 0; i < regnum; i++) {
     if (ref_r->gpr[i] != gpr(i)) {
       printf("111\n");
-      printf("ref:%u, my:%u", ref_r->gpr[i], gpr(i));
+      printf("ref:%u, my:%u\n", ref_r->gpr[i], gpr(i));
       return false;
     }
   }
