@@ -1,6 +1,7 @@
 #include <common.h>
 
 static Context* do_event(Event e, Context* c) {
+  assert(e.event != 4);
   switch (e.event) {
     case EVENT_YIELD: printf("EVENT YIELD!\n"); break;
     default: panic("Unhandled event ID = %d", e.event);
