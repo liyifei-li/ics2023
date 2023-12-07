@@ -1,14 +1,10 @@
 #include <common.h>
 #include "syscall.h"
 
-#ifndef CONFIG_STRACE
-#define CONFIG_STRACE
-#endif
-
 void do_syscall(Context *c) {
   uintptr_t a[4];
   a[0] = c->GPR1;
-  #ifdef CONFIG_STRACE
+  #ifdef CONFIG_TRACE
     printf("Syscall NO.%u\n", a[0]);
   #endif
   switch (a[0]) {
