@@ -10,7 +10,7 @@
 #endif
 
 static uintptr_t loader(PCB *pcb, const char *filename) {
-  ramdisk_read((void *)0x83000000, 0, get_ramdisk_size());
+  ramdisk_read((void *)0x83000000, 0, 0);//get_ramdisk_size());
   return 0x83000000;
 }
 
