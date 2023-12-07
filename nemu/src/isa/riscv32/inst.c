@@ -79,7 +79,7 @@ void csrrs_inst(word_t imm, int rd, word_t src1) {
     case MT_REG: R(rd) = MTR; MTR |= src1; break;
     case ME_REG: R(rd) = MER; MER |= src1; break;
     case MS_REG: R(rd) = MSR; MSR |= src1; break;
-    case MC_REG: R(rd) = MCR; MCR = src1; break;
+    case MC_REG: R(rd) = MCR; MCR |= src1; break;
     default: assert(0); break;
   }
   return;
