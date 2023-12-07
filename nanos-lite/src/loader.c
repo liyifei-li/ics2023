@@ -23,7 +23,7 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
   uint16_t phnum = ehdr.e_phnum;
   Elf_Phdr phdr[phnum];
   ramdisk_read(&phdr, phoff, phnum * sizeof(Elf_Phdr));
-  printf("phoff: 0x%x, phnum: 0x%x, phnum * sizeof(Elf_Phdr): 0x%x", phoff, phnum, phnum * sizeof(Elf_Phdr));
+  printf("phoff: 0x%x, phnum: 0x%x, phnum * sizeof(Elf_Phdr): 0x%x\n", phoff, phnum, phnum * sizeof(Elf_Phdr));
   for (int i = 0; i < phnum; i++) {
     if (phdr[i].p_type == PT_LOAD) {
       word_t filesz = phdr[i].p_filesz;
