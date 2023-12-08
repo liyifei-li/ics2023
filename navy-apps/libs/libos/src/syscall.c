@@ -73,6 +73,7 @@ int _write(int fd, void *buf, size_t count) {
 extern char end;
 
 void *_sbrk(intptr_t increment) {
+  assert(0);
   static void *program_break = NULL;
   if (program_break == NULL) program_break = &end;
   _syscall_(SYS_brk, (uintptr_t)program_break, 0, 0);
