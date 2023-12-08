@@ -70,7 +70,17 @@ int _write(int fd, void *buf, size_t count) {
   return GPRx;
 }
 
+extern char end;
+
 void *_sbrk(intptr_t increment) {
+  static void *program_break = NULL;
+  if (program_break == NULL) program_break = &end;
+  _syscall_(SYS_brk, (uintptr_t)program_break, 0, 0);
+  if (GPRx == 0) {
+    void *ret = program_break;
+    program_break += increment;
+    return ret;
+  }
   return (void *)-1;
 }
 
