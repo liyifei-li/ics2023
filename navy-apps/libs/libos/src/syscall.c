@@ -66,18 +66,16 @@ int _open(const char *path, int flags, mode_t mode) {
 }
 
 int _write(int fd, void *buf, size_t count) {
-  _syscall_(SYS_write, (uintptr_t)fd, (uintptr_t)buf, (uintptr_t)count);
-  return GPRx;
+  return _syscall_(SYS_write, (uintptr_t)fd, (uintptr_t)buf, (uintptr_t)count);
 }
 
 extern char end;
 
 void *_sbrk(intptr_t increment) {
-  assert(0);
   static void *program_break = NULL;
   if (program_break == NULL) program_break = &end;
   _syscall_(SYS_brk, (uintptr_t)program_break, 0, 0);
-  if (GPRx == 0) {
+  if (_syscall_(SYS_brk, (uintptr_t)program_break, 0, 0) == 0) {
     void *ret = program_break;
     program_break += increment;
     return ret;
