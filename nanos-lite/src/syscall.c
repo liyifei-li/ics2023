@@ -19,7 +19,6 @@ void do_syscall(Context *c) {
         size_t count = (size_t)a[3];
         for (int i = 0; i < count; i++) {
           putch(*(buf + i));
-          assert(0);
         }
         c->GPRx = count;
       }
