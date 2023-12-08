@@ -38,7 +38,7 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
       word_t memsz = phdr[i].p_memsz;
       Elf_Off offset = phdr[i].p_offset;
       Elf_Addr vaddr = phdr[i].p_vaddr;
-      ramdisk_read((void *)vaddr, offset, filesz);
+      ramdisk_read((void *)vaddr, offset, memsz);
       memset((void *)(vaddr + filesz), 0, memsz - filesz);
     }
   }
