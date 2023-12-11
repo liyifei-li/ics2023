@@ -2,7 +2,7 @@
 #include "syscall.h"
 #include <fs.h>
 
-#define off_t int
+#define off_t size_t
 
 int do_sysopen(const char *pathname, int flags, int mode);
 int do_sysread(int fd, void *buf, size_t count);
@@ -54,7 +54,7 @@ int do_syswrite(int fd, void *buf, size_t count) {
 }
 
 int do_sysbrk(void *addr) {
-  return 0;
+  return 0;//OK for PA3
 }
 
 int do_sysread(int fd, void *buf, size_t count) {
@@ -68,6 +68,5 @@ int do_sysclose(int fd) {
 }
 
 off_t do_syslseek(int fd, off_t offset, int whence) {
-  assert(0);
-  return 0;
+  return fs_lseek(fd, offset, whence);
 }
