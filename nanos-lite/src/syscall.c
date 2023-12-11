@@ -1,8 +1,10 @@
 #include <common.h>
 #include "syscall.h"
+#include <fs.h>
 
 int do_syswrite(int fd, char *buf, size_t count);
 int do_sysbrk(void *addr);
+int do_sysopen(char *pathname, int flags, int mode);
 
 void do_syscall(Context *c) {
   uintptr_t a[4];
@@ -16,13 +18,19 @@ void do_syscall(Context *c) {
   switch (a[0]) {
     case SYS_exit: halt(0); break;
     case SYS_yield: yield(); c->GPRx = 0; break;
+    case SYS_open: c->GPRx = do_sysopen((char *)a[1], a[2], a[3]); break;
     case SYS_write: c->GPRx = do_syswrite(a[1], (char *)a[2], a[3]); break;
-    case SYS_brk: c->GPRx = 0; break;//do_sysbrk((void *)a[1]); break;
+    case SYS_brk: c->GPRx = do_sysbrk((void *)a[1]); break;
     default: panic("Unhandled syscall ID = %d", a[0]);
   }
 }
 
+int do_sysopen(char *pathname, int flags, int mode) {
+  return fs_open(pathname, flags, mode);
+}
+
 int do_syswrite(int fd, char *buf, size_t count) {
+  assert(fd == 1 || fd == 2);
   if (fd == 1 || fd == 2) {
     for (int i = 0; i < count; i++) {
       putch(*(buf + i));
