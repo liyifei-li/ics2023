@@ -58,8 +58,7 @@ int do_sysbrk(void *addr) {
 }
 
 int do_sysread(int fd, void *buf, size_t count) {
-  assert(0);
-  return 0;
+  return fs_read(fd, buf, count);
 }
 
 int do_sysclose(int fd) {
