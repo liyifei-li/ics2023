@@ -2,11 +2,13 @@
 #include "syscall.h"
 #include <fs.h>
 
+#define off_t int
+
 int do_sysopen(const char *pathname, int flags, int mode);
 int do_sysread(int fd, void *buf, size_t count);
 int do_syswrite(int fd, void *buf, size_t count);
 int do_sysclose(int fd);
-//off_t do_syslseek(int fd, off_t offset, int whence);
+off_t do_syslseek(int fd, off_t offset, int whence);
 int do_sysbrk(void *addr);
 int do_sysexecve(const char *fname, char * const argv[], char *const envp[]);
 //int gettimeofday(struct timeval *tv, struct timezone *tz);
@@ -27,7 +29,7 @@ void do_syscall(Context *c) {
     case SYS_read: c->GPRx = do_sysread(a[1], (void *)a[2], a[3]); break;
     case SYS_write: c->GPRx = do_syswrite(a[1], (void *)a[2], a[3]); break;
     case SYS_close: c->GPRx = do_sysclose(a[1]); break;
- //   case SYS_lseek: c->GPRx = do_syslseek(a[1], a[2], a[3]); break;
+    case SYS_lseek: c->GPRx = do_syslseek(a[1], a[2], a[3]); break;
     case SYS_brk: c->GPRx = do_sysbrk((void *)a[1]); break;
 //    case SYS_execve: c->GPRx = do_sysexecve((const char *)a[1], (char *)a[2], (char *)a[3]); break;
  //   case SYS_gettimeofday: c->GPRx = do_sysgettimeofday(a[1], a[2], a[3]); break;
@@ -61,6 +63,11 @@ int do_sysread(int fd, void *buf, size_t count) {
 }
 
 int do_sysclose(int fd) {
+  assert(0);
+  return 0;
+}
+
+off_t do_syslseek(int fd, off_t offset, int whence) {
   assert(0);
   return 0;
 }
