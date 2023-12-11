@@ -4,7 +4,7 @@
 
 int main() {
   FILE *fp = fopen("/share/files/num", "r+");
-  for (int i = 0; i < 100000; i++) printf("114514\n");
+  for (int i = 0; i < 1000000; i++) printf("114514\n");
   /*
   printf("Hello\n");
   printf("Bye\n");
