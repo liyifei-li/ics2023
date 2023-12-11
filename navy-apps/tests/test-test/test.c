@@ -5,6 +5,7 @@
 int main() {
   FILE *fp = fopen("/share/files/num", "r+");
   printf("112514\n");
+  printf("1919810\n");
   /*
   printf("Hello\n");
   printf("Bye\n");
