@@ -20,7 +20,9 @@ void do_syscall(Context *c) {
   a[2] = c->GPR3;
   a[3] = c->GPR4;
   #ifdef CONFIG_STRACE
-    Log("Syscall NO.%u", a[0]);
+    if (a[0] == SYS_read || a[0] == SYS_write || a[0] == SYS_close || a[0] == SYS_lseek)
+      Log("Syscall NO.%u, fd = %d", a[0], a[1]);
+    else Log("Syscall NO.%u", a[0]);
   #endif
   switch (a[0]) {
     case SYS_exit: halt(0); break;
