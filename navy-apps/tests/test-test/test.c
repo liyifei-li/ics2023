@@ -4,7 +4,7 @@
 
 int main() {
   FILE *fp = fopen("/share/files/num", "r+");
-  assert(fp);
+  assert(0);
   printf("Hello\n");
   printf("Bye\n");
   FILE *asdf = NULL;
