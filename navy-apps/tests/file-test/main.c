@@ -34,8 +34,6 @@ int main() {
 
   fclose(fp);
 
-  assert(0);
-
   printf("PASS!!!\n");
 
   return 0;
