@@ -7,14 +7,19 @@ static Context* (*user_handler)(Event, Context*) = NULL;
 Context* __am_irq_handle(Context *c) {
   if (user_handler) {
     Event ev = {0};
-    printf("%d", c->mcause);
+    printf("cte.c: %d\n", c->mcause);
     switch (c->mcause) {
       case -1: ev.event = EVENT_YIELD; break;
       case 0: ev.event = EVENT_SYSCALL; break;
       case 1: ev.event = EVENT_SYSCALL; break;
       case 2: ev.event = EVENT_SYSCALL; break;
+      case 3: ev.event = EVENT_SYSCALL; break;
       case 4: ev.event = EVENT_SYSCALL; break;
+      case 7: ev.event = EVENT_SYSCALL; break;
+      case 8: ev.event = EVENT_SYSCALL; break;
       case 9: ev.event = EVENT_SYSCALL; break;
+      case 13: ev.event = EVENT_SYSCALL; break;
+      case 19: ev.event = EVENT_SYSCALL; break;
       default: ev.event = EVENT_ERROR; break;
     }
     c = user_handler(ev, c);
