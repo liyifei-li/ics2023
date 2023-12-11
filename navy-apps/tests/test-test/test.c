@@ -3,6 +3,8 @@
 #include <assert.h>
 
 int main() {
+  FILE *fp = fopen("/share/files/num", "r+");
+  assert(fp);
   printf("Hello\n");
   printf("Bye\n");
   FILE *asdf = NULL;
