@@ -2,9 +2,9 @@
 #include <assert.h>
 
 int main() {
-  assert(0);
+  FILE *ffpp = NULL;
   FILE *fp = fopen("/share/files/num", "r+");
-  assert(fp);
+  assert(ffpp);
 
   fseek(fp, 0, SEEK_END);
   long size = ftell(fp);
