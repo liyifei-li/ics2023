@@ -42,13 +42,16 @@ int do_sysopen(const char *pathname, int flags, int mode) {
 }
 
 int do_syswrite(int fd, void *buf, size_t count) {
+  assert(fd != 0);
   char *p = buf;
-  assert(fd == 1 || fd == 2);
   if (fd == 1 || fd == 2) {
     for (int i = 0; i < count; i++) {
       putch(*(p + i));
     }
     return count;
+  }
+  else {
+    return fs_write(fd, buf, count);
   }
   return -1;
 }
