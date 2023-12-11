@@ -8,7 +8,7 @@ int main() {
   fseek(fp, 0, SEEK_END);
   long size = ftell(fp);
   assert(size == 5000);
-  assert(0);
+
   fseek(fp, 500 * 5, SEEK_SET);
   int i, n;
   for (i = 500; i < 1000; i ++) {
@@ -33,8 +33,6 @@ int main() {
   }
 
   fclose(fp);
-
-  assert(0);
 
   printf("PASS!!!\n");
 
