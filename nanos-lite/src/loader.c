@@ -1,5 +1,6 @@
 #include <proc.h>
 #include <elf.h>
+#include <fs.h>
 
 #ifdef __LP64__
 # define Elf_Ehdr Elf64_Ehdr
@@ -24,21 +25,29 @@
 #endif
 
 static uintptr_t loader(PCB *pcb, const char *filename) {
+  int fd = fs_open(filename, 0, 0);
+
   Elf_Ehdr ehdr;
-  ramdisk_read(&ehdr, 0, sizeof(Elf_Ehdr));
+  fs_lseek(fd, 0, SEEK_SET);
+  fs_read(fd, &ehdr, sizeof(Elf_Ehdr));
+
   assert(*(uint32_t *)ehdr.e_ident == 0x464c457f);
   assert(ehdr.e_machine == EXPECT_TYPE);
+
   Elf_Addr phoff = ehdr.e_phoff;
   uint16_t phnum = ehdr.e_phnum;
   Elf_Phdr phdr[phnum];
-  ramdisk_read(&phdr, phoff, phnum * sizeof(Elf_Phdr));
+  fs_lseek(fd, phoff, SEEK_SET);
+  fs_read(fd, &phdr, phnum * sizeof(Elf_Phdr));
+
   for (int i = 0; i < phnum; i++) {
     if (phdr[i].p_type == PT_LOAD) {
       word_t filesz = phdr[i].p_filesz;
       word_t memsz = phdr[i].p_memsz;
       Elf_Off offset = phdr[i].p_offset;
       Elf_Addr vaddr = phdr[i].p_vaddr;
-      ramdisk_read((void *)vaddr, offset, filesz);
+      fs_lseek(fd, offset, SEEK_SET);
+      fs_read(fd, (void *)vaddr, filesz);
       memset((void *)(vaddr + filesz), 0, memsz - filesz);
     }
   }
