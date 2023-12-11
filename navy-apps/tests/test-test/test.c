@@ -6,6 +6,7 @@ int main() {
   FILE *fp = fopen("/share/files/num", "r+");
   assert(0);
   assert(0);
+  printf("114514\n");
   /*
   printf("Hello\n");
   printf("Bye\n");
