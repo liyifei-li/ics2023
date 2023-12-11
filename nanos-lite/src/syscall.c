@@ -14,7 +14,7 @@ void do_syscall(Context *c) {
     Log("Syscall NO.%u", a[0]);
   #endif
   switch (a[0]) {
-    case SYS_exit: break;//halt(0); break;
+    case SYS_exit: halt(0); break;
     case SYS_yield: yield(); c->GPRx = 0; break;
     case SYS_write: c->GPRx = do_syswrite(a[1], (char *)a[2], a[3]); break;
     case SYS_brk: c->GPRx = 0; break;//do_sysbrk((void *)a[1]); break;
