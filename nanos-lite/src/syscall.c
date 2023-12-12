@@ -1,6 +1,7 @@
 #include <common.h>
 #include "syscall.h"
 #include <fs.h>
+#include <device.h>
 
 #define off_t size_t
 
@@ -22,7 +23,8 @@ void do_syscall(Context *c) {
   #ifdef CONFIG_STRACE
     if (a[0] == SYS_read || a[0] == SYS_write || a[0] == SYS_close || a[0] == SYS_lseek)
       Log("Syscall NO.%u, fd = %d", a[0], a[1]);
-    else Log("Syscall NO.%u", a[0]);
+    else
+      Log("Syscall NO.%u", a[0]);
   #endif
   switch (a[0]) {
     case SYS_exit: halt(0); break;
