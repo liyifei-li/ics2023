@@ -1,7 +1,6 @@
 #include <fs.h>
 #include <ramdisk.h>
 #include <device.h>
-//size_t serial_write(const void *buf, size_t offset, size_t len);
 
 typedef size_t (*ReadFn) (void *buf, size_t offset, size_t len);
 typedef size_t (*WriteFn) (const void *buf, size_t offset, size_t len);
@@ -63,15 +62,15 @@ size_t fs_read(int fd, void *buf, size_t len) {
 }
 
 size_t fs_write(int fd, const void *buf, size_t len) {
-  if (file_table[fd].write == NULL) {
+  if (file_table[fd].write != NULL) {
+    return file_table[fd].write(buf, 0, len);
+  }
+  else {
     size_t file_disk_offset = file_table[fd].disk_offset;
     size_t file_open_offset = file_table[fd].open_offset;
     ramdisk_write(buf, file_disk_offset + file_open_offset, len);
     file_table[fd].open_offset += len;
     return len;
-  }
-  else {
-    return file_table[fd].write(buf, 0, len);
   }
 }
 
