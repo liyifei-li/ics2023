@@ -19,20 +19,20 @@ void do_syscall(Context *c) {
   a[1] = c->GPR2;
   a[2] = c->GPR3;
   a[3] = c->GPR4;
-//  #ifdef CONFIG_STRACE
+  #ifdef CONFIG_STRACE
     if (a[0] == SYS_read || a[0] == SYS_write || a[0] == SYS_close || a[0] == SYS_lseek)
       Log("Syscall NO.%u, fd = %d", a[0], a[1]);
     else
       Log("Syscall NO.%u", a[0]);
-//  #endif
+  #endif
   switch (a[0]) {
     case SYS_exit: halt(0); break;
     case SYS_yield: yield(); c->GPRx = 0; break;
-    case SYS_open: c->GPRx = do_sysopen((char *)a[1], a[2], a[3]); break;
-    case SYS_read: c->GPRx = do_sysread(a[1], (void *)a[2], a[3]); break;
-    case SYS_write: c->GPRx = do_syswrite(a[1], (void *)a[2], a[3]); break;
-    case SYS_close: c->GPRx = do_sysclose(a[1]); break;
-    case SYS_lseek: c->GPRx = do_syslseek(a[1], a[2], a[3]); break;
+    case SYS_open: c->GPRx = fs_open((char *)a[1], a[2], a[3]); break;
+    case SYS_read: c->GPRx = fs_read(a[1], (void *)a[2], a[3]); break;
+    case SYS_write: c->GPRx = fs_write(a[1], (void *)a[2], a[3]); break;
+    case SYS_close: c->GPRx = fs_close(a[1]); break;
+    case SYS_lseek: c->GPRx = fs_lseek(a[1], a[2], a[3]); break;
     case SYS_brk: c->GPRx = do_sysbrk((void *)a[1]); break;
 //    case SYS_execve: c->GPRx = do_sysexecve((const char *)a[1], (char *)a[2], (char *)a[3]); break;
  //   case SYS_gettimeofday: c->GPRx = do_sysgettimeofday(a[1], a[2], a[3]); break;
@@ -40,26 +40,6 @@ void do_syscall(Context *c) {
   }
 }
 
-int do_sysopen(const char *pathname, int flags, int mode) {
-  return fs_open(pathname, flags, mode);
-}
-
-int do_syswrite(int fd, void *buf, size_t count) {
-  return fs_write(fd, buf, count);
-}
-
 int do_sysbrk(void *addr) {
   return 0;//OK for PA3
-}
-
-int do_sysread(int fd, void *buf, size_t count) {
-  return fs_read(fd, buf, count);
-}
-
-int do_sysclose(int fd) {
-  return 0;//Closed successfully
-}
-
-off_t do_syslseek(int fd, off_t offset, int whence) {
-  return fs_lseek(fd, offset, whence);
 }
