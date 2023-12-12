@@ -1,7 +1,7 @@
 #include <fs.h>
 #include <ramdisk.h>
 #include <device.h>
-size_t serial_write(const void *buf, size_t offset, size_t len);
+//size_t serial_write(const void *buf, size_t offset, size_t len);
 
 typedef size_t (*ReadFn) (void *buf, size_t offset, size_t len);
 typedef size_t (*WriteFn) (const void *buf, size_t offset, size_t len);
