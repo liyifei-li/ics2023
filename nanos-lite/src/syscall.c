@@ -1,13 +1,11 @@
 #include <common.h>
 #include "syscall.h"
 #include <fs.h>
-//#include <time.h>
-
-//typedef size_t off_t;
+#include <sys/time.h>
 
 int sys_brk(void *addr);
 int sys_execve(const char *fname, char * const argv[], char *const envp[]);
-//int sys_gettimeofday(struct timeval *tv, struct timezone *tz);
+int sys_gettimeofday(struct timeval *tv, struct timezone *tz);
 
 void do_syscall(Context *c) {
   uintptr_t a[4];
