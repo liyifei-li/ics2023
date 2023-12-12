@@ -1,7 +1,6 @@
 #include <common.h>
 #include "syscall.h"
 #include <fs.h>
-#include <device.h>
 
 #define off_t size_t
 
@@ -20,12 +19,12 @@ void do_syscall(Context *c) {
   a[1] = c->GPR2;
   a[2] = c->GPR3;
   a[3] = c->GPR4;
-  #ifdef CONFIG_STRACE
+//  #ifdef CONFIG_STRACE
     if (a[0] == SYS_read || a[0] == SYS_write || a[0] == SYS_close || a[0] == SYS_lseek)
       Log("Syscall NO.%u, fd = %d", a[0], a[1]);
     else
       Log("Syscall NO.%u", a[0]);
-  #endif
+//  #endif
   switch (a[0]) {
     case SYS_exit: halt(0); break;
     case SYS_yield: yield(); c->GPRx = 0; break;
