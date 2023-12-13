@@ -4,6 +4,10 @@
 #include <string.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include <fcntl.h>
+#include <stdint.h>
+#include <stdio.h>
+#include <ctype.h>
 
 void SDL_BlitSurface(SDL_Surface *src, SDL_Rect *srcrect, SDL_Surface *dst, SDL_Rect *dstrect) {
   assert(dst && src);
@@ -36,7 +40,7 @@ void SDL_UpdateRect(SDL_Surface *s, int x, int y, int w, int h) {
   printf("%d %d %d %d\n", x, y, w, h);
   uint32_t BitsPerPixel = s->format->BitsPerPixel;
   int fd = open("/dev/fb", O_WRONLY);
-  uint32_t *pos = s->pixels;
+  uint32_t *pos = (uint32_t *)s->pixels;
   for (int i = 0; i < h; i++) {
     lseek(fd, 4 * (x + (y + i) * w), SEEK_SET);
     write(fd, (void *)pos, 4 * w);
