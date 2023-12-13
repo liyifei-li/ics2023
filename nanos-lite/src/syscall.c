@@ -39,9 +39,9 @@ int sys_brk(void *addr) {
 }
 
 int sys_gettimeofday(struct timeval *tv, struct timezone *tz) {
-  uint64_t time = io_read(AM_TIMER_UPTIME).us;
-  tv->tv_sec = time / 1000000;
-  tv->tv_usec = time % 1000000;
+  AM_TIMER_UPTIME_T time = io_read(AM_TIMER_UPTIME);
+  tv->tv_sec = time.us / 1000000;
+  tv->tv_usec = time.us % 1000000;
   assert(tz == NULL);
   return 0;
 }
