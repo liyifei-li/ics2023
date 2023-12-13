@@ -46,6 +46,8 @@ void SDL_UpdateRect(SDL_Surface *s, int x, int y, int w, int h) {
     write(fd, (void *)pos, 4 * w);
     pos += w;
   }
+  write(fd, (void *)pos, 0);
+  close(fd);
   printf("114514\n");
   return;
 }
