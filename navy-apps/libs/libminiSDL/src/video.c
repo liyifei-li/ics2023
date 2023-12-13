@@ -3,19 +3,7 @@
 #include <assert.h>
 #include <string.h>
 #include <stdlib.h>
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <fcntl.h>
-#include <ctype.h>
-#include <stdint.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
 #include <unistd.h>
-#include <sys/time.h>
-#include <fcntl.h>
-#include <assert.h>
-#include <ctype.h>
 
 void SDL_BlitSurface(SDL_Surface *src, SDL_Rect *srcrect, SDL_Surface *dst, SDL_Rect *dstrect) {
   assert(dst && src);
@@ -49,8 +37,8 @@ void SDL_UpdateRect(SDL_Surface *s, int x, int y, int w, int h) {
   int fd = open("/dev/fb", O_WRONLY);
   uint32_t *pos = s->pixels;
   for (int i = 0; i < h; i++) {
-    lseek(fd, BitsPerPixel * (x + (y + i) * w), SEEK_SET);
-    write(fd, (void *)pos, BitsPerPixel * w);
+    lseek(fd, 4 * (x + (y + i) * w), SEEK_SET);
+    write(fd, (void *)pos, 4 * w);
     pos += w;
   }
   return;
