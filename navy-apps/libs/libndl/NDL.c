@@ -5,6 +5,8 @@
 #include <unistd.h>
 #include <sys/time.h>
 #include <fcntl.h>
+#include <assert.h>
+#include <ctype.h>
 
 static int evtdev = -1;
 static int fbdev = -1;
@@ -39,6 +41,24 @@ void NDL_OpenCanvas(int *w, int *h) {
     }
     close(fbctl);
   }
+  int fd = open("/proc/dispinfo", O_RDONLY);
+  char buf[64];
+  read(fd, buf, 64);
+  int width, height;
+  char *ptr;
+  ptr = strstr(buf, "WIDTH");
+  assert(ptr != NULL);
+  while(*ptr != '\0' && !isdigit(*ptr)) {
+    ptr++;
+  }
+  width = atoi(ptr);
+  ptr = strstr(buf, "HEIGHT");
+  assert(ptr != NULL);
+  while(*ptr != '\0' && !isdigit(*ptr)) {
+    ptr++;
+  }
+  height = atoi(ptr);
+  printf("Width: %d, Height: %d", width, height);
 }
 
 void NDL_DrawRect(uint32_t *pixels, int x, int y, int w, int h) {
