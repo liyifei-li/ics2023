@@ -23,8 +23,20 @@ size_t serial_write(const void *buf, size_t offset, size_t len) {
 }
 
 size_t events_read(void *buf, size_t offset, size_t len) {
-//  AM_INPUT_KEYBRD_T kbd = io_read(AM_INPUT_KEYBRD);
-
+  AM_INPUT_KEYBRD_T kbd = io_read(AM_INPUT_KEYBRD);
+  char event_text[16]; //Maximum length of keyname is 11
+  if (kbd.keycode) {
+    if (kbd.keydown) {
+      strcpy(event_text, "kd "); 
+    }
+    else {
+      strcpy(event_text, "ku "); 
+    }
+    strcat(event_text, keyname[kbd.keycode]);
+    strcat(event_text, "\n");
+    strncpy((char *)buf, event_text, len);
+    return len < strlen(event_text) ? len : strlen(event_text);
+  }
   return 0;
 }
 
