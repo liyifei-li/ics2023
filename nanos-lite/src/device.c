@@ -26,7 +26,7 @@ size_t events_read(void *buf, size_t offset, size_t len) {
   AM_INPUT_KEYBRD_T input_keybrd = io_read(AM_INPUT_KEYBRD);
   bool keydown = input_keybrd.keydown;
   int keycode = input_keybrd.keycode;
-  if (keycode) {
+  if (keycode != AM_KEY_NONE) {
     return snprintf((char *)buf, len, "%s %s\n", keydown ? "kd" : "ku", keyname[keycode]);
   }
   return 0;
@@ -34,7 +34,6 @@ size_t events_read(void *buf, size_t offset, size_t len) {
 
 size_t dispinfo_read(void *buf, size_t offset, size_t len) {
 //  AM_GPU_CONFIG_T gpu_config = io_read(AM_GPU_CONFIG);
-//  char dispinfo_text[32];
   
   return 0;
 }
