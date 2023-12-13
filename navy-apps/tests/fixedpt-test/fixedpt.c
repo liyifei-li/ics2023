@@ -4,8 +4,8 @@
 
 int main() {
   fixedpt a, b, c;
-  a = fixedpt_fromint(10);
-  b = fixedpt_fromint(-20);
+  a = fixedpt_rconst(10);
+  b = fixedpt_rconst(-20);
   c = fixedpt_div(a, b);
   printf("ANS: %d\n", c);
 
