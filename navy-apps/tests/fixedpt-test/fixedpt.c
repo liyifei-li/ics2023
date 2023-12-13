@@ -7,7 +7,7 @@ int main() {
   a = fixedpt_fromint(10);
   b = fixedpt_fromint(-20);
   c = fixedpt_div(a, b);
-  printf("ANS: %f\n", fixedpt_tofloat(c));
+  printf("ANS: %d\n", c);
 
   return 0;
 }
