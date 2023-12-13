@@ -23,24 +23,19 @@ size_t serial_write(const void *buf, size_t offset, size_t len) {
 }
 
 size_t events_read(void *buf, size_t offset, size_t len) {
-  AM_INPUT_KEYBRD_T kbd = io_read(AM_INPUT_KEYBRD);
-  char event_text[16]; //Maximum length of keyname is 11
-  if (kbd.keycode) {
-    if (kbd.keydown) {
-      strcpy(event_text, "kd "); 
-    }
-    else {
-      strcpy(event_text, "ku "); 
-    }
-    strcat(event_text, keyname[kbd.keycode]);
-    strcat(event_text, "\n");
-    strncpy((char *)buf, event_text, len);
-    return len < strlen(event_text) ? len : strlen(event_text);
+  AM_INPUT_KEYBRD_T input_keybrd = io_read(AM_INPUT_KEYBRD);
+  bool keydown = input_keybrd.keydown;
+  int keycode = input_keybrd.keycode;
+  if (keycode) {
+    return snprintf((char *)buf, len, "%s %s\n", keydown ? "kd" : "ku", keyname[keycode]);
   }
   return 0;
 }
 
 size_t dispinfo_read(void *buf, size_t offset, size_t len) {
+//  AM_GPU_CONFIG_T gpu_config = io_read(AM_GPU_CONFIG);
+//  char dispinfo_text[32];
+  
   return 0;
 }
 
