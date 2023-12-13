@@ -4,8 +4,9 @@
 #include <string.h>
 #include <unistd.h>
 #include <sys/time.h>
+#include <fcntl.h>
 
-static int evtdev = 3;
+static int evtdev = -1;
 static int fbdev = -1;
 static int screen_w = 0, screen_h = 0;
 
@@ -16,6 +17,7 @@ uint32_t NDL_GetTicks() {
 }
 
 int NDL_PollEvent(char *buf, int len) {
+  open("/dev/event", O_RDONLY);
   return read(evtdev, buf, len) != 0;
 }
 
