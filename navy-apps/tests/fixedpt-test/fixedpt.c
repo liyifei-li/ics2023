@@ -4,9 +4,9 @@
 
 int main() {
   fixedpt a, b, c;
-  a = fixedpt_rconst(100);
+  a = fixedpt_rconst(12);
   b = fixedpt_rconst(-1);
-  c = fixedpt_divi(a, -1);
+  c = fixedpt_divi(a, -123);
   printf("ANS: %d\n", c);
 
   return 0;
