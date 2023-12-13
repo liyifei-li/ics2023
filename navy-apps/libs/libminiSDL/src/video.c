@@ -37,6 +37,7 @@ void SDL_UpdateRect(SDL_Surface *s, int x, int y, int w, int h) {
     h = atoi(ptr);
     close(fd); 
   }
+  printf("%d %d %d %d\n", x, y, w, h);
   uint32_t BitsPerPixel = s->format->BitsPerPixel;
   int fd = open("/dev/fb", O_WRONLY);
   uint32_t *pos = (uint32_t *)s->pixels;
@@ -45,6 +46,7 @@ void SDL_UpdateRect(SDL_Surface *s, int x, int y, int w, int h) {
     write(fd, (void *)pos, 4 * w);
     pos += w;
   }
+  printf("114514\n");
   return;
 }
 
