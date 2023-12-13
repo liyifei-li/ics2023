@@ -58,10 +58,22 @@ void NDL_OpenCanvas(int *w, int *h) {
     ptr++;
   }
   height = atoi(ptr);
-  printf("Width: %d, Height: %d", width, height);
+  printf("Width: %d, Height: %d\n", width, height);
+  close(fd);
+  return;
 }
 
 void NDL_DrawRect(uint32_t *pixels, int x, int y, int w, int h) {
+  int fd = open("/proc/dispinfo", O_RDONLY);
+  char buf[64];
+  fd = open("/dev/fb", O_WRONLY);
+  uint32_t *pos = pixels;
+  for (int i = 0; i < h; i++) {
+    lseek(fd, x + (y + i) * screen_w, SEEK_SET);
+    write(fd, (void *)pos, 4 * w);
+    pos += w;
+  }
+  return;
 }
 
 void NDL_OpenAudio(int freq, int channels, int samples) {
@@ -82,6 +94,23 @@ int NDL_Init(uint32_t flags) {
   if (getenv("NWM_APP")) {
     evtdev = 3;
   }
+  int fd = open("/proc/dispinfo", O_RDONLY);
+  char buf[64];
+  read(fd, buf, 64);
+  char *ptr;
+  ptr = strstr(buf, "WIDTH");
+  assert(ptr != NULL);
+  while(*ptr != '\0' && !isdigit(*ptr)) {
+    ptr++;
+  }
+  screen_w = atoi(ptr);
+  ptr = strstr(buf, "HEIGHT");
+  assert(ptr != NULL);
+  while(*ptr != '\0' && !isdigit(*ptr)) {
+    ptr++;
+  }
+  screen_h = atoi(ptr);
+  close(fd);
   return 0;
 }
 
