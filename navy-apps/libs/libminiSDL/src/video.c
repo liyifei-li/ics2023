@@ -3,6 +3,19 @@
 #include <assert.h>
 #include <string.h>
 #include <stdlib.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
+#include <ctype.h>
+#include <stdint.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <unistd.h>
+#include <sys/time.h>
+#include <fcntl.h>
+#include <assert.h>
+#include <ctype.h>
 
 void SDL_BlitSurface(SDL_Surface *src, SDL_Rect *srcrect, SDL_Surface *dst, SDL_Rect *dstrect) {
   assert(dst && src);
@@ -13,6 +26,34 @@ void SDL_FillRect(SDL_Surface *dst, SDL_Rect *dstrect, uint32_t color) {
 }
 
 void SDL_UpdateRect(SDL_Surface *s, int x, int y, int w, int h) {
+  if (x == 0 && y == 0 && w == 0 && h == 0) {
+    int fd = open("/proc/dispinfo", O_RDONLY);
+    char buf[64];
+    read(fd, buf, 64);
+    char *ptr;
+    ptr = strstr(buf, "WIDTH");
+    assert(ptr != NULL);
+    while(*ptr != '\0' && !isdigit(*ptr)) {
+      ptr++;
+    }
+    w = atoi(ptr);
+    ptr = strstr(buf, "HEIGHT");
+    assert(ptr != NULL);
+    while(*ptr != '\0' && !isdigit(*ptr)) {
+      ptr++;
+    }
+    h = atoi(ptr);
+    close(fd); 
+  }
+  uint32_t BitsPerPixel = s->format->BitsPerPixel;
+  int fd = open("/dev/fb", O_WRONLY);
+  uint32_t *pos = s->pixels;
+  for (int i = 0; i < h; i++) {
+    lseek(fd, BitsPerPixel * (x + (y + i) * w), SEEK_SET);
+    write(fd, (void *)pos, BitsPerPixel * w);
+    pos += w;
+  }
+  return;
 }
 
 // APIs below are already implemented.
