@@ -21,8 +21,9 @@ SDL_Surface* IMG_Load(const char *filename) {
   long size = ftell(fd);
   printf("%ld\n", size);
   void *buf = malloc(size);
+  fseek(fd, 0, SEEK_SET);
+  fread(buf, 1, size, fd);
   SDL_Surface *ret = STBIMG_LoadFromMemory(buf, size);
-  assert(ret);
   free(buf);
   fclose(fd);
   return ret;
