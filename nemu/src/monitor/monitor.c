@@ -77,10 +77,10 @@ static char *elf_file = NULL;
 uint32_t funccnt;
 
 struct flist {
-  char name[64];
+  char name[128];
   vaddr_t addr;
   uint32_t size;
-} funclist[20480];
+} funclist[2048];
 
 static void load_elf() {
   if (elf_file == NULL) return;
@@ -135,13 +135,10 @@ static void load_elf() {
   for (int i = 0; i < num_symbols; i++) {
     ret = fread(&sym, sizeof(Elf32_Sym), 1, fp);
     assert(ret == 1);
-    Log("%d %d", num_symbols, i);
     if (ELF32_ST_TYPE(sym.st_info) == STT_FUNC) {
-    Log("%d", i);
       funclist[funccnt].addr = sym.st_value;
       funclist[funccnt].size = sym.st_size;
       strcpy(funclist[funccnt].name, strtab + sym.st_name);
-    Log("%d", i);
       funccnt++;
     }
   }
