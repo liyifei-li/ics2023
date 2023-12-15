@@ -26,8 +26,8 @@ void SDL_BlitSurface(SDL_Surface *src, SDL_Rect *srcrect, SDL_Surface *dst, SDL_
     dstrect->x = 0;
     dstrect->y = 0;
   }
-  if (srcrect->x + srcrect->w > src->w) srcrect->w = src->w - srcrect->x;
-  if (dstrect->x + srcrect->w > dst->w) srcrect->w = dst->w - dstrect->x;
+//  if (srcrect->x + srcrect->w > src->w) srcrect->w = src->w - srcrect->x;
+//  if (dstrect->x + srcrect->w > dst->w) srcrect->w = dst->w - dstrect->x;
   void *srcpos;
   void *dstpos;
   uint8_t BytesPerPixel = src->format->BytesPerPixel;
