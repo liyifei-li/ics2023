@@ -92,6 +92,7 @@ static void load_elf() {
   long size = ftell(fp);
   Log("The elf is %s, size = %ld", elf_file, size);
   fseek(fp, 0, SEEK_SET);
+  Log("here");
 
   Elf32_Ehdr ehdr;
   Elf32_Shdr shdr;
