@@ -139,7 +139,7 @@ static void load_elf() {
       funclist[funccnt].addr = sym.st_value;
       funclist[funccnt].size = sym.st_size;
       strcpy(funclist[funccnt].name, strtab + sym.st_name);
-      printf("%s", funclist[funccnt].name);
+      printf("%s\n", funclist[funccnt].name);
       funccnt++;
     }
   }
