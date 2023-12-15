@@ -21,8 +21,8 @@ int SDL_PollEvent(SDL_Event *ev) {
   char key[16];
   printf("aaa\n");
   if (!NDL_PollEvent(buf, 32)) {
-    return 0;
     printf("ddd\n");
+    return 0;
   }
   printf("bbb\n");
   sscanf(buf, "%s %s", eventtype, key);
