@@ -61,6 +61,7 @@ void SDL_FillRect(SDL_Surface *dst, SDL_Rect *dstrect, uint32_t color) {
   assert(buf);
   assert(BytesPerPixel == 1 || BytesPerPixel == 4);
   if (BytesPerPixel == 1) {
+    printf("aaa\n");
     for (int i = 0; i < dstrect->w; i++) {
       memcpy(buf + 4 * i, &dst->format->palette->colors[color], 4);
     }
@@ -95,6 +96,7 @@ void SDL_UpdateRect(SDL_Surface *s, int x, int y, int w, int h) {
   assert(BytesPerPixel == 1 || BytesPerPixel == 4);
   void *pos;
   if (BytesPerPixel == 1) {
+        printf("aaa\n");
     for (int i = 0; i < h; i++) {
       pos = s->pixels + (x + (i + y) * s->w);
       for (int j = 0; j < w; j++) {
