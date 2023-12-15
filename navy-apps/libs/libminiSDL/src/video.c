@@ -77,6 +77,7 @@ void SDL_UpdateRect(SDL_Surface *s, int x, int y, int w, int h) {
     w = s->w;
     h = s->h;
   }
+  printf("UpdateRect: %d %d %d %d\n", x, y, w, h);
   assert(x >= 0);
   assert(x + w <= s->w);
   assert(y >= 0);
