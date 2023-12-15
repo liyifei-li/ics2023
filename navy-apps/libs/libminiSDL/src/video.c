@@ -60,6 +60,7 @@ void SDL_FillRect(SDL_Surface *dst, SDL_Rect *dstrect, uint32_t color) {
   if (BytesPerPixel == 1) {
     for (int i = 0; i < dstrect->w; i++) {
       memcpy(buf + 4 * i, &dst->format->palette->colors[color], 4);
+      printf("%x", dst->format->palette->colors[color]);
     }
   }
   else {
@@ -95,7 +96,6 @@ void SDL_UpdateRect(SDL_Surface *s, int x, int y, int w, int h) {
       for (int j = 0; j < w; j++) {
         lseek(fd, 4 * (x + j + (i + y) * s->w), SEEK_SET);
         write(fd, &s->format->palette->colors[*(uint8_t *)pos], 4);
-        printf("%x\n", s->format->palette->colors[*(uint8_t *)pos]);
         pos++;
       }
     }
