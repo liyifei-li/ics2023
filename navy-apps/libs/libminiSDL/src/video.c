@@ -74,7 +74,7 @@ void SDL_FillRect(SDL_Surface *dst, SDL_Rect *dstrect, uint32_t color) {
     w = dstrect->w;
     h = dstrect->h;
   }
-  /*
+  printf("x = %d, y = %d, w = %d, h = %d, color = %d\n", x, y, w, h, color);
   int dstw = dst->w;
   int dsth = dst->h;
   assert(x >= 0 && y >= 0);
@@ -92,16 +92,6 @@ void SDL_FillRect(SDL_Surface *dst, SDL_Rect *dstrect, uint32_t color) {
     write(fd, buf, BytesPerPixel * w);
   }
   free(buf);
-  */
-  int fd = open("/dev/fb", O_WRONLY);
-  int dstw = dst->w;
-  uint8_t BytesPerPixel = dst->format->BytesPerPixel;
-  for (int i = x; i < x + w; i++) {
-    for (int j = y; j < y + h; j++) {
-      lseek(fd, 4 * (x + i * dstw), SEEK_SET);
-      write(fd, "8888", BytesPerPixel * w);
-    }
-  }
   close(fd);
 }
 
