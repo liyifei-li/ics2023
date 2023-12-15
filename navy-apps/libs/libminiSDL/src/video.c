@@ -12,9 +12,50 @@
 void SDL_BlitSurface(SDL_Surface *src, SDL_Rect *srcrect, SDL_Surface *dst, SDL_Rect *dstrect) {
   assert(dst && src);
   assert(dst->format->BitsPerPixel == src->format->BitsPerPixel);
+  int16_t srcx, srcy;
+  uint16_t srcw, srch;
+  if (srcrect == NULL) {
+    srcx = 0;
+    srcy = 0;
+    srcw = src->w;
+    srch = src->h;
+  }
+  else {
+    srcx = srcrect->x;
+    srcy = srcrect->y;
+    srcw = srcrect->w;
+    srch = srcrect->h;
+  }
+  int16_t dstx, dsty;
+  uint16_t dstw, dsth;
+  if (dstrect == NULL) {
+    dstx = 0;
+    dsty = 0;
+    dstw = srcw;
+    dsth = srch;
+  }
+  else {
+    dstx = dstrect->x;
+    dsty = dstrect->y;
+    dstw = dstrect->w;
+    dsth = dstrect->h;
+  }
+  assert(srcx + srcw <= src->w && srcy + srch <= src->h);
+  assert(dstx + dstw <= dst->w && dsty + dsth <= dst->h);
+  uint8_t BytesPerPixel = src->format->BytesPerPixel;
+  void *srcpixels = src->pixels;
+  void *dstpixels = dst->pixels;
+  void *srcpos;
+  void *dstpos;
+  for (int i = srcy; i < srcy + srch; i++) {
+    srcpos = srcpixels + BytesPerPixel * (srcx + i * src->w);
+    dstpos = dstpixels + BytesPerPixel * (dstx + i * dst->w);
+    memcpy(dstpos, srcpos, BytesPerPixel * srcw);
+  }
 }
 
 void SDL_FillRect(SDL_Surface *dst, SDL_Rect *dstrect, uint32_t color) {
+  assert(dst);
   int16_t x, y;
   uint16_t w, h;
   if (dstrect == NULL) {
@@ -33,10 +74,23 @@ void SDL_FillRect(SDL_Surface *dst, SDL_Rect *dstrect, uint32_t color) {
   int dsth = dst->h;
   assert(x + w <= dstw && y + h <= dsth);
   uint8_t BytesPerPixel = dst->format->BytesPerPixel;
-  uint32_t *pos = (uint32_t *)dst->pixels;
+  void *buf = malloc(BytesPerPixel * (w + 4));
+  uint32_t pos = 0;
+  for (int i = 0; i < w; i++) {
+    *(uint32_t *)(buf + pos) = color;
+    pos += BytesPerPixel;
+  }
+  int fd = open("/dev/fb", O_WRONLY);
+  for (int i = y; i < y + h; i++) {
+    lseek(fd, BytesPerPixel * (x + i * dstw), SEEK_SET);
+    write(fd, buf, BytesPerPixel * w);
+  }
+  free(buf);
+  close(fd);
 }
 
 void SDL_UpdateRect(SDL_Surface *s, int x, int y, int w, int h) {
+  assert(s);
   if (x == 0 && y == 0 && w == 0 && h == 0) {
     w = s->w;
     h = s->h;
