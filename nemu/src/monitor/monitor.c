@@ -140,6 +140,7 @@ static void load_elf() {
     Log("%d", i);
       funclist[funccnt].addr = sym.st_value;
       funclist[funccnt].size = sym.st_size;
+    Log("%d", i);
       strcpy(funclist[funccnt].name, strtab + sym.st_name);
       funccnt++;
     }
