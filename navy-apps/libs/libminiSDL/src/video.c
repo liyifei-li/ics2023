@@ -28,6 +28,9 @@ void SDL_BlitSurface(SDL_Surface *src, SDL_Rect *srcrect, SDL_Surface *dst, SDL_
   }
   void *srcpos;
   void *dstpos;
+  printf("srcrect->x = %d, srcrect->y = %d, srcrect->w = %d, srcrect->h = %d\n", srcrect->x, srcrect->y, srcrect->w, srcrect->h);
+  printf("dstrect->x = %d, dstrect->y = %d\n", dstrect->x, dstrect->y);
+  printf("src->w = %d, src->h = %d\n", src->w, src->h);
   uint8_t BytesPerPixel = src->format->BytesPerPixel;
   for (int i = 0; i < srcrect->h; i++) {
     if (dstrect->y + i < 0 || dstrect->y + i >= dst->h) continue;
@@ -57,7 +60,6 @@ void SDL_FillRect(SDL_Surface *dst, SDL_Rect *dstrect, uint32_t color) {
   void *buf = malloc(4 * dstrect->w);
   assert(buf);
   assert(BytesPerPixel == 1 || BytesPerPixel == 4);
-  printf("%x", 1234);
   if (BytesPerPixel == 1) {
     for (int i = 0; i < dstrect->w; i++) {
       memcpy(buf + 4 * i, &dst->format->palette->colors[color], 4);
