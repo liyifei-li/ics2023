@@ -76,6 +76,7 @@ void SDL_FillRect(SDL_Surface *dst, SDL_Rect *dstrect, uint32_t color) {
   }
   int dstw = dst->w;
   int dsth = dst->h;
+  assert(x >= 0 && y >= 0);
   assert(x + w <= dstw && y + h <= dsth);
   uint8_t BytesPerPixel = dst->format->BytesPerPixel;
   void *buf = malloc(BytesPerPixel * (w + 4));
