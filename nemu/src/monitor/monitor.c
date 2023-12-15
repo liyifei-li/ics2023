@@ -133,17 +133,16 @@ static void load_elf() {
 
   funccnt = 0;
   for (int i = 0; i < num_symbols; i++) {
-    Log("%d %d", num_symbols, i);
     ret = fread(&sym, sizeof(Elf32_Sym), 1, fp);
-    Log("%d %d", num_symbols, i);
     assert(ret == 1);
+    Log("%d %d", num_symbols, i);
     if (ELF32_ST_TYPE(sym.st_info) == STT_FUNC) {
+    Log("%d", i);
       funclist[funccnt].addr = sym.st_value;
       funclist[funccnt].size = sym.st_size;
       strcpy(funclist[funccnt].name, strtab + sym.st_name);
       funccnt++;
     }
-    Log("%d %d", num_symbols, i);
   }
   fclose(fp);
   free(strtab);
