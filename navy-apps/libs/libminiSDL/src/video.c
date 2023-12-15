@@ -47,6 +47,7 @@ void SDL_FillRect(SDL_Surface *dst, SDL_Rect *dstrect, uint32_t color) {
     dstrect->w = dst->w;
     dstrect->h = dst->h;
   }
+  printf("x = %d, y = %d, w = %d, h = %d\n", dstrect->x, dstrect->y, dstrect->w, dstrect->h);
   uint8_t BytesPerPixel = dst->format->BytesPerPixel;
   if (dstrect->x < 0) dstrect->x = 0;
   if (dstrect->y < 0) dstrect->y = 0;
