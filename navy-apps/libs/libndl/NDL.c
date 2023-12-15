@@ -24,6 +24,10 @@ int NDL_PollEvent(char *buf, int len) {
 }
 
 void NDL_OpenCanvas(int *w, int *h) {
+  if (*w == 0 && *h == 0) {
+    *w = screen_w;
+    *h = screen_h;
+  }
   if (getenv("NWM_APP")) {
     int fbctl = 4;
     fbdev = 5;
@@ -41,31 +45,10 @@ void NDL_OpenCanvas(int *w, int *h) {
     }
     close(fbctl);
   }
-  if (*w == 0 && *h == 0) {
-    int fd = open("/proc/dispinfo", O_RDONLY);
-    char buf[64];
-    read(fd, buf, 64);
-    char *ptr;
-    ptr = strstr(buf, "WIDTH");
-    assert(ptr != NULL);
-    while(*ptr != '\0' && !isdigit(*ptr)) {
-      ptr++;
-    }
-    *w = atoi(ptr);
-    ptr = strstr(buf, "HEIGHT");
-    assert(ptr != NULL);
-    while(*ptr != '\0' && !isdigit(*ptr)) {
-      ptr++;
-    }
-    *h = atoi(ptr);
-//  printf("Width: %d, Height: %d\n", *w, *h);
-    close(fd);
-  }
   return;
 }
 
 void NDL_DrawRect(uint32_t *pixels, int x, int y, int w, int h) {
-  printf("aaa\n");
   int fd = open("/dev/fb", O_WRONLY);
   uint32_t *pos = pixels;
   for (int i = 0; i < h; i++) {
@@ -73,7 +56,6 @@ void NDL_DrawRect(uint32_t *pixels, int x, int y, int w, int h) {
     write(fd, (void *)pos, 4 * w);
     pos += w;
   }
-  printf("bbb\n");
   return;
 }
 
@@ -95,6 +77,23 @@ int NDL_Init(uint32_t flags) {
   if (getenv("NWM_APP")) {
     evtdev = 3;
   }
+  int fd = open("/proc/dispinfo", O_RDONLY);
+  char buf[64];
+  read(fd, buf, 64);
+  char *ptr;
+  ptr = strstr(buf, "WIDTH");
+  assert(ptr != NULL);
+  while(*ptr != '\0' && !isdigit(*ptr)) {
+    ptr++;
+  }
+  screen_w = atoi(ptr);
+  ptr = strstr(buf, "HEIGHT");
+  assert(ptr != NULL);
+  while(*ptr != '\0' && !isdigit(*ptr)) {
+    ptr++;
+  }
+  screen_h = atoi(ptr);
+  close(fd);
   return 0;
 }
 
