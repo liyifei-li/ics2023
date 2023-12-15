@@ -192,6 +192,7 @@ uint32_t ffname(vaddr_t addr) {
       return ret;
     ret++;
   }
+  assert(0);
   return ret;
 }
 
