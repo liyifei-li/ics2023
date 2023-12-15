@@ -92,7 +92,6 @@ static void load_elf() {
   long size = ftell(fp);
   Log("The elf is %s, size = %ld", elf_file, size);
   fseek(fp, 0, SEEK_SET);
-  Log("here");
 
   Elf32_Ehdr ehdr;
   Elf32_Shdr shdr;
@@ -120,6 +119,7 @@ static void load_elf() {
       break;
     }
   }
+  Log("here");
   fseek(fp, ehdr.e_shoff, SEEK_SET);
   for (int i = 0; i < ehdr.e_shnum; i++) {
     ret = fread(&shdr, sizeof(Elf32_Shdr), 1, fp);
