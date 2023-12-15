@@ -50,6 +50,7 @@ int fs_open(const char *pathname, int flags, int mode) {
   size_t file_table_size = sizeof(file_table) / sizeof(file_table[0]);
   for (int i = 0; i < file_table_size; i++) {
     if (strcmp(file_table[i].name, pathname) == 0) {
+      file_table[i].open_offset = 0;
       return i;
     }
   }
