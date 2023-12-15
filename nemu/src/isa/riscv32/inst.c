@@ -189,7 +189,6 @@ uint32_t ffname(vaddr_t addr) {
   uint32_t ret = 0;
   while (ret < funccnt) {
     if (addr >= funclist[ret].addr && addr < funclist[ret].addr + funclist[ret].size) {
-      printf("%x %x\n", funclist[ret].addr, funclist[ret].size);
       return ret;
     }
     ret++;

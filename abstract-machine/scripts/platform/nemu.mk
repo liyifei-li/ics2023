@@ -13,7 +13,6 @@ LDFLAGS   += -T $(AM_HOME)/scripts/linker.ld \
 LDFLAGS   += --gc-sections -e _start
 NEMUFLAGS += -l $(shell dirname $(IMAGE).elf)/nemu-log.txt
 #NEMUFLAGS += -e $(IMAGE).elf
-NEMUFLAGS += -e /home/e7cf09/ics2023/navy-apps/apps/pal/build/pal-riscv32
 NEMUFLAGS += -b
 
 CFLAGS += -DMAINARGS=\"$(mainargs)\"
