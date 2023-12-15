@@ -188,8 +188,10 @@ extern struct flist {
 uint32_t ffname(vaddr_t addr) {
   uint32_t ret = 0;
   while (ret < funccnt) {
-    if (addr >= funclist[ret].addr && addr < funclist[ret].addr + funclist[ret].size)
+    if (addr >= funclist[ret].addr && addr < funclist[ret].addr + funclist[ret].size) {
+      printf("%x %x\n", funclist[ret].addr, funclist[ret].size);
       return ret;
+    }
     ret++;
   }
   return ret;
@@ -198,8 +200,7 @@ uint32_t ffname(vaddr_t addr) {
 uint32_t rec_level;
 
 void call_ftrace(vaddr_t curpc, vaddr_t dnpc, uint32_t name) {
-//  printf(FMT_PADDR ": %*scall [%s@" FMT_PADDR "]\n", curpc, rec_level * 2, "", name < funccnt ? funclist[name].name : "???", dnpc);
-  printf(FMT_PADDR ": %*scall [%d@" FMT_PADDR "]\n", curpc, rec_level * 2, "", name < funccnt ? name : 233, dnpc);
+  printf(FMT_PADDR ": %*scall [%s@" FMT_PADDR "]\n", curpc, rec_level * 2, "", name < funccnt ? funclist[name].name : "???", dnpc);
   rec_level++;
 }
 
@@ -207,8 +208,7 @@ void ret_ftrace(vaddr_t curpc, vaddr_t dnpc, uint32_t name) {
 //  assert(rec_level != 0);
   if (rec_level == 0) rec_level = 1;
   rec_level--;
-//  printf(FMT_PADDR ": %*sret [%s]\n", curpc, rec_level * 2, "", name < funccnt ? funclist[name].name : "???");
-  printf(FMT_PADDR ": %*sret [%d]\n", curpc, rec_level * 2, "", name < funccnt ? name : 233);
+  printf(FMT_PADDR ": %*sret [%s]\n", curpc, rec_level * 2, "", name < funccnt ? funclist[name].name : "???");
 }
 
 void jal_ftrace(vaddr_t curpc, vaddr_t dnpc, int rd) {
