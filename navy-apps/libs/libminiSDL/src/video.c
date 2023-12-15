@@ -41,6 +41,8 @@ void SDL_BlitSurface(SDL_Surface *src, SDL_Rect *srcrect, SDL_Surface *dst, SDL_
     dstw = dstrect->w;
     dsth = dstrect->h;
   }
+  printf("srcx = %d, srcy = %d, srcw = %d, srch = %d\n", srcx, srcy, srcw, srch);
+  printf("dstx = %d, dsty = %d, dstw = %d, dsth = %d\n", dstx, dsty, dstw, dsth);
   assert(srcx + srcw <= src->w && srcy + srch <= src->h);
   assert(dstx + dstw <= dst->w && dsty + dsth <= dst->h);
   uint8_t BytesPerPixel = src->format->BytesPerPixel;
