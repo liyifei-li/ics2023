@@ -94,6 +94,7 @@ void SDL_FillRect(SDL_Surface *dst, SDL_Rect *dstrect, uint32_t color) {
 }
 
 void SDL_UpdateRect(SDL_Surface *s, int x, int y, int w, int h) {
+  printf("SDL_UpdateRect Start\n");
   assert(s);
   if (x == 0 && y == 0 && w == 0 && h == 0) {
     w = s->w;
@@ -111,7 +112,7 @@ void SDL_UpdateRect(SDL_Surface *s, int x, int y, int w, int h) {
     pos += BytesPerPixel * w;
   }
   close(fd);
-  return;
+  printf("SDL_UpdateRect End\n");
 }
 
 // APIs below are already implemented.
