@@ -131,7 +131,6 @@ static void load_elf() {
   assert (shdr.sh_entsize != 0);
   uint32_t num_symbols = shdr.sh_size / shdr.sh_entsize;
 
-  Log("here");
   funccnt = 0;
   for (int i = 0; i < num_symbols; i++) {
     ret = fread(&sym, sizeof(Elf32_Sym), 1, fp);
@@ -145,6 +144,7 @@ static void load_elf() {
   }
   fclose(fp);
   free(strtab);
+  Log("here");
 }
 
 #endif
