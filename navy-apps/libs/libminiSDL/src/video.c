@@ -29,8 +29,6 @@ void SDL_BlitSurface(SDL_Surface *src, SDL_Rect *srcrect, SDL_Surface *dst, SDL_
   void *srcpos;
   void *dstpos;
   uint8_t BytesPerPixel = src->format->BytesPerPixel;
-  printf("srcrect->h = %d\n", srcrect->h);
-  printf("dstrect->w = %d\n", dstrect->w);
   for (int i = 0; i < srcrect->h; i++) {
     if (dstrect->y + i < 0 || dstrect->y + i >= dst->h) continue;
     srcpos = src->pixels + BytesPerPixel * (srcrect->x + (i + srcrect->y) * src->w);
@@ -92,6 +90,7 @@ void SDL_UpdateRect(SDL_Surface *s, int x, int y, int w, int h) {
   assert(BytesPerPixel == 1 || BytesPerPixel == 4);
   void *pos;
   if (BytesPerPixel == 1) {
+    printf("h = %d, w = %d\n", h, w);
     for (int i = 0; i < h; i++) {
       pos = s->pixels + (x + (i + y) * s->w);
       for (int j = 0; j < w; j++) {
