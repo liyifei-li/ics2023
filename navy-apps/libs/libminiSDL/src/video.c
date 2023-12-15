@@ -15,16 +15,20 @@ void SDL_BlitSurface(SDL_Surface *src, SDL_Rect *srcrect, SDL_Surface *dst, SDL_
 }
 
 void SDL_FillRect(SDL_Surface *dst, SDL_Rect *dstrect, uint32_t color) {
-  /*
   int16_t x, y;
   uint16_t w, h;
-  int Surface_w, Surface_h;
-  Surface_w = dst->
   if (dstrect == NULL) {
     x = 0;
     y = 0;
+    w = dst->w;
+    h = dst->h;
   }
-  */
+  else {
+    x = dstrect->x;
+    y = dstrect->y;
+    w = dstrect->w;
+    h = dstrect->h;
+  }
 }
 
 void SDL_UpdateRect(SDL_Surface *s, int x, int y, int w, int h) {
@@ -33,6 +37,7 @@ void SDL_UpdateRect(SDL_Surface *s, int x, int y, int w, int h) {
     h = s->h;
   }
   int fd = open("/dev/fb", O_WRONLY);
+  assert(s->format->BytesPerPixel == 4);
   uint32_t *pos = (uint32_t *)s->pixels;
   for (int i = y; i < h; i++) {
     lseek(fd, 4 * (x + i * w), SEEK_SET);
