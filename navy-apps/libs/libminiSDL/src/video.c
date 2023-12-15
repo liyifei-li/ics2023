@@ -57,10 +57,10 @@ void SDL_FillRect(SDL_Surface *dst, SDL_Rect *dstrect, uint32_t color) {
   void *buf = malloc(4 * dstrect->w);
   assert(buf);
   assert(BytesPerPixel == 1 || BytesPerPixel == 4);
+  printf("%x", 1234);
   if (BytesPerPixel == 1) {
     for (int i = 0; i < dstrect->w; i++) {
       memcpy(buf + 4 * i, &dst->format->palette->colors[color], 4);
-      printf("%x", dst->format->palette->colors[color]);
     }
   }
   else {
