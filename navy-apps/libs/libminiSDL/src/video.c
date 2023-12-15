@@ -28,10 +28,9 @@ void SDL_BlitSurface(SDL_Surface *src, SDL_Rect *srcrect, SDL_Surface *dst, SDL_
   }
   void *srcpos;
   void *dstpos;
-  printf("srcrect->x = %d, srcrect->y = %d, srcrect->w = %d, srcrect->h = %d\n", srcrect->x, srcrect->y, srcrect->w, srcrect->h);
-  printf("dstrect->x = %d, dstrect->y = %d\n", dstrect->x, dstrect->y);
-  printf("src->w = %d, src->h = %d\n", src->w, src->h);
   uint8_t BytesPerPixel = src->format->BytesPerPixel;
+  printf("srcrect->h = %d\n", srcrect->h);
+  printf("dstrect->w = %d\n", dstrect->w);
   for (int i = 0; i < srcrect->h; i++) {
     if (dstrect->y + i < 0 || dstrect->y + i >= dst->h) continue;
     srcpos = src->pixels + BytesPerPixel * (srcrect->x + (i + srcrect->y) * src->w);
