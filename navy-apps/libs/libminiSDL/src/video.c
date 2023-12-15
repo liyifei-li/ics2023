@@ -10,6 +10,7 @@
 #include <ctype.h>
 
 void SDL_BlitSurface(SDL_Surface *src, SDL_Rect *srcrect, SDL_Surface *dst, SDL_Rect *dstrect) {
+  printf("SDL_BlitSurface_Begin\n");
   assert(dst && src);
   assert(dst->format->BitsPerPixel == src->format->BitsPerPixel);
   if (srcrect == NULL) {
@@ -35,9 +36,11 @@ void SDL_BlitSurface(SDL_Surface *src, SDL_Rect *srcrect, SDL_Surface *dst, SDL_
     dstpos = dst->pixels + BytesPerPixel * (dstrect->x + (i + dstrect->y) * dst->w);
     memcpy(dstpos, srcpos, BytesPerPixel * srcrect->w);
   }
+    printf("SDL_BlitSurface_End\n");
 }
 
 void SDL_FillRect(SDL_Surface *dst, SDL_Rect *dstrect, uint32_t color) {
+  printf("SDL_FillRect_Begin\n");
   assert(dst);
   if (dstrect == NULL) {
     dstrect = malloc(sizeof(SDL_Rect));
@@ -73,9 +76,11 @@ void SDL_FillRect(SDL_Surface *dst, SDL_Rect *dstrect, uint32_t color) {
   }
   free(buf);
   close(fd);
+  printf("SDL_FillRect_End\n");
 }
 
 void SDL_UpdateRect(SDL_Surface *s, int x, int y, int w, int h) {
+  printf("SDL_UpdateRect_Begin\n");
   assert(s);
   if (x == 0 && y == 0 && w == 0 && h == 0) {
     w = s->w;
@@ -108,6 +113,7 @@ void SDL_UpdateRect(SDL_Surface *s, int x, int y, int w, int h) {
     }
   }
   close(fd);
+  printf("SDL_UpdateRect_End\n");
 }
 
 // APIs below are already implemented.
