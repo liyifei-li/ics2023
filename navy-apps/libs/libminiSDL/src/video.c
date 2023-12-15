@@ -49,7 +49,7 @@ void SDL_UpdateRect(SDL_Surface *s, int x, int y, int w, int h) {
   int fd = open("/dev/fb", O_WRONLY);
   for (int i = y; i < y + h; i++) {
     lseek(fd, BytesPerPixel * (x + i * sw), SEEK_SET);
-    write(fd, s->pixels, BytesPerPixel * w);
+    write(fd, (void *)pos, BytesPerPixel * w);
     pos += w;
   }
   close(fd);
