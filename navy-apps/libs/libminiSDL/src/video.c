@@ -12,49 +12,30 @@
 void SDL_BlitSurface(SDL_Surface *src, SDL_Rect *srcrect, SDL_Surface *dst, SDL_Rect *dstrect) {
   assert(dst && src);
   assert(dst->format->BitsPerPixel == src->format->BitsPerPixel);
-  int16_t srcx, srcy;
-  uint16_t srcw, srch;
   if (srcrect == NULL) {
-    srcx = 0;
-    srcy = 0;
-    srcw = src->w;
-    srch = src->h;
+    srcrect = malloc(sizeof(SDL_Rect));
+    assert(srcrect);
+    srcrect->x = 0;
+    srcrect->y = 0;
+    srcrect->w = src->w;
+    srcrect->h = src->h;
   }
-  else {
-    srcx = srcrect->x;
-    srcy = srcrect->y;
-    srcw = srcrect->w;
-    srch = srcrect->h;
-  }
-  int16_t dstx, dsty;
-  uint16_t dstw, dsth;
   if (dstrect == NULL) {
-    dstx = 0;
-    dsty = 0;
-    dstw = srcw;
-    dsth = srch;
+    dstrect = malloc(sizeof(SDL_Rect));
+    assert(dstrect);
+    dstrect->x = 0;
+    dstrect->y = 0;
   }
-  else {
-    dstx = dstrect->x;
-    dsty = dstrect->y;
-    dstw = dstrect->w;
-    dsth = dstrect->h;
-  }
-  uint8_t BytesPerPixel = src->format->BytesPerPixel;
-  void *srcpixels = src->pixels;
-  void *dstpixels = dst->pixels;
+  if (srcrect->x + srcrect->w > src->w) srcrect->w = src->w - srcrect->x;
+  if (dstrect->x + srcrect->w > dst->w) srcrect->w = dst->w - dstrect->x;
   void *srcpos;
   void *dstpos;
-  for (int i = 0; i < srch; i++) {
-    if (dsty + i < 0 || dsty + i >= dsth) continue;
-    srcpos = srcpixels + BytesPerPixel * (srcx + (i + srcy) * srcw);
-    dstpos = dstpixels + BytesPerPixel * (dstx + (i + dsty) * dstw);
-    for (int j = 0; j < srcw; j++) {
-      if (dstx + j < 0 || dstx + j >= dstw) continue;
-      memcpy(dstpos, srcpos, BytesPerPixel);
-      srcpos += BytesPerPixel;
-      dstpos += BytesPerPixel;
-    }
+  uint8_t BytesPerPixel = src->format->BytesPerPixel;
+  for (int i = 0; i < srcrect->h; i++) {
+    if (dstrect->y + i < 0 || dstrect->y + i >= dst->h) continue;
+    srcpos = src->pixels + BytesPerPixel * (srcrect->x + (i + srcrect->y) * src->w);
+    dstpos = dst->pixels + BytesPerPixel * (dstrect->x + (i + dstrect->y) * dst->w);
+    memcpy(dstpos, srcpos, BytesPerPixel * srcrect->w);
   }
 }
 
