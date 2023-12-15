@@ -45,12 +45,12 @@ void SDL_UpdateRect(SDL_Surface *s, int x, int y, int w, int h) {
   int sh = s->h;
   assert(x + w <= sw && y + h <= sh);
   uint8_t BytesPerPixel = s->format->BytesPerPixel;
-  uint32_t *pos = (uint32_t *)s->pixels;
+  void *pos = s->pixels;
   int fd = open("/dev/fb", O_WRONLY);
   for (int i = y; i < y + h; i++) {
     lseek(fd, BytesPerPixel * (x + i * sw), SEEK_SET);
-    write(fd, (void *)pos, BytesPerPixel * w);
-    pos += w;
+    write(fd, pos, BytesPerPixel * w);
+    pos += BytesPerPixel * w;
   }
   close(fd);
   return;
