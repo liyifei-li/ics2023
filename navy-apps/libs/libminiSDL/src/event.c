@@ -19,12 +19,9 @@ int SDL_PollEvent(SDL_Event *ev) {
   char buf[32];
   char eventtype[8];
   char key[16];
-  printf("aaa\n");
   if (!NDL_PollEvent(buf, 32)) {
-    printf("ddd\n");
     return 0;
   }
-  printf("bbb\n");
   sscanf(buf, "%s %s", eventtype, key);
   if (strcmp(eventtype, "kd") == 0) {
     ev->type = SDL_KEYDOWN;
@@ -44,7 +41,6 @@ int SDL_PollEvent(SDL_Event *ev) {
     }
   }
   assert(ev->key.keysym.sym != 0);
-  printf("ccc\n");
   return 1;
 }
 
