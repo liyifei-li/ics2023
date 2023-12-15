@@ -90,12 +90,12 @@ void SDL_UpdateRect(SDL_Surface *s, int x, int y, int w, int h) {
   assert(BytesPerPixel == 1 || BytesPerPixel == 4);
   void *pos;
   if (BytesPerPixel == 1) {
-    printf("h = %d, w = %d\n", h, w);
     for (int i = 0; i < h; i++) {
       pos = s->pixels + (x + (i + y) * s->w);
       for (int j = 0; j < w; j++) {
         lseek(fd, 4 * (x + j + (i + y) * s->w), SEEK_SET);
         write(fd, &s->format->palette->colors[*(uint8_t *)pos], 4);
+        printf("%u", s->format->palette->colors[*(uint8_t *)pos]);
         pos++;
       }
     }
