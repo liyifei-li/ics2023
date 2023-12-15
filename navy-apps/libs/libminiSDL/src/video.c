@@ -10,7 +10,6 @@
 #include <ctype.h>
 
 void SDL_BlitSurface(SDL_Surface *src, SDL_Rect *srcrect, SDL_Surface *dst, SDL_Rect *dstrect) {
-  printf("aaa\n");
   assert(dst && src);
   assert(dst->format->BitsPerPixel == src->format->BitsPerPixel);
   if (srcrect == NULL) {
@@ -36,11 +35,9 @@ void SDL_BlitSurface(SDL_Surface *src, SDL_Rect *srcrect, SDL_Surface *dst, SDL_
     dstpos = dst->pixels + BytesPerPixel * (dstrect->x + (i + dstrect->y) * dst->w);
     memcpy(dstpos, srcpos, BytesPerPixel * srcrect->w);
   }
-  printf("bbb\n");
 }
 
 void SDL_FillRect(SDL_Surface *dst, SDL_Rect *dstrect, uint32_t color) {
-  printf("ccc\n");
   assert(dst);
   if (dstrect == NULL) {
     dstrect = malloc(sizeof(SDL_Rect));
@@ -76,11 +73,9 @@ void SDL_FillRect(SDL_Surface *dst, SDL_Rect *dstrect, uint32_t color) {
   }
   free(buf);
   close(fd);
-  printf("ddd\n");
 }
 
 void SDL_UpdateRect(SDL_Surface *s, int x, int y, int w, int h) {
-  printf("eee\n");
   assert(s);
   if (x == 0 && y == 0 && w == 0 && h == 0) {
     w = s->w;
@@ -113,7 +108,6 @@ void SDL_UpdateRect(SDL_Surface *s, int x, int y, int w, int h) {
     }
   }
   close(fd);
-  printf("fff\n");
 }
 
 // APIs below are already implemented.
@@ -131,7 +125,6 @@ static inline int maskToShift(uint32_t mask) {
 
 SDL_Surface* SDL_CreateRGBSurface(uint32_t flags, int width, int height, int depth,
     uint32_t Rmask, uint32_t Gmask, uint32_t Bmask, uint32_t Amask) {
-    printf("ggg\n");
   assert(depth == 8 || depth == 32);
   SDL_Surface *s = malloc(sizeof(SDL_Surface));
   assert(s);
@@ -165,7 +158,6 @@ SDL_Surface* SDL_CreateRGBSurface(uint32_t flags, int width, int height, int dep
     s->pixels = malloc(s->pitch * height);
     assert(s->pixels);
   }
-  printf("hhh\n");
 
   return s;
 }
@@ -180,7 +172,6 @@ SDL_Surface* SDL_CreateRGBSurfaceFrom(void *pixels, int width, int height, int d
 }
 
 void SDL_FreeSurface(SDL_Surface *s) {
-    printf("iii\n");
   if (s != NULL) {
     if (s->format != NULL) {
       if (s->format->palette != NULL) {
@@ -192,11 +183,9 @@ void SDL_FreeSurface(SDL_Surface *s) {
     if (s->pixels != NULL && !(s->flags & SDL_PREALLOC)) free(s->pixels);
     free(s);
   }
-    printf("jjj\n");
 }
 
 SDL_Surface* SDL_SetVideoMode(int width, int height, int bpp, uint32_t flags) {
-    printf("kkk\n");
   if (flags & SDL_HWSURFACE) NDL_OpenCanvas(&width, &height);
   return SDL_CreateRGBSurface(flags, width, height, bpp,
       DEFAULT_RMASK, DEFAULT_GMASK, DEFAULT_BMASK, DEFAULT_AMASK);
@@ -213,7 +202,6 @@ void SDL_SoftStretch(SDL_Surface *src, SDL_Rect *srcrect, SDL_Surface *dst, SDL_
   int h = (srcrect == NULL ? src->h : srcrect->h);
 
   assert(dstrect);
-  printf("%d %d %d %d\n", w, dstrect->w, h, dstrect->h);
   if(w == dstrect->w && h == dstrect->h) {
     /* The source rectangle and the destination rectangle
      * are of the same size. If that is the case, there
@@ -228,11 +216,9 @@ void SDL_SoftStretch(SDL_Surface *src, SDL_Rect *srcrect, SDL_Surface *dst, SDL_
   else {
     assert(0);
   }
-      printf("lll\n");
 }
 
 void SDL_SetPalette(SDL_Surface *s, int flags, SDL_Color *colors, int firstcolor, int ncolors) {
-  printf("qqq\n");
   assert(s);
   assert(s->format);
   assert(s->format->palette);
@@ -250,11 +236,9 @@ void SDL_SetPalette(SDL_Surface *s, int flags, SDL_Color *colors, int firstcolor
     }
     SDL_UpdateRect(s, 0, 0, 0, 0);
   }
-  printf("rrr\n");
 }
 
 static void ConvertPixelsARGB_ABGR(void *dst, void *src, int len) {
-  printf("sss\n");
   int i;
   uint8_t (*pdst)[4] = dst;
   uint8_t (*psrc)[4] = src;
@@ -279,11 +263,9 @@ static void ConvertPixelsARGB_ABGR(void *dst, void *src, int len) {
   for (; i < len; i ++) {
     macro(i);
   }
-  printf("ttt\n");
 }
 
 SDL_Surface *SDL_ConvertSurface(SDL_Surface *src, SDL_PixelFormat *fmt, uint32_t flags) {
-  printf("ooo\n");
   assert(src->format->BitsPerPixel == 32);
   assert(src->w * src->format->BytesPerPixel == src->pitch);
   assert(src->format->BitsPerPixel == fmt->BitsPerPixel);
@@ -294,17 +276,14 @@ SDL_Surface *SDL_ConvertSurface(SDL_Surface *src, SDL_PixelFormat *fmt, uint32_t
   assert(fmt->Gmask == src->format->Gmask);
   assert(fmt->Amask == 0 || src->format->Amask == 0 || (fmt->Amask == src->format->Amask));
   ConvertPixelsARGB_ABGR(ret->pixels, src->pixels, src->w * src->h);
-  printf("ppp\n");
 
   return ret;
 }
 
 uint32_t SDL_MapRGBA(SDL_PixelFormat *fmt, uint8_t r, uint8_t g, uint8_t b, uint8_t a) {
-  printf("mmm\n");
   assert(fmt->BytesPerPixel == 4);
   uint32_t p = (r << fmt->Rshift) | (g << fmt->Gshift) | (b << fmt->Bshift);
   if (fmt->Amask) p |= (a << fmt->Ashift);
-  printf("nnn\n");
   return p;
 }
 
