@@ -34,15 +34,13 @@ void NDL_OpenCanvas(int *w, int *h) {
   while(*ptr != '\0' && !isdigit(*ptr)) {
     ptr++;
   }
-  //*w = atoi(ptr);
-  *w = 320;
+  *w = atoi(ptr);
   ptr = strstr(buf, "HEIGHT");
   assert(ptr != NULL);
   while(*ptr != '\0' && !isdigit(*ptr)) {
     ptr++;
   }
-  //*h = atoi(ptr);
-  *h = 200;
+  *h = atoi(ptr);
 //  printf("Width: %d, Height: %d\n", *w, *h);
   close(fd);
 
