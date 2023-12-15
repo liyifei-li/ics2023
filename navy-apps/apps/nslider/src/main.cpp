@@ -34,6 +34,7 @@ void prev(int rep) {
   if (rep == 0) rep = 1;
   cur -= rep;
   if (cur < 0) cur = 0;
+  printf("%d\n", cur);
   render();
 }
 
