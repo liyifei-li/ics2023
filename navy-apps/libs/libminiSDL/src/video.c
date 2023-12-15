@@ -83,9 +83,9 @@ void SDL_FillRect(SDL_Surface *dst, SDL_Rect *dstrect, uint32_t color) {
   uint8_t BytesPerPixel = dst->format->BytesPerPixel;
   void *buf = malloc(BytesPerPixel * (w + 4));
   uint32_t pos = 0;
+  printf("x = %d, y = %d, w = %d, h = %d\n", x, y, w, h);
   for (int i = 0; i < w; i++) {
-    //*(uint8_t *)(buf + pos) = color;
-    *(uint8_t *)(buf + pos) = 0;
+    *(uint8_t *)(buf + pos) = color;
     pos += BytesPerPixel;
   }
   int fd = open("/dev/fb", O_WRONLY);
