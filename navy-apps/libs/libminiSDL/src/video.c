@@ -74,7 +74,7 @@ void SDL_FillRect(SDL_Surface *dst, SDL_Rect *dstrect, uint32_t color) {
     w = dstrect->w;
     h = dstrect->h;
   }
-  printf("x = %d, y = %d, w = %d, h = %d, color = %d\n", x, y, w, h, color);
+  printf("x = %d, y = %d, w = %d, h = %d, color = %x\n", x, y, w, h, color);
   int dstw = dst->w;
   int dsth = dst->h;
   assert(x >= 0 && y >= 0);
