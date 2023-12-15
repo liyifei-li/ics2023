@@ -119,7 +119,6 @@ static void load_elf() {
       break;
     }
   }
-  Log("here");
   fseek(fp, ehdr.e_shoff, SEEK_SET);
   for (int i = 0; i < ehdr.e_shnum; i++) {
     ret = fread(&shdr, sizeof(Elf32_Shdr), 1, fp);
@@ -132,6 +131,7 @@ static void load_elf() {
   assert (shdr.sh_entsize != 0);
   uint32_t num_symbols = shdr.sh_size / shdr.sh_entsize;
 
+  Log("here");
   funccnt = 0;
   for (int i = 0; i < num_symbols; i++) {
     ret = fread(&sym, sizeof(Elf32_Sym), 1, fp);
