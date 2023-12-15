@@ -15,11 +15,22 @@ void SDL_BlitSurface(SDL_Surface *src, SDL_Rect *srcrect, SDL_Surface *dst, SDL_
 }
 
 void SDL_FillRect(SDL_Surface *dst, SDL_Rect *dstrect, uint32_t color) {
+  /*
+  int16_t x, y;
+  uint16_t w, h;
+  int Surface_w, Surface_h;
+  Surface_w = dst->
+  if (dstrect == NULL) {
+    x = 0;
+    y = 0;
+  }
+  */
 }
 
 void SDL_UpdateRect(SDL_Surface *s, int x, int y, int w, int h) {
   assert(x == 0 || y == 0 || w == 0 || h == 0);
   if (x == 0 && y == 0 && w == 0 && h == 0) {
+    /*
     int fd = open("/proc/dispinfo", O_RDONLY);
     char buf[64];
     read(fd, buf, 64);
@@ -37,6 +48,9 @@ void SDL_UpdateRect(SDL_Surface *s, int x, int y, int w, int h) {
     }
     h = atoi(ptr);
     close(fd); 
+    */ 
+    w = s->w;
+    h = s->h;
   }
   uint32_t BitsPerPixel = s->format->BitsPerPixel;
   int fd = open("/dev/fb", O_WRONLY);
