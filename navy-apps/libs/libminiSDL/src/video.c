@@ -60,37 +60,29 @@ void SDL_BlitSurface(SDL_Surface *src, SDL_Rect *srcrect, SDL_Surface *dst, SDL_
 
 void SDL_FillRect(SDL_Surface *dst, SDL_Rect *dstrect, uint32_t color) {
   assert(dst);
-  int16_t x, y;
-  uint16_t w, h;
   if (dstrect == NULL) {
-    x = 0;
-    y = 0;
-    w = dst->w;
-    h = dst->h;
+    dstrect = malloc(sizeof(SDL_Rect));
+    assert(dstrect);
+    dstrect->x = 0;
+    dstrect->y = 0;
+    dstrect->w = dst->w;
+    dstrect->h = dst->h;
   }
-  else {
-    x = dstrect->x;
-    y = dstrect->y;
-    w = dstrect->w;
-    h = dstrect->h;
-  }
-  int dstw = dst->w;
-  int dsth = dst->h;
-  printf("dstw = %d, dsth = %d\n", dstw, dsth);
-  assert(x >= 0 && y >= 0);
-  assert(x + w <= dstw && y + h <= dsth);
   uint8_t BytesPerPixel = dst->format->BytesPerPixel;
-  void *buf = malloc(BytesPerPixel * (w + 4));
-  uint32_t pos = 0;
-  printf("x = %d, y = %d, w = %d, h = %d\n", x, y, w, h);
-  for (int i = 0; i < w; i++) {
-    *(uint8_t *)(buf + pos) = color;
-    pos += BytesPerPixel;
-  }
+  if (dstrect->x < 0) dstrect->x = 0;
+  if (dstrect->y < 0) dstrect->y = 0;
+  if (dstrect->x + dstrect->w > dst->w) dstrect->w = dst->w - dstrect->x;
+  if (dstrect->y + dstrect->h > dst->h) dstrect->h = dst->h - dstrect->y;
   int fd = open("/dev/fb", O_WRONLY);
-  for (int i = y; i < y + h; i++) {
-    lseek(fd, BytesPerPixel * (x + i * dstw), SEEK_SET);
-    write(fd, buf, BytesPerPixel * w);
+  void *pos = dst->pixels + BytesPerPixel * (dstrect->x + dstrect->y * dst->w);
+  void *buf = malloc(BytesPerPixel * dstrect->w);
+  assert(buf);
+  for (int i = 0; i < dstrect->w; i++) {
+    memcpy(buf + BytesPerPixel * i, &color, BytesPerPixel);
+  }
+  for (int i = 0; i < dstrect->h; i++) {
+    lseek(fd, BytesPerPixel * (dstrect->x + (i + dstrect->y) * dst->w), SEEK_SET);
+    write(fd, buf, BytesPerPixel * dstrect->w);
   }
   free(buf);
   close(fd);
@@ -102,14 +94,15 @@ void SDL_UpdateRect(SDL_Surface *s, int x, int y, int w, int h) {
     w = s->w;
     h = s->h;
   }
-  int sw = s->w;
-  int sh = s->h;
-  assert(x + w <= sw && y + h <= sh);
+  assert(x >= 0);
+  assert(x + w <= s->w);
+  assert(y >= 0);
+  assert(y + h <= s->h);
   uint8_t BytesPerPixel = s->format->BytesPerPixel;
   void *pos = s->pixels;
   int fd = open("/dev/fb", O_WRONLY);
   for (int i = y; i < y + h; i++) {
-    lseek(fd, BytesPerPixel * (x + i * sw), SEEK_SET);
+    lseek(fd, BytesPerPixel * (x + i * s->w), SEEK_SET);
     write(fd, pos, BytesPerPixel * w);
     pos += BytesPerPixel * w;
   }
