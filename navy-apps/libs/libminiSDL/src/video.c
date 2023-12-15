@@ -28,35 +28,14 @@ void SDL_FillRect(SDL_Surface *dst, SDL_Rect *dstrect, uint32_t color) {
 }
 
 void SDL_UpdateRect(SDL_Surface *s, int x, int y, int w, int h) {
-  assert(x == 0 || y == 0 || w == 0 || h == 0);
   if (x == 0 && y == 0 && w == 0 && h == 0) {
-    /*
-    int fd = open("/proc/dispinfo", O_RDONLY);
-    char buf[64];
-    read(fd, buf, 64);
-    char *ptr;
-    ptr = strstr(buf, "WIDTH");
-    assert(ptr != NULL);
-    while(*ptr != '\0' && !isdigit(*ptr)) {
-      ptr++;
-    }
-    w = atoi(ptr);
-    ptr = strstr(buf, "HEIGHT");
-    assert(ptr != NULL);
-    while(*ptr != '\0' && !isdigit(*ptr)) {
-      ptr++;
-    }
-    h = atoi(ptr);
-    close(fd); 
-    */ 
     w = s->w;
     h = s->h;
   }
-  uint32_t BitsPerPixel = s->format->BitsPerPixel;
   int fd = open("/dev/fb", O_WRONLY);
   uint32_t *pos = (uint32_t *)s->pixels;
-  for (int i = 0; i < h; i++) {
-    lseek(fd, 4 * (x + (y + i) * w), SEEK_SET);
+  for (int i = y; i < h; i++) {
+    lseek(fd, 4 * (x + i * w), SEEK_SET);
     write(fd, (void *)pos, 4 * w);
     pos += w;
   }
