@@ -12,7 +12,6 @@
 void SDL_BlitSurface(SDL_Surface *src, SDL_Rect *srcrect, SDL_Surface *dst, SDL_Rect *dstrect) {
   assert(dst && src);
   assert(dst->format->BitsPerPixel == src->format->BitsPerPixel);
-  int cnt = 0;
   int free_srcrect = 0;
   int free_dstrect = 0;
   if (srcrect == NULL) {
@@ -39,22 +38,16 @@ void SDL_BlitSurface(SDL_Surface *src, SDL_Rect *srcrect, SDL_Surface *dst, SDL_
   for (int i = 0; i < srcrect->h; i++) {
     pos = src->pixels + BytesPerPixel * (srcrect->x + (i + srcrect->y) * srcrect->w);
     memcpy(buf + BytesPerPixel * i * srcrect->w, pos, BytesPerPixel * srcrect->w);
-    cnt++;
-    if (cnt == 100000) {
-      cnt = 0;
-      printf("a\n");
-    }
   }
   assert(dstrect->x >= 0 && dstrect->x + srcrect->w <= dst->w);
   assert(dstrect->y >= 0 && dstrect->y + srcrect->h <= dst->h);
   for (int i = 0; i < srcrect->h; i++) {
-    pos = dst->pixels + BytesPerPixel * ((dstrect->x) + (i + dstrect->y) * srcrect->w);
-    memcpy(pos, buf + BytesPerPixel * (i * srcrect->w), BytesPerPixel * srcrect->w);
-    cnt++;
-    if (cnt == 100000) {
-      cnt = 0;
-      printf("b\n");
+    for (int j = 0; j < srcrect->w; j++) {
+      pos = dst->pixels + BytesPerPixel * (dstrect->x + j + (i + dstrect->y) * dst->w);
+      memcpy(pos, buf + BytesPerPixel * (j + i * srcrect->w), BytesPerPixel);
     }
+//    pos = dst->pixels + BytesPerPixel * ((dstrect->x) + (i + dstrect->y) * srcrect->w);
+//    memcpy(pos, buf + BytesPerPixel * i * srcrect->w, BytesPerPixel * srcrect->w);
   }
   if (free_srcrect) free(srcrect);
   if (free_dstrect) free(dstrect);
