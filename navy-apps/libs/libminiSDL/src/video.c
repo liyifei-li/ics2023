@@ -87,20 +87,27 @@ void SDL_FillRect(SDL_Surface *dst, SDL_Rect *dstrect, uint32_t color) {
 
 void SDL_UpdateRect(SDL_Surface *s, int x, int y, int w, int h) {
   assert(s);
+  /*
   if (x == 0 && y == 0 && w == 0 && h == 0) {
     w = s->w;
     h = s->h;
   }
+  */
+  x = 0;
+  y = 0;
+  w = s->w;
+  h = s->h;
   assert(x >= 0 && x + w <= s->w);
   assert(y >= 0 && y + h <= s->h);
   uint8_t BytesPerPixel = s->format->BytesPerPixel;
   int fd = open("/dev/fb", O_WRONLY);
-  uint32_t *pixels = malloc(40 * w * h);
+  uint32_t *pixels = malloc(4 * w * h);
   assert(BytesPerPixel == 1 || BytesPerPixel == 4);
   if (BytesPerPixel == 1) {
     uint8_t *pos;
     SDL_Color *colors = s->format->palette->colors;
     uint32_t color;
+
     for (int i = 0; i < h; i++) {
       for (int j = 0; j < w; j++) {
         pos = s->pixels + x + j + (i + y) * s->w;
@@ -108,6 +115,7 @@ void SDL_UpdateRect(SDL_Surface *s, int x, int y, int w, int h) {
         memcpy(pixels + j + i * w, &color, 4);
       }
     }
+
   }
   else {
     for (int i = 0; i < h; i++) {
