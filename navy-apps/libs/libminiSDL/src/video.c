@@ -39,16 +39,8 @@ void SDL_BlitSurface(SDL_Surface *src, SDL_Rect *srcrect, SDL_Surface *dst, SDL_
     pos = src->pixels + BytesPerPixel * (srcrect->x + (i + srcrect->y) * srcrect->w);
     memcpy(buf + BytesPerPixel * i * srcrect->w, pos, BytesPerPixel * srcrect->w);
   }
-  /*
-  int dstxa = dstrect->x < 0 ? -dstrect->x : 0;
-  int dstxb = dstrect->x + srcrect->w > dst->w ? dstrect->x + srcrect->w - dst->w : 0;
-  int dstya = dstrect->y < 0 ? -dstrect->y : 0;
-  int dstyb = dstrect->y + srcrect->h > dst->h ? dstrect->y + srcrect->h - dst->h : 0;
-  for (int i = dstya; i < srcrect->h - dstyb; i++) {
-    pos = dst->pixels + BytesPerPixel * ((dstrect->x + dstxa) + (i + dstrect->y) * dstrect->w);
-    memcpy(buf + BytesPerPixel * (i * srcrect->w + dstxa), pos, BytesPerPixel * (srcrect->w - dstxa - dstxb));
-  }
-  */
+  assert(dstrect->x >= 0 && dstrect->x + srcrect->w <= dst->w);
+  assert(dstrect->y >= 0 && dstrect->y + srcrect->h <= dst->h);
   for (int i = 0; i < srcrect->h; i++) {
     pos = dst->pixels + BytesPerPixel * ((dstrect->x) + (i + dstrect->y) * dst->w);
     memcpy(pos, buf + BytesPerPixel * (i * srcrect->w), BytesPerPixel * srcrect->w);
