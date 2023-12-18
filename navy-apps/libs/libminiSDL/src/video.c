@@ -95,7 +95,7 @@ void SDL_UpdateRect(SDL_Surface *s, int x, int y, int w, int h) {
   assert(y >= 0 && y + h <= s->h);
   uint8_t BytesPerPixel = s->format->BytesPerPixel;
   int fd = open("/dev/fb", O_WRONLY);
-  uint32_t *pixels = malloc(4 * w * h);
+  uint32_t *pixels = malloc(40 * w * h);
   assert(BytesPerPixel == 1 || BytesPerPixel == 4);
   if (BytesPerPixel == 1) {
     uint8_t *pos;
@@ -108,7 +108,6 @@ void SDL_UpdateRect(SDL_Surface *s, int x, int y, int w, int h) {
         printf("%d", color);
         memcpy(pixels + j + i * w, &color, 4);
       }
-      printf("\n");
     }
   }
   else {
