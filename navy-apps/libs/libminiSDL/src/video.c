@@ -42,12 +42,8 @@ void SDL_BlitSurface(SDL_Surface *src, SDL_Rect *srcrect, SDL_Surface *dst, SDL_
   assert(dstrect->x >= 0 && dstrect->x + srcrect->w <= dst->w);
   assert(dstrect->y >= 0 && dstrect->y + srcrect->h <= dst->h);
   for (int i = 0; i < srcrect->h; i++) {
-    for (int j = 0; j < srcrect->w; j++) {
-      pos = dst->pixels + BytesPerPixel * (dstrect->x + j + (i + dstrect->y) * srcrect->w);
-      memcpy(pos, buf + BytesPerPixel * (j + i * srcrect->w), BytesPerPixel);
-    }
-//    pos = dst->pixels + BytesPerPixel * ((dstrect->x) + (i + dstrect->y) * srcrect->w);
-//    memcpy(pos, buf + BytesPerPixel * i * srcrect->w, BytesPerPixel * srcrect->w);
+    pos = dst->pixels + BytesPerPixel * ((dstrect->x) + (i + dstrect->y) * srcrect->w);
+    memcpy(pos, buf + BytesPerPixel * i * srcrect->w, BytesPerPixel * srcrect->w);
   }
   if (free_srcrect) free(srcrect);
   if (free_dstrect) free(dstrect);
