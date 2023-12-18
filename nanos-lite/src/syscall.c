@@ -1,6 +1,7 @@
 #include <common.h>
 #include "syscall.h"
 #include <fs.h>
+#include <proc.h>
 #include <sys/time.h>
 
 int sys_brk(void *addr);
@@ -38,14 +39,16 @@ int sys_brk(void *addr) {
   return 0;//OK for PA3
 }
 
+int sys_execve(const char *fname, char * const argv[], char *const envp[]) {
+  PCB *pcb = NULL;
+  naive_uload(pcb, fname);
+  return -1;//Sane??
+}
+
 int sys_gettimeofday(struct timeval *tv, struct timezone *tz) {
   AM_TIMER_UPTIME_T time = io_read(AM_TIMER_UPTIME);
   tv->tv_sec = time.us / 1000000;
   tv->tv_usec = time.us % 1000000;
   assert(tz == NULL);
   return 0;
-}
-
-int sys_execve(const char *fname, char * const argv[], char *const envp[]) {
-  assert(0);
 }
