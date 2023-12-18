@@ -37,7 +37,7 @@ void do_syscall(Context *c) {
 }
 
 void sys_exit() {
-  sys_execve("/bin/nemu", NULL, NULL);
+  sys_execve("/bin/menu", NULL, NULL);
 }
 
 int sys_brk(void *addr) {
