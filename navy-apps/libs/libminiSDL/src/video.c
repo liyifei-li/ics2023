@@ -111,7 +111,7 @@ void SDL_UpdateRect(SDL_Surface *s, int x, int y, int w, int h) {
     for (int i = 0; i < h; i++) {
       for (int j = 0; j < w; j++) {
         colorptr = s->pixels + x + j + (i + y) * s->w;
-        color = s->format->palette->colors[*colorptr].r << 16 + s->format->palette->colors[*colorptr].g << 8 + s->format->palette->colors[*colorptr].b;
+        color = s->format->palette->colors[*colorptr].r << 16 | s->format->palette->colors[*colorptr].g << 8 | s->format->palette->colors[*colorptr].b;
         memcpy(pixels + j + i * w, &color, 4);
       }
     }
