@@ -98,12 +98,13 @@ void SDL_UpdateRect(SDL_Surface *s, int x, int y, int w, int h) {
   uint32_t *pixels = malloc(4 * w * h);
   assert(BytesPerPixel == 1 || BytesPerPixel == 4);
   if (BytesPerPixel == 1) {
-    uint8_t *colorptr;
+    uint8_t *pos;
+    SDL_Color *colors = s->format->palette->colors;
     uint32_t color;
     for (int i = 0; i < h; i++) {
       for (int j = 0; j < w; j++) {
-        colorptr = s->pixels + x + j + (i + y) * s->w;
-        color = s->format->palette->colors[*colorptr].r << 16 | s->format->palette->colors[*colorptr].g << 8 | s->format->palette->colors[*colorptr].b;
+        pos = s->pixels + x + j + (i + y) * s->w;
+        color = colors[*pos].r << 16 | colors[*pos].g << 8 | colors[*pos].b;
         memcpy(pixels + j + i * w, &color, 4);
       }
     }
