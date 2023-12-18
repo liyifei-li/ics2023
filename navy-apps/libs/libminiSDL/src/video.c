@@ -102,7 +102,7 @@ void SDL_UpdateRect(SDL_Surface *s, int x, int y, int w, int h) {
   assert(y >= 0 && y + h <= s->h);
   uint8_t BytesPerPixel = s->format->BytesPerPixel;
   int fd = open("/dev/fb", O_WRONLY);
-  uint32_t *pixels = malloc(BytesPerPixel * w * h);
+  uint32_t *pixels = malloc(4 * w * h);
   assert(BytesPerPixel == 1 || BytesPerPixel == 4);
   if (BytesPerPixel == 1) {
     uint8_t *colorptr;
