@@ -105,7 +105,6 @@ void SDL_UpdateRect(SDL_Surface *s, int x, int y, int w, int h) {
       for (int j = 0; j < w; j++) {
         pos = s->pixels + x + j + (i + y) * s->w;
         color = colors[*pos].r << 16 | colors[*pos].g << 8 | colors[*pos].b;
-        printf("%d", color);
         memcpy(pixels + j + i * w, &color, 4);
       }
     }
