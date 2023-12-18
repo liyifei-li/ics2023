@@ -10,6 +10,7 @@
 #include <ctype.h>
 
 void SDL_BlitSurface(SDL_Surface *src, SDL_Rect *srcrect, SDL_Surface *dst, SDL_Rect *dstrect) {
+  printf("aaa\n");
   assert(dst && src);
   assert(dst->format->BitsPerPixel == src->format->BitsPerPixel);
   int free_srcrect = 0;
@@ -49,9 +50,11 @@ void SDL_BlitSurface(SDL_Surface *src, SDL_Rect *srcrect, SDL_Surface *dst, SDL_
   }
   if (free_srcrect) free(srcrect);
   if (free_dstrect) free(dstrect);
+  printf("bbb\n");
 }
 
 void SDL_FillRect(SDL_Surface *dst, SDL_Rect *dstrect, uint32_t color) {
+  printf("ccc\n");
   int free_dstrect = 0;
   assert(dst);
   if (dstrect == NULL) {
@@ -85,9 +88,11 @@ void SDL_FillRect(SDL_Surface *dst, SDL_Rect *dstrect, uint32_t color) {
     }
   }
   if (free_dstrect) free(dstrect);
+  printf("ddd\n");
 }
 
 void SDL_UpdateRect(SDL_Surface *s, int x, int y, int w, int h) {
+  printf("eee\n");
   assert(s);
   if (x == 0 && y == 0 && w == 0 && h == 0) {
     w = s->w;
@@ -118,6 +123,7 @@ void SDL_UpdateRect(SDL_Surface *s, int x, int y, int w, int h) {
   NDL_DrawRect(pixels, x, y, w, h);
   close(fd);
   free(pixels);
+  printf("fff\n");
 }
 
 // APIs below are already implemented.
