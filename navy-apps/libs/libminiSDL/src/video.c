@@ -47,6 +47,7 @@ void SDL_BlitSurface(SDL_Surface *src, SDL_Rect *srcrect, SDL_Surface *dst, SDL_
   }
   if (free_srcrect) free(srcrect);
   if (free_dstrect) free(dstrect);
+  free(pixels);
 }
 
 void SDL_FillRect(SDL_Surface *dst, SDL_Rect *dstrect, uint32_t color) {
@@ -91,6 +92,7 @@ void SDL_UpdateRect(SDL_Surface *s, int x, int y, int w, int h) {
     w = s->w;
     h = s->h;
   }
+
   assert(x >= 0 && x + w <= s->w);
   assert(y >= 0 && y + h <= s->h);
   uint8_t BytesPerPixel = s->format->BytesPerPixel;
