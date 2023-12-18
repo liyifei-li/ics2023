@@ -50,6 +50,7 @@ void SDL_BlitSurface(SDL_Surface *src, SDL_Rect *srcrect, SDL_Surface *dst, SDL_
 }
 
 void SDL_FillRect(SDL_Surface *dst, SDL_Rect *dstrect, uint32_t color) {
+  printf("i dont think do...");
   int free_dstrect = 0;
   assert(dst);
   if (dstrect == NULL) {
@@ -87,16 +88,10 @@ void SDL_FillRect(SDL_Surface *dst, SDL_Rect *dstrect, uint32_t color) {
 
 void SDL_UpdateRect(SDL_Surface *s, int x, int y, int w, int h) {
   assert(s);
-  /*
   if (x == 0 && y == 0 && w == 0 && h == 0) {
     w = s->w;
     h = s->h;
   }
-  */
-  x = 0;
-  y = 0;
-  w = s->w;
-  h = s->h;
   assert(x >= 0 && x + w <= s->w);
   assert(y >= 0 && y + h <= s->h);
   uint8_t BytesPerPixel = s->format->BytesPerPixel;
