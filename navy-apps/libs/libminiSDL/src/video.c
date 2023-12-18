@@ -12,9 +12,12 @@
 void SDL_BlitSurface(SDL_Surface *src, SDL_Rect *srcrect, SDL_Surface *dst, SDL_Rect *dstrect) {
   assert(dst && src);
   assert(dst->format->BitsPerPixel == src->format->BitsPerPixel);
+  int free_srcrect = 0;
+  int free_dstrect = 0;
   if (srcrect == NULL) {
     srcrect = malloc(sizeof(SDL_Rect));
     assert(srcrect);
+    free_srcrect = 1;
     srcrect->x = 0;
     srcrect->y = 0;
     srcrect->w = src->w;
@@ -23,57 +26,65 @@ void SDL_BlitSurface(SDL_Surface *src, SDL_Rect *srcrect, SDL_Surface *dst, SDL_
   if (dstrect == NULL) {
     dstrect = malloc(sizeof(SDL_Rect));
     assert(dstrect);
+    free_dstrect = 1;
     dstrect->x = 0;
     dstrect->y = 0;
   }
-  void *srcpos;
-  void *dstpos;
   uint8_t BytesPerPixel = src->format->BytesPerPixel;
+  assert(srcrect->x >= 0 && srcrect->x + srcrect->w <= src->w);
+  assert(srcrect->y >= 0 && srcrect->y + srcrect->h <= src->h);
+  void *buf = malloc(src->format->BytesPerPixel * srcrect->w * srcrect->h);
+  void *pos;
   for (int i = 0; i < srcrect->h; i++) {
-    if (dstrect->y + i < 0 || dstrect->y + i >= dst->h) continue;
-    srcpos = src->pixels + BytesPerPixel * (srcrect->x + (i + srcrect->y) * src->w);
-    dstpos = dst->pixels + BytesPerPixel * (dstrect->x + (i + dstrect->y) * dst->w);
-    memcpy(dstpos, srcpos, BytesPerPixel * srcrect->w);
+    pos = src->pixels + BytesPerPixel * (srcrect->x + (i + srcrect->y) * srcrect->w);
+    memcpy(pos, buf + BytesPerPixel * i * srcrect->w, BytesPerPixel * srcrect->w);
   }
+  int dstxa = dstrect->x < 0 ? -dstrect->x : 0;
+  int dstxb = dstrect->x + srcrect->w > dst->w ? dstrect->x + srcrect->w - dst->w : 0;
+  int dstya = dstrect->y < 0 ? -dstrect->y : 0;
+  int dstyb = dstrect->y + srcrect->h > dst->h ? dstrect->y + srcrect->h - dst->h : 0;
+  for (int i = dstya; i < srcrect->h - dstyb; i++) {
+    pos = dst->pixels + BytesPerPixel * ((dstrect->x + dstxa) + (i + dstrect->y) * dstrect->w);
+    memcpy(buf + BytesPerPixel * (i * srcrect->w + dstxa), pos, BytesPerPixel * (srcrect->w - dstxa - dstxb));
+  }
+  if (free_srcrect) free(srcrect);
+  if (free_dstrect) free(dstrect);
 }
 
 void SDL_FillRect(SDL_Surface *dst, SDL_Rect *dstrect, uint32_t color) {
+  int free_dstrect = 0;
   assert(dst);
   if (dstrect == NULL) {
     dstrect = malloc(sizeof(SDL_Rect));
     assert(dstrect);
+    free_dstrect = 1;
     dstrect->x = 0;
     dstrect->y = 0;
     dstrect->w = dst->w;
     dstrect->h = dst->h;
   }
-  printf("x = %d, y = %d, w = %d, h = %d\n", dstrect->x, dstrect->y, dstrect->w, dstrect->h);
   uint8_t BytesPerPixel = dst->format->BytesPerPixel;
   if (dstrect->x < 0) dstrect->x = 0;
   if (dstrect->y < 0) dstrect->y = 0;
   if (dstrect->x + dstrect->w > dst->w) dstrect->w = dst->w - dstrect->x;
   if (dstrect->y + dstrect->h > dst->h) dstrect->h = dst->h - dstrect->y;
-  int fd = open("/dev/fb", O_WRONLY);
-  void *pos = dst->pixels + BytesPerPixel * (dstrect->x + dstrect->y * dst->w);
-  void *buf = malloc(4 * dstrect->w);
-  assert(buf);
+  void *pos;
   assert(BytesPerPixel == 1 || BytesPerPixel == 4);
   if (BytesPerPixel == 1) {
-    for (int i = 0; i < dstrect->w; i++) {
-      memcpy(buf + 4 * i, &dst->format->palette->colors[color], 4);
+    for (int i = 0; i < dstrect->h; i++) {
+      pos = dst->pixels + (dstrect->x + (i + dstrect->y) * dst->w);
+      memset(pos, color, dstrect->w);
     }
   }
   else {
-    for (int i = 0; i < dstrect->w; i++) {
-      memcpy(buf + BytesPerPixel * i, &color, BytesPerPixel);
+    for (int i = 0; i < dstrect->h; i++) {
+      for (int j = 0; j < dstrect->w; j++) {
+        pos = dst->pixels + BytesPerPixel * (dstrect->x + j + (i + dstrect->y) * dst->w);
+        memcpy(pos, &color, BytesPerPixel);
+      }
     }
   }
-  for (int i = 0; i < dstrect->h; i++) {
-    lseek(fd, BytesPerPixel * (dstrect->x + (i + dstrect->y) * dst->w), SEEK_SET);
-    write(fd, buf, BytesPerPixel * dstrect->w);
-  }
-  free(buf);
-  close(fd);
+  if (free_dstrect) free(dstrect);
 }
 
 void SDL_UpdateRect(SDL_Surface *s, int x, int y, int w, int h) {
@@ -82,33 +93,31 @@ void SDL_UpdateRect(SDL_Surface *s, int x, int y, int w, int h) {
     w = s->w;
     h = s->h;
   }
-  assert(x >= 0);
-  assert(x + w <= s->w);
-  assert(y >= 0);
-  assert(y + h <= s->h);
+  assert(x >= 0 && x + w <= s->w);
+  assert(y >= 0 && y + h <= s->h);
   uint8_t BytesPerPixel = s->format->BytesPerPixel;
   int fd = open("/dev/fb", O_WRONLY);
+  uint32_t *pixels = malloc(BytesPerPixel * w * h);
   assert(BytesPerPixel == 1 || BytesPerPixel == 4);
-  void *pos;
   if (BytesPerPixel == 1) {
+    uint8_t *colorptr;
+    uint32_t color;
     for (int i = 0; i < h; i++) {
-      pos = s->pixels + (x + (i + y) * s->w);
       for (int j = 0; j < w; j++) {
-        lseek(fd, 4 * (x + j + (i + y) * s->w), SEEK_SET);
-        write(fd, &s->format->palette->colors[*(uint8_t *)pos], 4);
-        pos++;
+        colorptr = s->pixels + x + j + (i + y) * s->w;
+        color = s->format->palette->colors[*colorptr].r << 16 + s->format->palette->colors[*colorptr].g << 8 + s->format->palette->colors[*colorptr].b;
+        memcpy(pixels + j + i * w, &color, 4);
       }
     }
   }
   else {
-    pos = s->pixels;
-    for (int i = y; i < y + h; i++) {
-      lseek(fd, BytesPerPixel * (x + i * s->w), SEEK_SET);
-      write(fd, pos, BytesPerPixel * w);
-      pos += BytesPerPixel * w;
+    for (int i = 0; i < h; i++) {
+      memcpy(pixels + i * w, s->pixels + BytesPerPixel * (x + (i + y) * s->w), BytesPerPixel * w);
     }
   }
+  NDL_DrawRect(pixels, x, y, w, h);
   close(fd);
+  free(pixels);
 }
 
 // APIs below are already implemented.
