@@ -51,7 +51,7 @@ void SDL_BlitSurface(SDL_Surface *src, SDL_Rect *srcrect, SDL_Surface *dst, SDL_
   */
   for (int i = 0; i < srcrect->h; i++) {
     pos = dst->pixels + BytesPerPixel * ((dstrect->x) + (i + dstrect->y) * dst->w);
-    memcpy(pos, buf + BytesPerPixel * (i * srcrect->w), BytesPerPixel * srcrect->w);
+    memcpy(buf + BytesPerPixel * (i * srcrect->w), pos, BytesPerPixel * srcrect->w);
   }
   if (free_srcrect) free(srcrect);
   if (free_dstrect) free(dstrect);
