@@ -46,7 +46,7 @@ void init_fs() {
 int fs_open(const char *pathname, int flags, int mode) {
   size_t file_table_size = sizeof(file_table) / sizeof(file_table[0]);
   size_t pathnamelen = strlen(pathname);
-//  printf("%d %d '%c'\n\n\n", strncmp("/bin/menu", pathname, pathnamelen), strlen("/bin/menu") - pathnamelen, pathname[9]);
+  printf("%d %d '%c'\n\n\n", strncmp("/bin/menu", pathname, pathnamelen), strlen("/bin/menu") - pathnamelen, pathname[9]);
   for (int i = 0; i < file_table_size; i++) {
     if ((strncmp(file_table[i].name, pathname, pathnamelen) && strlen(file_table[i].name) == pathnamelen + 1 && file_table[i].name[pathnamelen] == '\n') || strcmp(file_table[i].name, pathname) == 0) {
       file_table[i].open_offset = 0;
