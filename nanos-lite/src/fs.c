@@ -49,7 +49,7 @@ int fs_open(const char *pathname, int flags, int mode) {
   printf("%s", pathname);
   printf("%d %d '%c'\n\n\n", strncmp("/bin/menu", pathname, pathnamelen - 1), strlen("/bin/menu") - pathnamelen, pathname[9]);
   for (int i = 0; i < file_table_size; i++) {
-    if ((strncmp(file_table[i].name, pathname, pathnamelen - 1) && strlen(file_table[i].name) == pathnamelen - 1 && pathname[pathnamelen - 1] == '\n') || strcmp(file_table[i].name, pathname) == 0) {
+    if ((strncmp(file_table[i].name, pathname, pathnamelen - 1) == 0 && strlen(file_table[i].name) == pathnamelen - 1 && pathname[pathnamelen - 1] == '\n') || strcmp(file_table[i].name, pathname) == 0) {
       file_table[i].open_offset = 0;
       return i;
     }
