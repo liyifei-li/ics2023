@@ -45,12 +45,8 @@ void init_fs() {
 
 int fs_open(const char *pathname, int flags, int mode) {
   size_t file_table_size = sizeof(file_table) / sizeof(file_table[0]);
-  size_t pathnamelen = strlen(pathname);
   for (int i = 0; i < file_table_size; i++) {
-    if ((strncmp(file_table[i].name, pathname, pathnamelen - 1) == 0
-      && strlen(file_table[i].name) == pathnamelen - 1
-      && pathname[pathnamelen - 1] == '\n')
-      || strcmp(file_table[i].name, pathname) == 0) {
+    if (strcmp(file_table[i].name, pathname) == 0) {
       file_table[i].open_offset = 0;
       return i;
     }
