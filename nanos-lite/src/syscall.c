@@ -15,12 +15,12 @@ void do_syscall(Context *c) {
   a[1] = c->GPR2;
   a[2] = c->GPR3;
   a[3] = c->GPR4;
-//  #ifdef CONFIG_STRACE
+  #ifdef CONFIG_STRACE
     if (a[0] == SYS_read || a[0] == SYS_write || a[0] == SYS_close || a[0] == SYS_lseek)
       Log("Syscall NO.%u, file = %s", a[0], file_table[a[1]].name);
     else
       Log("Syscall NO.%u", a[0]);
-//  #endif
+  #endif
   switch (a[0]) {
     case SYS_exit: sys_exit(); break;
     case SYS_yield: yield(); c->GPRx = 0; break;
