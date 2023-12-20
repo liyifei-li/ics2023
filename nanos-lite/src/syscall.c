@@ -17,7 +17,7 @@ void do_syscall(Context *c) {
   a[3] = c->GPR4;
   #ifdef CONFIG_STRACE
     if (a[0] == SYS_read || a[0] == SYS_write || a[0] == SYS_close || a[0] == SYS_lseek)
-      Log("Syscall NO.%u, fd = %d", a[0], a[1]);
+      Log("Syscall NO.%u, file = %s", a[0], file_table[a[1]].name);
     else
       Log("Syscall NO.%u", a[0]);
   #endif
