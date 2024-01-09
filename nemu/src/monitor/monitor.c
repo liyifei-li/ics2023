@@ -68,7 +68,7 @@ static long load_img() {
   return size;
 }
 
-
+//also need to modify nemu.mk
 
 #ifdef CONFIG_ITRACE
 
