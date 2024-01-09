@@ -61,7 +61,7 @@ __am_asm_trap:
   jal __am_irq_handle
 
   # test starts here
-  mv sp, a0
+  # mv sp, a0
   # test ends here
 
   LOAD t1, OFFSET_STATUS(sp)
