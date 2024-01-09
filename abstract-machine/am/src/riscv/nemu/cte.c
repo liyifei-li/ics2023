@@ -42,6 +42,7 @@ bool cte_init(Context*(*handler)(Event, Context*)) {
 
 Context *kcontext(Area kstack, void (*entry)(void *), void *arg) {
   assert(kstack.start = kstack.end);
+  assert(0);
   return NULL;
 }
 
