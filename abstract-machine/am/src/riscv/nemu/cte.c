@@ -24,7 +24,7 @@ Context* __am_irq_handle(Context *c) {
     c = user_handler(ev, c);
     assert(c != NULL);
   }
-
+  printf("%8x\n", (uintptr_t)c);
   return c;
 }
 
@@ -42,8 +42,7 @@ bool cte_init(Context*(*handler)(Event, Context*)) {
 
 Context *kcontext(Area kstack, void (*entry)(void *), void *arg) {
   Context *c = (Context*)kstack.end - 1;
-  c->GPR1 = (uintptr_t)arg;
-  c->GPR2 = (uintptr_t)entry;
+  c->mepc = (uintptr_t)entry;
   return c;
 }
 
