@@ -11,7 +11,7 @@ void call_main(uintptr_t *args) {
   char **argv = (char **)args;
   args += argc + 1;
   char **envp = (char **)args;
-  printf("%s %s\n", argv[1], envp[1]);
+  printf("%d %s %s\n", argc, argv[1], envp[1]);
   exit(main(argc, argv, envp));
   assert(0);
 }
