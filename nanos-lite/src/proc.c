@@ -30,12 +30,22 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[], char *con
   while (argv[argv_length] != NULL) argv_length++;
   int envp_length = 0;
   while (envp[envp_length] != NULL) envp_length++;
-//  uintptr_t argv_ptr[argv_length], envp_ptr[envp_length];
-  printf("%d %d\n", argv_length, envp_length);
-  uintptr_t cur = (uintptr_t)heap.end - 1;
-  printf("%p\n", cur);
+  uintptr_t argv_ptr[argv_length], envp_ptr[envp_length];
+  char *cur = (char *)heap.end - 1;
+  size_t len;
   for (int i = 0; i < argv_length; i++) {
-
+    len = strlen(argv[i]);
+    cur -= len + 1;
+    strncpy(cur, argv[i], len);
+    argv_ptr[i] = (uintptr_t)cur;
+    printf("%p\n", argv_ptr[i]);
+  }
+  for (int i = 0; i < envp_length; i++) {
+    len = strlen(envp[i]);
+    cur -= len + 1;
+    strncpy(cur, envp[i], len);
+    envp_ptr[i] = (uintptr_t)cur;
+    printf("%p\n", envp_ptr[i]);
   }
   void *entry = (void *)loader(pcb, filename);
   
