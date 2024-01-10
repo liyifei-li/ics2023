@@ -59,6 +59,7 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[], char *con
     cur -= 4;//4 is the length of uintptr_t *
     *(uintptr_t *)cur = argv_ptr[i];
   }
+  cur -= 4;
   *(uintptr_t *)cur = argv_length;
   void *entry = (void *)loader(pcb, filename);
   
