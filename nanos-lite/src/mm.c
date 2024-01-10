@@ -3,7 +3,10 @@
 static void *pf = NULL;
 
 void* new_page(size_t nr_page) {
-  return NULL;
+  assert(pf != NULL);
+  void *ret = pf;
+  pf += nr_page * PGSIZE;
+  return ret;
 }
 
 #ifdef HAS_VME
@@ -13,7 +16,8 @@ static void* pg_alloc(int n) {
 #endif
 
 void free_page(void *p) {
-  panic("not implement yet");
+  // panic("not implement yet");
+  // Implemented by doing nothing
 }
 
 /* The brk() system call handler. */
