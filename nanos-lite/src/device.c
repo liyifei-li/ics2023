@@ -15,6 +15,7 @@ static const char *keyname[256] __attribute__((used)) = {
 };
 
 size_t serial_write(const void *buf, size_t offset, size_t len) {
+  yield();
   const char *p = buf;
   for (int i = 0; i < len; i++) {
     putch(*(p + i));
@@ -23,6 +24,7 @@ size_t serial_write(const void *buf, size_t offset, size_t len) {
 }
 
 size_t events_read(void *buf, size_t offset, size_t len) {
+  yield();
   AM_INPUT_KEYBRD_T input_keybrd = io_read(AM_INPUT_KEYBRD);
   bool keydown = input_keybrd.keydown;
   int keycode = input_keybrd.keycode;
