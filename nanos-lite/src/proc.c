@@ -44,7 +44,7 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[], char *con
     argv_ptr[i] = (uintptr_t)cur;
     printf("3");
   }
-    printf("%d\n", argv_ptr[1]);
+    printf("%p\n", argv_ptr[1]);
   for (int i = 0; i < envp_length; i++) {
     len = strlen(envp[i]);
     cur -= len + 1;
