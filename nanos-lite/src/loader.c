@@ -52,7 +52,6 @@ uintptr_t loader(PCB *pcb, const char *filename) {
     }
   }
   Elf_Addr entry = ehdr.e_entry;
-  pcb->cp = (Context *)entry;
   return entry;
 }
 
