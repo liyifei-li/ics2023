@@ -21,18 +21,18 @@ void hello_fun(void *arg) {
   }
 }
 
-void context_kload(PCB *p, void (*entry)(void *), void *arg) {
-  p->cp = kcontext((Area) { p->stack, p + 1 }, entry, arg);
+void context_kload(PCB *pcb, void (*entry)(void *), void *arg) {
+  pcb->cp = kcontext((Area) { pcb->stack, pcb + 1 }, entry, arg);
 }
 
-void context_uload(PCB *p, const char *pathname) {
-  void *entry = (void *)loader(p, pathname);
-  p->cp = ucontext(NULL, (Area) { p->stack, p + 1 }, entry);
+void context_uload(PCB *pcb, const char *filename, char *const argv[], char *const envp[]) {
+  void *entry = (void *)loader(pcb, filename);
+  pcb->cp = ucontext(NULL, (Area) { pcb->stack, pcb + 1 }, entry);
 }
 
 void init_proc() {
   context_kload(&pcb[0], hello_fun, (void *)1);
-  context_uload(&pcb[1], "/bin/pal");
+  context_uload(&pcb[1], "/bin/pal", NULL, NULL);
   switch_boot_pcb();
 
   Log("Initializing processes...");
