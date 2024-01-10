@@ -42,6 +42,7 @@ size_t dispinfo_read(void *buf, size_t offset, size_t len) {
 }
 
 size_t fb_write(const void *buf, size_t offset, size_t len) {
+  yield();
   AM_GPU_CONFIG_T gpu_config = io_read(AM_GPU_CONFIG);
   int width = gpu_config.width;
   assert(offset % 4 == 0);
