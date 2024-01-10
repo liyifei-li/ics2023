@@ -63,6 +63,7 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[], char *con
   
   pcb->cp = ucontext(NULL, (Area) { pcb->stack, pcb + 1 }, entry);
   pcb->cp->GPRx = cur;
+  assert(0);
 }
 
 void init_proc() {
