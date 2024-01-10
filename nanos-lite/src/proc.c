@@ -1,4 +1,6 @@
 #include <proc.h>
+#include <fs.h>
+#include <loader.h>
 
 #define MAX_NR_PROC 4
 
@@ -23,9 +25,14 @@ void context_kload(PCB *p, void (*entry)(void *), void *arg) {
   p->cp = kcontext((Area) { p->stack, p + 1 }, entry, arg);
 }
 
+void context_uload(PCB *p, const char *pathname) {
+  void *entry = (void *)loader(p, pathname);
+  p->cp = ucontext(NULL, (Area) { p->stack, p + 1 }, entry);
+}
+
 void init_proc() {
   context_kload(&pcb[0], hello_fun, (void *)1);
-  context_kload(&pcb[1], hello_fun, (void *)2);
+  context_uload(&pcb[1], "/bin/pal");
   switch_boot_pcb();
 
   Log("Initializing processes...");

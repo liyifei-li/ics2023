@@ -24,7 +24,7 @@
 # error Unsupported ISA
 #endif
 
-static uintptr_t loader(PCB *pcb, const char *filename) {
+uintptr_t loader(PCB *pcb, const char *filename) {
   int fd = fs_open(filename, 0, 0);
 
   Elf_Ehdr ehdr;
@@ -52,6 +52,7 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
     }
   }
   Elf_Addr entry = ehdr.e_entry;
+  pcb->cp = (Context *)entry;
   return entry;
 }
 
@@ -60,4 +61,3 @@ void naive_uload(PCB *pcb, const char *filename) {
   Log("Jump to entry = %p", entry);
   ((void(*)())entry) ();
 }
-
