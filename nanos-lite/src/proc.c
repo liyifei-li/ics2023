@@ -33,8 +33,8 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[], char *con
   uintptr_t argv_ptr[argv_length + 1], envp_ptr[envp_length + 1];
   uintptr_t cur = (uintptr_t)heap.end - 1;
   size_t len;
-  argv_ptr[1] = 0;
-  envp_ptr[1] = 0;
+  argv_ptr[argv_length] = 0;
+  envp_ptr[envp_length] = 0;
   for (int i = 0; i < argv_length; i++) {
     len = strlen(argv[i]);
     cur -= len + 1;
