@@ -6,11 +6,12 @@
 int main(int argc, char *argv[], char *envp[]);
 extern char **environ;
 void call_main(uintptr_t *args) {
-  environ = envp;
-  assert(0);
-  for (int i = 0; i < 2; i++) {
-    printf("%s %s\n", argv[i], envp[i]);
-  }
-  exit(main(argc, argv, argp));
+  int argc = *(int *)args;
+  args++;
+  char **argv = (char **)args;
+  args += argc + 1;
+  char **envp = (char **)args;
+  printf("%s %s\n", argv[1], envp[1]);
+  exit(main(argc, argv, envp));
   assert(0);
 }
