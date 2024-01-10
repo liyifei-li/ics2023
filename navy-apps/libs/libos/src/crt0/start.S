@@ -1,6 +1,6 @@
 .globl  _start
 _start:
-/*
+
 #if defined(__ISA_AM_NATIVE__)
 
   movq $0, %rbp
@@ -41,4 +41,3 @@ _start:
 #else
 #error Unsupported ISA
 #endif
-*/
