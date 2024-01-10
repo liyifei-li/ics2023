@@ -50,9 +50,7 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[], char *con
     printf("%s\n", envp_ptr[i]);
   }
   envp_ptr[envp_length] = 0;
-  printf("%s\n", envp_ptr[1]);
-  cur = (cur - 1) & 0xfffffffc;
-  printf("%s\n", envp_ptr[1]);
+  cur = (cur - 4) & 0xfffffffc;
   for (int i = envp_length; i >= 0; i--) {
     *(uintptr_t *)cur = envp_ptr[i];
     cur -= 4;//4 is the length of uintptr_t *
