@@ -6,6 +6,7 @@ void* new_page(size_t nr_page) {
   assert(pf != NULL);
   void *ret = pf;
   pf += nr_page * PGSIZE;
+  panic("a");
   return ret;
 }
 
