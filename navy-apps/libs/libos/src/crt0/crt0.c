@@ -9,7 +9,7 @@ void call_main(uintptr_t *args) {
   int argc = *(int *)args;
   args++;
   char **argv = (char **)args;
-  args += argc + 1;
+  args += argc;
   char **envp = (char **)args;
   printf("%d %s %s\n", argc, argv[1], envp[1]);
   exit(main(argc, argv, envp));
