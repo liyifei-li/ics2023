@@ -69,8 +69,8 @@ void __am_switch(Context *c) {
 void map(AddrSpace *as, void *va, void *pa, int prot) {
 }
 
-Context *ucontext(AddrSpace *as, Area kstack, void *entry) {
-  Context *c = (Context*)kstack.end - 1;
+Context *ucontext(AddrSpace *as, Area ustack, void *entry) {
+  Context *c = (Context*)ustack.end - 1;
   c->mstatus = 0x1800;//To pass difftest
   c->mepc = (uintptr_t)entry;
   c->GPRx = (uintptr_t)heap.end - 1;
