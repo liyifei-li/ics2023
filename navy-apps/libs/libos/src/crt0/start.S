@@ -1,6 +1,6 @@
 .globl  _start
 _start:
-
+/*
 #if defined(__ISA_AM_NATIVE__)
 
   movq $0, %rbp
@@ -30,8 +30,8 @@ _start:
 
 #elif defined(__riscv)
   mv s0, zero
-//  mv sp, a0
-//  jal call_main
+  mv sp, a0
+  jal call_main
 
 #elif defined(__ISA_LOONGARCH32R__)
 
@@ -41,3 +41,4 @@ _start:
 #else
 #error Unsupported ISA
 #endif
+*/
