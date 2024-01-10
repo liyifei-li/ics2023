@@ -47,6 +47,7 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[], char *con
     cur -= len + 1;
     strcpy((char *)cur, envp[i]);
     envp_ptr[i] = (uintptr_t)cur;
+    printf("%s\n", envp_ptr[i]);
   }
   envp_ptr[envp_length] = 0;
   cur = (cur - 1) & 0xfffffffc;
