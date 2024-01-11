@@ -29,8 +29,10 @@ void context_kload(PCB *pcb, void (*entry)(void *), void *arg) {
 void context_uload(PCB *pcb, const char *filename, char *const argv[], char *const envp[]) {
   printf("%s hahaha\n", filename);
   int argv_length = 0;
-  while (argv[argv_length] != NULL) argv_length++;
-  printf("%s hahaha\n", filename);
+  while (argv[argv_length] != NULL) {
+    argv_length++;
+    printf("%s hahaha\n", filename);
+  }
   int envp_length = 0;
   while (envp[envp_length] != NULL) envp_length++;
   uintptr_t *argv_ptr[argv_length + 1], *envp_ptr[envp_length + 1];
