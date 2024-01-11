@@ -27,6 +27,7 @@ void context_kload(PCB *pcb, void (*entry)(void *), void *arg) {
 }
 
 void context_uload(PCB *pcb, const char *filename, char *const argv[], char *const envp[]) {
+  printf("%s\n", filename);
   int argv_length = 0;
   while (argv[argv_length] != NULL) argv_length++;
   int envp_length = 0;
@@ -60,7 +61,6 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[], char *con
   }
   cur -= 4;
   *(uintptr_t *)cur = argv_length;
-  printf("%s\n", filename);
   void *entry = (void *)loader(pcb, filename);
   
   pcb->cp = ucontext(NULL, (Area) { pcb->stack, pcb + 1 }, entry);
