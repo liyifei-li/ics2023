@@ -30,8 +30,8 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[], char *con
   printf("%s hahaha\n", filename);
   int argv_length = 0;
   while (argv[argv_length] != NULL) {
-    argv_length++;
     printf("%s hahaha\n", filename);
+    argv_length++;
   }
   int envp_length = 0;
   while (envp[envp_length] != NULL) envp_length++;
