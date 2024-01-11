@@ -4,6 +4,7 @@
 #include <assert.h>
 #include <time.h>
 #include "syscall.h"
+#include <stdio.h>
 
 // helper macros
 #define _concat(x, y) x ## y
@@ -98,6 +99,7 @@ int _gettimeofday(struct timeval *tv, struct timezone *tz) {
 }
 
 int _execve(const char *fname, char * const argv[], char *const envp[]) {
+  printf("execve: \n");
   return _syscall_(SYS_execve, (uintptr_t)fname, (uintptr_t)argv, (uintptr_t)envp);
 }
 
