@@ -48,7 +48,7 @@ int sys_brk(void *addr) {
 }
 
 int sys_execve(const char *fname, char * const argv[], char *const envp[]) {
-//  printf("sys_execve: %s %s %s\n", fname, argv[0], envp[0]);
+  printf("sys_execve: %s\n", fname);
   if (fs_open(fname, 0, 0) == -1) return -2;
   context_uload(current, fname, argv, envp);
   //printf("sys_exceve: \n");
