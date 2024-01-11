@@ -45,8 +45,9 @@ int sys_brk(void *addr) {
 }
 
 int sys_execve(const char *fname, char * const argv[], char *const envp[]) {
-  PCB *pcb = NULL;
-  naive_uload(pcb, fname);
+  context_uload(current, fname, argv, envp);
+  switch_boot_pcb();
+  yield();
   return -1;//Sane??
 }
 
