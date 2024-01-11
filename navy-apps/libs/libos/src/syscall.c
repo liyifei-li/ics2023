@@ -5,6 +5,7 @@
 #include <time.h>
 #include "syscall.h"
 #include <stdio.h>
+#include <errno.h>
 
 // helper macros
 #define _concat(x, y) x ## y
