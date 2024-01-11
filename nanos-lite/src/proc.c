@@ -27,7 +27,7 @@ void context_kload(PCB *pcb, void (*entry)(void *), void *arg) {
 }
 
 void context_uload(PCB *pcb, const char *filename, char *const argv[], char *const envp[]) {
-  printf("%shahaha\n", filename);
+  printf("%s hahaha\n", filename);
   int argv_length = 0;
   while (argv[argv_length] != NULL) argv_length++;
   int envp_length = 0;
@@ -49,6 +49,7 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[], char *con
     strcpy((char *)cur, envp[i]);
     envp_ptr[i] = cur;
   }
+  printf("%s hahaha\n", filename);
   envp_ptr[envp_length] = 0;
   cur = (void *)((uintptr_t)cur & 0xfffffffc);
   for (int i = envp_length; i >= 0; i--) {
