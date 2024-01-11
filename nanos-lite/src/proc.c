@@ -40,7 +40,7 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[], char *con
   printf("ccc\n");
   for (int i = 0; i < argv_length; i++) {
     len = strlen(argv[i]);
-    printf("%d", len);
+    printf("%d\n", len);
     cur -= len + 1;
     strcpy((char *)cur, argv[i]);
     argv_ptr[i] = cur;
