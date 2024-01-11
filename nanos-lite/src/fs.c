@@ -39,6 +39,7 @@ int fs_open(const char *pathname, int flags, int mode) {
       return i;
     }
   }
+  printf("%s\n", pathname);
   assert(0);
 }
 
