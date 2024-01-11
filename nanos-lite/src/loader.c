@@ -25,7 +25,6 @@
 #endif
 
 uintptr_t loader(PCB *pcb, const char *filename) {
-  printf("loader: %s\n", filename);
   int fd = fs_open(filename, 0, 0);
 
   Elf_Ehdr ehdr;
