@@ -10,6 +10,7 @@ int sys_execve(const char *fname, char * const argv[], char *const envp[]);
 int sys_gettimeofday(struct timeval *tv, struct timezone *tz);
 
 void do_syscall(Context *c) {
+  printf("do_syscall: \n");
   uintptr_t a[4];
   a[0] = c->GPR1;
   a[1] = c->GPR2;
