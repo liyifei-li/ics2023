@@ -39,7 +39,7 @@ int fs_open(const char *pathname, int flags, int mode) {
       return i;
     }
   }
-  printf("%s\n", pathname);
+  panic("path %s not found", pathname);
   assert(0);
 }
 
