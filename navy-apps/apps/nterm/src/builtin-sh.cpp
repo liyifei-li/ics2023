@@ -36,7 +36,7 @@ static void sh_handle_cmd(const char *cmd) {
     token = strtok(NULL, delimiter);
   }
   assert(argc);
-  printf("%s\n", argv[0]);
+  printf("builtin-sh: %s\n", argv[0]);
   execvp(argv[0], argv);
   free(str);
 }
