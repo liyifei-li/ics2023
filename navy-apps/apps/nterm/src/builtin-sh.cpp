@@ -24,10 +24,20 @@ static void sh_prompt() {
 }
 
 static void sh_handle_cmd(const char *cmd) {
-  char *token = NULL;
+  const int MAX_ARGS = 256;
+  char *argv[MAX_ARGS];
   const char delimiter[] = " \n";
-  token = strtok((char *)cmd, delimiter);
-  execvp(token, NULL);
+  char *str = strdup(cmd);
+  assert(str);
+  char *token = strtok(str, delimiter);
+  int argc = 0;
+  while(token != NULL) {
+    argv[argc++] = token;
+    token = strtok(NULL, delimiter);
+  }
+  assert(argc);
+  execvp(argv[0], argv);
+  free(str);
 }
 
 void builtin_sh_run() {
