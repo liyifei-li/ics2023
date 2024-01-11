@@ -46,7 +46,7 @@ int sys_brk(void *addr) {
 
 int sys_execve(const char *fname, char * const argv[], char *const envp[]) {
   context_uload(current, fname, argv, envp);
-  printf("%s\n", fname);
+  printf("aaa%s\naaa", fname);
   switch_boot_pcb();
   yield();
   return -1;//Sane??
