@@ -10,7 +10,6 @@ int sys_execve(const char *fname, char * const argv[], char *const envp[]);
 int sys_gettimeofday(struct timeval *tv, struct timezone *tz);
 
 void do_syscall(Context *c) {
-  printf("do_syscall: \n");
   uintptr_t a[4];
   a[0] = c->GPR1;
   a[1] = c->GPR2;
@@ -46,6 +45,7 @@ int sys_brk(void *addr) {
 }
 
 int sys_execve(const char *fname, char * const argv[], char *const envp[]) {
+  printf("sys_execve: \n");
   context_uload(current, fname, argv, envp);
   switch_boot_pcb();
   yield();
