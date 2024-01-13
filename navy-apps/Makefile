@@ -35,7 +35,7 @@ endif
 
 ## 2. General Compilation Targets
 
-VME=1
+# VME=1
 
 ### Create the destination directory (`build/$ISA`)
 WORK_DIR  = $(shell pwd)
