@@ -6,12 +6,17 @@ void* new_page(size_t nr_page) {
   assert(pf != NULL);
   void *ret = pf;
   pf += nr_page * PGSIZE;
+  assert(((uintptr_t)ret & 0xfff) == 0);
   return ret;
 }
 
 #ifdef HAS_VME
 static void* pg_alloc(int n) {
-  return NULL;
+  assert(n > 0);
+  size_t nr_page = ((n - 1) / PGSIZE) + 1;
+  void *ret = new_page(nr_page);
+  memset(ret, 0, nr_page * PGSIZE);
+  return ret;
 }
 #endif
 

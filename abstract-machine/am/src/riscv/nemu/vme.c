@@ -67,6 +67,16 @@ void __am_switch(Context *c) {
 }
 
 void map(AddrSpace *as, void *va, void *pa, int prot) {
+  uint32_t VPN1 = ((uintptr_t)va >> 22);
+  uint32_t VPN0 = ((uintptr_t)va >> 12) & 0x3ff;
+  PTE **PTE1 = (PTE **)as->ptr + VPN1;
+  PTE *PTE0;
+  if (*PTE1 == NULL) {
+    *PTE1 = pgalloc_usr(PGSIZE);
+  }
+  assert(((uintptr_t)*PTE1 & 0xfff) == 0);
+  PTE0 = *PTE1 + VPN0;
+  *PTE0 = ((PTE_V | PTE_R | PTE_W | PTE_X) | ((uintptr_t)pa << 10));
 }
 
 Context *ucontext(AddrSpace *as, Area kstack, void *entry) {
