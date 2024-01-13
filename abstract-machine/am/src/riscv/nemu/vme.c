@@ -77,6 +77,7 @@ void map(AddrSpace *as, void *va, void *pa, int prot) {
   assert(((uintptr_t)*PTE1 & 0xfff) == 0);
   PTE0 = *PTE1 + VPN0;
   *PTE0 = ((PTE_V | PTE_R | PTE_W | PTE_X) | ((uintptr_t)pa << 10));
+  assert(0);
 }
 
 Context *ucontext(AddrSpace *as, Area kstack, void *entry) {
