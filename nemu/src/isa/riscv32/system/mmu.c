@@ -24,7 +24,6 @@ paddr_t isa_mmu_translate(vaddr_t vaddr, int len, int type) {
   paddr_t PTE0 = paddr_read(PTE1, 4);
   paddr_t paddr = paddr_read((PTE0 << 12) + 4 * VPN0, 4);
   assert(paddr == vaddr);
-  assert(0);
   return paddr;
   return vaddr;
 }
