@@ -71,14 +71,14 @@ void map(AddrSpace *as, void *va, void *pa, int prot) {
   assert(((uintptr_t)pa & 0xfff) == 0);
   uint32_t VPN1 = ((uintptr_t)va >> 22);
   uint32_t VPN0 = ((uintptr_t)va >> 12) & 0x3ff;
-  PTE **PTE1 = (PTE **)as->ptr + VPN1;
-  PTE *PTE0;
-  if (*PTE1 == NULL) {
-    *PTE1 = pgalloc_usr(PGSIZE);
+  PTE PTE1 = (PTE)as->ptr + 4 * VPN1;
+  if (*(PTE *)PTE1 == 0) {
+    *(PTE *)PTE1 = (PTE)pgalloc_usr(PGSIZE);
   }
-  assert(((uintptr_t)*PTE1 & 0xfff) == 0);
-  PTE0 = *PTE1 + VPN0;
-  *PTE0 = ((PTE_V | PTE_R | PTE_W | PTE_X) | (uintptr_t)pa);
+  *(PTE *)PTE1 |= PTE_V;
+  PTE PTE0;
+  PTE0 = (*(PTE *)PTE1 & 0xfffff000) + 4 * VPN0;
+  *(PTE *)PTE0 = ((PTE_V | PTE_R | PTE_W | PTE_X) | (uintptr_t)pa);
 }
 
 Context *ucontext(AddrSpace *as, Area kstack, void *entry) {
