@@ -67,6 +67,8 @@ void __am_switch(Context *c) {
 }
 
 void map(AddrSpace *as, void *va, void *pa, int prot) {
+  assert(((uintptr_t)va & 0xfff) == 0);
+  assert(((uintptr_t)pa & 0xfff) == 0);
   uint32_t VPN1 = ((uintptr_t)va >> 22);
   uint32_t VPN0 = ((uintptr_t)va >> 12) & 0x3ff;
   PTE **PTE1 = (PTE **)as->ptr + VPN1;
