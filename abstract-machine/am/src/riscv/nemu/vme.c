@@ -37,10 +37,10 @@ bool vme_init(void* (*pgalloc_f)(int), void (*pgfree_f)(void*)) {
       map(&kas, va, va, 0);
     }
   }
-
+  printf("aaa\n");
   set_satp(kas.ptr);
   vme_enable = 1;
-
+  printf("bbb\n");
   return true;
 }
 
@@ -67,7 +67,6 @@ void __am_switch(Context *c) {
 }
 
 void map(AddrSpace *as, void *va, void *pa, int prot) {
-  printf("%p\n", va);
   assert(((uintptr_t)va & 0xfff) == 0);
   assert(((uintptr_t)pa & 0xfff) == 0);
   uint32_t VPN1 = ((uintptr_t)va >> 22);
@@ -80,7 +79,6 @@ void map(AddrSpace *as, void *va, void *pa, int prot) {
   PTE PTE0;
   PTE0 = (*(PTE *)PTE1 & 0xfffff000) + 4 * VPN0;
   *(PTE *)PTE0 = ((PTE_V | PTE_R | PTE_W | PTE_X) | (uintptr_t)pa);
-  printf("%p\n", va);
 }
 
 Context *ucontext(AddrSpace *as, Area kstack, void *entry) {
