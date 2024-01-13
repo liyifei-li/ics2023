@@ -67,6 +67,7 @@ void __am_switch(Context *c) {
 }
 
 void map(AddrSpace *as, void *va, void *pa, int prot) {
+  if ((uintptr_t)va == 0x80001000) printf("aaa\n");
   assert(((uintptr_t)va & 0xfff) == 0);
   assert(((uintptr_t)pa & 0xfff) == 0);
   uint32_t VPN1 = ((uintptr_t)va >> 22);
