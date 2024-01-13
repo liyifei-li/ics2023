@@ -67,7 +67,7 @@ IFDEF(CONFIG_ITRACE, extern uint32_t funccnt);
 
 void csrrw_inst(word_t imm, int rd, word_t src1) {
   switch (imm) {
-    case SATP_REG: R(rd) = SATP; SATP = src1; break;
+//    case SATP_REG: R(rd) = SATP; SATP = src1; break;
     case MT_REG: R(rd) = MTR; MTR = src1; break;
     case ME_REG: R(rd) = MER; MER = src1; break;
     case MS_REG: R(rd) = MSR; MSR = src1; break;
@@ -79,7 +79,7 @@ void csrrw_inst(word_t imm, int rd, word_t src1) {
 
 void csrrs_inst(word_t imm, int rd, word_t src1) {
   switch (imm) {
-    case SATP_REG: R(rd) = SATP; SATP |= src1; break;
+//    case SATP_REG: R(rd) = SATP; SATP |= src1; break;
     case MT_REG: R(rd) = MTR; MTR |= src1; break;
     case ME_REG: R(rd) = MER; MER |= src1; break;
     case MS_REG: R(rd) = MSR; MSR |= src1; break;
@@ -91,7 +91,7 @@ void csrrs_inst(word_t imm, int rd, word_t src1) {
 
 void csrrc_inst(word_t imm, int rd, word_t src1) {
   switch (imm) {
-    case SATP_REG: R(rd) = SATP; SATP &= ~src1; break;
+//    case SATP_REG: R(rd) = SATP; SATP &= ~src1; break;
     case MT_REG: R(rd) = MTR; MTR &= ~src1; break;
     case ME_REG: R(rd) = MER; MER &= ~src1; break;
     case MS_REG: R(rd) = MSR; MSR &= ~src1; break;
