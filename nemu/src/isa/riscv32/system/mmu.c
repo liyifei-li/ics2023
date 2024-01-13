@@ -18,12 +18,14 @@
 #include <memory/paddr.h>
 
 paddr_t isa_mmu_translate(vaddr_t vaddr, int len, int type) {
+  printf("%d %d %d\n", vaddr, len, type);
   uint32_t VPN1 = (vaddr >> 22);
   uint32_t VPN0 = (vaddr >> 12) & 0x3ff;
   paddr_t PTE1 = (cpu.satp << 12) + 4 * VPN1;
   paddr_t PTE0 = paddr_read(PTE1, 4);
   paddr_t paddr = paddr_read((PTE0 << 12) + 4 * VPN0, 4);
   assert(paddr == vaddr);
+  printf("%d %d %d\n", vaddr, len, type);
   return paddr;
   return vaddr;
 }
