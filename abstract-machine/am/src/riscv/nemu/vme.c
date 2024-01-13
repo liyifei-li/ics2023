@@ -67,7 +67,6 @@ void __am_switch(Context *c) {
 }
 
 void map(AddrSpace *as, void *va, void *pa, int prot) {
-  if ((uintptr_t)va == 0x80001000) printf("aaa\n");
   assert(((uintptr_t)va & 0xfff) == 0);
   assert(((uintptr_t)pa & 0xfff) == 0);
   uint32_t VPN1 = ((uintptr_t)va >> 22);
@@ -80,6 +79,7 @@ void map(AddrSpace *as, void *va, void *pa, int prot) {
   PTE PTE0;
   PTE0 = (*(PTE *)PTE1 & 0xfffff000) + 4 * VPN0;
   *(PTE *)PTE0 = ((PTE_V | PTE_R | PTE_W | PTE_X) | (uintptr_t)pa);
+  if ((uintptr_t)va == 0x80001000) printf("%8p %8p\n", PTE1, PTE0);
 }
 
 Context *ucontext(AddrSpace *as, Area kstack, void *entry) {
