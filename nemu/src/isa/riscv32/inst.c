@@ -74,7 +74,6 @@ void csrrw_inst(word_t imm, int rd, word_t src1) {
     case MC_REG: R(rd) = MCR; MCR = src1; break;
     default: assert(0); break;
   }
-  assert(0);
   return;
 }
 
