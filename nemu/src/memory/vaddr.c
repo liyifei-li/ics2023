@@ -26,16 +26,16 @@ word_t vaddr2paddr(vaddr_t addr, int len, int type) {
 }
 
 word_t vaddr_ifetch(vaddr_t addr, int len) {
-  addr = vaddr2paddr(addr, len, MEM_TYPE_IFETCH);
+  //addr = vaddr2paddr(addr, len, MEM_TYPE_IFETCH);
   return paddr_read(addr, len);
 }
 
 word_t vaddr_read(vaddr_t addr, int len) {
-  addr = vaddr2paddr(addr, len, MEM_TYPE_READ);
+  //addr = vaddr2paddr(addr, len, MEM_TYPE_READ);
   return paddr_read(addr, len);
 }
 
 void vaddr_write(vaddr_t addr, int len, word_t data) {
-  addr = vaddr2paddr(addr, len, MEM_TYPE_WRITE);
+  //addr = vaddr2paddr(addr, len, MEM_TYPE_WRITE);
   paddr_write(addr, len, data);
 }
