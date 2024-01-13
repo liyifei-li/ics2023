@@ -23,7 +23,6 @@ paddr_t isa_mmu_translate(vaddr_t vaddr, int len, int type) {
   uint32_t VPN0 = (vaddr >> 12) & 0x3ff;
   PTE PTE1 = (cpu.satp << 12) + 4 * VPN1;
   printf("%8x\n", PTE1);
-
   PTE PTE0 = paddr_read(PTE1, 4);
   printf("%8x\n", PTE0);
   paddr_t paddr = paddr_read(PTE0 + 4 * VPN0, 4);
