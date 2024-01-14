@@ -46,10 +46,11 @@ uintptr_t loader(PCB *pcb, const char *filename) {
       word_t memsz = phdr[i].p_memsz;
       Elf_Off offset = phdr[i].p_offset;
       Elf_Addr vaddr = phdr[i].p_vaddr;
-      /*
       fs_lseek(fd, offset, SEEK_SET);
+      void *curpage = (void *)(vaddr & 0xfffff000);
+      /*
       while ((uint32_t)curpage <= vaddr + filesz) {
-        void *newpage = pgalloc_usr(PGSIZE);
+        void *newpage = new_page(1);
         map(&pcb->as, curpage, newpage, 0);
         uint32_t pgoffset = vaddr > (uint32_t)curpage ? vaddr - (uint32_t)curpage : 0;
         uint32_t pagesz = (uint32_t)curpage + PGSIZE > vaddr + memsz ? vaddr + memsz - (uint32_t)curpage : cursize;
@@ -57,7 +58,6 @@ uintptr_t loader(PCB *pcb, const char *filename) {
         curpage += PGSIZE;
       }
       */
-      void *curpage = (void *)(vaddr & 0xfffff000);
       while ((uintptr_t)curpage <= vaddr + memsz) {
         void *newpage = new_page(1);
         printf("%p %p %p %p\n", vaddr, curpage, newpage, vaddr + memsz);
@@ -65,9 +65,7 @@ uintptr_t loader(PCB *pcb, const char *filename) {
         curpage += PGSIZE;
       }
       fs_lseek(fd, offset, SEEK_SET);
-      printf("ccc\n");
       fs_read(fd, (void *)vaddr, filesz);
-      printf("ddd\n");
       memset((void *)(vaddr + filesz), 0, memsz - filesz);
     }
   }
