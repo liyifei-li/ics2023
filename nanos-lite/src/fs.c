@@ -27,8 +27,8 @@ Finfo file_table[] __attribute__((used)) = {
 
 void init_fs() {
   AM_GPU_CONFIG_T gpu_config = io_read(AM_GPU_CONFIG);
-  printf("aaa\n");
   file_table[FD_FB].size = gpu_config.vmemsz;
+  printf("aaa\n");
   return;
 }
 
