@@ -59,7 +59,7 @@ uintptr_t loader(PCB *pcb, const char *filename) {
       */
       void *curpage = (void *)(vaddr & 0xfffff000);
       while ((uintptr_t)curpage <= vaddr + memsz) {
-        printf("%p %p\n", curpage, vaddr + memsz);
+        printf("%p %p %p\n", vaddr, curpage, vaddr + memsz);
         void *newpage = new_page(1);
         map(&pcb->as, curpage, newpage, 0);
         curpage += PGSIZE;
