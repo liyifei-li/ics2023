@@ -40,7 +40,7 @@ uintptr_t loader(PCB *pcb, const char *filename) {
   Elf_Phdr phdr[phnum];
   fs_lseek(fd, phoff, SEEK_SET);
   fs_read(fd, &phdr, phnum * sizeof(Elf_Phdr));
-
+    printf("aaabbb\n");
   for (int i = 0; i < phnum; i++) {
     if (phdr[i].p_type == PT_LOAD) {
       word_t filesz = phdr[i].p_filesz;
@@ -69,6 +69,8 @@ uintptr_t loader(PCB *pcb, const char *filename) {
       memset((void *)(vaddr + filesz), 0, memsz - filesz);
     }
   }
+    printf("aaabbb\n");
+
   void *stack = pcb->as.area.end - 8 * PGSIZE;
   for (int i = 0; i < 8; i++) {
     void *newpage = new_page(1);
