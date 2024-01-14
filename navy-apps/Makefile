@@ -35,10 +35,6 @@ endif
 
 ## 2. General Compilation Targets
 
-### Did this as the manual says
-
-VME       = 1
-
 ### Create the destination directory (`build/$ISA`)
 WORK_DIR  = $(shell pwd)
 DST_DIR   = $(WORK_DIR)/build/$(ISA)
@@ -51,7 +47,7 @@ ARCHIVE  = $(WORK_DIR)/build/$(NAME)-$(ISA).a
 
 ### Add default libraries for ISA != native
 ifneq ($(ISA), native)
-LIBS += libc libos libndl libfixedptc libminiSDL libSDL_image
+LIBS += libc libos libndl # libfixedptc libminiSDL libSDL_image
 CFLAGS += -U_FORTIFY_SOURCE  # fix compile error in Newlib on ubuntu
 else
 WL = -Wl,
@@ -170,8 +166,8 @@ $(CLEAN_ALL):
 .PHONY: clean-all $(CLEAN_ALL)
 
 ### Build fsimg and ramdisk for Nanos-lite
-APPS = nterm pal # menu
-TESTS = 
+APPS = # nterm pal menu
+TESTS = dummy
 
 fsimg: $(addprefix apps/, $(APPS)) $(addprefix tests/, $(TESTS))
 	-for t in $^; do $(MAKE) -s -C $(NAVY_HOME)/$$t install; done

@@ -85,5 +85,6 @@ Context *ucontext(AddrSpace *as, Area kstack, void *entry) {
   Context *c = (Context*)kstack.end - 1;
   c->mstatus = 0x1800;//To pass difftest
   c->mepc = (uintptr_t)entry;
+  c->pdir = as->ptr;
   return c;
 }

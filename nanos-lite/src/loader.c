@@ -1,6 +1,7 @@
 #include <proc.h>
 #include <elf.h>
 #include <fs.h>
+#include <mm.h>
 
 #ifdef __LP64__
 # define Elf_Ehdr Elf64_Ehdr
@@ -46,10 +47,32 @@ uintptr_t loader(PCB *pcb, const char *filename) {
       word_t memsz = phdr[i].p_memsz;
       Elf_Off offset = phdr[i].p_offset;
       Elf_Addr vaddr = phdr[i].p_vaddr;
+      /*
+      fs_lseek(fd, offset, SEEK_SET);
+      while ((uint32_t)curpage <= vaddr + filesz) {
+        void *newpage = pgalloc_usr(PGSIZE);
+        map(&pcb->as, curpage, newpage, 0);
+        uint32_t pgoffset = vaddr > (uint32_t)curpage ? vaddr - (uint32_t)curpage : 0;
+        uint32_t pagesz = (uint32_t)curpage + PGSIZE > vaddr + memsz ? vaddr + memsz - (uint32_t)curpage : cursize;
+        fs_read(fd, (void *)vaddr, );
+        curpage += PGSIZE;
+      }
+      */
+      void *curpage = (void *)(vaddr & 0xfffff000);
+      while ((uintptr_t)curpage <= vaddr + memsz) {
+        void *newpage = new_page(1);
+        map(&pcb->as, curpage, newpage, 0);
+        curpage += PGSIZE;
+      }
       fs_lseek(fd, offset, SEEK_SET);
       fs_read(fd, (void *)vaddr, filesz);
       memset((void *)(vaddr + filesz), 0, memsz - filesz);
     }
+  }
+  void *stack = pcb->as.area.end - 8 * PGSIZE;
+  for (int i = 0; i < 8; i++) {
+    void *newpage = new_page(1);
+    map(&pcb->as, stack, newpage, 0);
   }
   Elf_Addr entry = ehdr.e_entry;
   return entry;
