@@ -67,7 +67,7 @@ void __am_switch(Context *c) {
 }
 
 void map(AddrSpace *as, void *va, void *pa, int prot) {
-  printf("%p %p\n", va, pa);
+  //printf("%p %p\n", va, pa);
   assert(((uintptr_t)va & 0xfff) == 0);
   assert(((uintptr_t)pa & 0xfff) == 0);
   uint32_t VPN1 = ((uintptr_t)va >> 22);
@@ -76,7 +76,7 @@ void map(AddrSpace *as, void *va, void *pa, int prot) {
   if (*(PTE *)PTE1 == 0) {
     *(PTE *)PTE1 = (PTE)pgalloc_usr(PGSIZE);
   }
-  printf("0x%8x\n", *(PTE *)PTE1);
+  //printf("0x%8x\n", *(PTE *)PTE1);
   *(PTE *)PTE1 |= PTE_V;
   PTE PTE0;
   PTE0 = (*(PTE *)PTE1 & 0xfffff000) + 4 * VPN0;
