@@ -72,7 +72,7 @@ void init_proc() {
   char *argv[] = {"/bin/dummy", NULL};
   char *envp[] = {NULL};
 //  context_kload(&pcb[0], hello_fun, (void *)1);
-  context_uload(&pcb[1], "/bin/dummy", argv, envp);
+  context_uload(&pcb[0], "/bin/dummy", argv, envp);
   switch_boot_pcb();
 
   Log("Initializing processes...");
@@ -88,5 +88,6 @@ Context *schedule(Context *prev) {
   current = (current == &pcb[0] ? &pcb[1] : &pcb[0]);
   return current->cp;
   */
-  return prev;
+  current = &pcb[0];
+  return current->cp;
 }
