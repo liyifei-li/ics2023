@@ -69,6 +69,7 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[], char *con
 }
 
 void init_proc() {
+  printf("aaa\n");
   char *argv[] = {"/bin/dummy", NULL};
   char *envp[] = {NULL};
 //  context_kload(&pcb[0], hello_fun, (void *)1);
