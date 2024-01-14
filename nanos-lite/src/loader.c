@@ -65,7 +65,9 @@ uintptr_t loader(PCB *pcb, const char *filename) {
         curpage += PGSIZE;
       }
       fs_lseek(fd, offset, SEEK_SET);
+      printf("ccc\n");
       fs_read(fd, (void *)vaddr, filesz);
+      printf("ddd\n");
       memset((void *)(vaddr + filesz), 0, memsz - filesz);
     }
   }
