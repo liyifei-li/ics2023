@@ -44,7 +44,6 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[], char *con
     strcpy((char *)cur, argv[i]);
     argv_ptr[i] = cur;
   }
-  printf("aaabbb\n");
   for (int i = 0; i < envp_length; i++) {
     len = strlen(envp[i]);
     cur -= len + 1;
@@ -52,6 +51,7 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[], char *con
     envp_ptr[i] = cur;
   }
   envp_ptr[envp_length] = 0;
+  printf("aaabbb\n");
   cur = (void *)((uintptr_t)cur & 0xfffffffc);
   for (int i = envp_length; i >= 0; i--) {
     cur -= 4;//4 is the length of void *
