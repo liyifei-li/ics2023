@@ -15,7 +15,7 @@ static void* pg_alloc(int n) {
   size_t nr_page = n / PGSIZE;
   assert(nr_page * PGSIZE == n);
   void *ret = new_page(nr_page);
-  memset(ret, 0, nr_page * PGSIZE);
+  memset(ret, 0, n);
   return ret;
 }
 #endif

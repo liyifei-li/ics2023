@@ -35,7 +35,9 @@ endif
 
 ## 2. General Compilation Targets
 
-# VME=1
+### Did this as the manual says
+
+VME       = 1
 
 ### Create the destination directory (`build/$ISA`)
 WORK_DIR  = $(shell pwd)
@@ -169,7 +171,7 @@ $(CLEAN_ALL):
 
 ### Build fsimg and ramdisk for Nanos-lite
 APPS = nterm pal # menu
-TESTS = exec-test
+TESTS = 
 
 fsimg: $(addprefix apps/, $(APPS)) $(addprefix tests/, $(TESTS))
 	-for t in $^; do $(MAKE) -s -C $(NAVY_HOME)/$$t install; done

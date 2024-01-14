@@ -34,4 +34,12 @@ static inline bool in_pmem(paddr_t addr) {
 word_t paddr_read(paddr_t addr, int len);
 void paddr_write(paddr_t addr, int len, word_t data);
 
+#define PTE_V 0x01
+#define PTE_R 0x02
+#define PTE_W 0x04
+#define PTE_X 0x08
+#define PTE_U 0x10
+#define PTE_A 0x40
+#define PTE_D 0x80
+
 #endif
