@@ -61,10 +61,10 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[], char *con
     *(uintptr_t *)cur = (uintptr_t)argv_ptr[i];
   }
   cur -= 4;
-  printf("aaabbb\n");
   *(uintptr_t *)cur = argv_length;
   void *entry = (void *)loader(pcb, filename);
   
+  printf("aaabbb\n");
   pcb->cp = ucontext(NULL, (Area) { pcb->stack, pcb + 1 }, entry);
   pcb->cp->GPRx = (uintptr_t)cur;
 }
