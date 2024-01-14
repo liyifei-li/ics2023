@@ -73,6 +73,7 @@ uintptr_t loader(PCB *pcb, const char *filename) {
   for (int i = 0; i < 8; i++) {
     void *newpage = new_page(1);
     map(&pcb->as, stack, newpage, 0);
+    stack += PGSIZE;
   }
   Elf_Addr entry = ehdr.e_entry;
   return entry;
