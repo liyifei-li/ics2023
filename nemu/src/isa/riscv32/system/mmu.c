@@ -29,6 +29,7 @@ paddr_t isa_mmu_translate(vaddr_t vaddr, int len, int type) {
     case MEM_TYPE_IFETCH: assert(leaf & PTE_X); break;
     case MEM_TYPE_READ:   assert(leaf & PTE_R); break;
     case MEM_TYPE_WRITE:  assert(leaf & PTE_W); break;
+    default:              assert(0);
   }
   paddr_t pageaddr = 0xfffff000 & paddr_read((PTE0 & 0xfffff000) + 4 * VPN0, 4);
   paddr_t paddr = pageaddr | (0x00000fff & vaddr);
