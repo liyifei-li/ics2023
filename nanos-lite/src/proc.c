@@ -14,6 +14,7 @@ void switch_boot_pcb() {
 
 void hello_fun(void *arg) {
   yield();
+  yield();
   int j = 1;
   while (1) {
     if (j % 1000 == 0)
