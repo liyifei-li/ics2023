@@ -3,7 +3,6 @@
 #include <syscall.h>
 
 static Context* do_event(Event e, Context* c) {
-  printf("haha %p %p %p\n", current, current->as.area.start, current->max_brk);
   switch (e.event) {
     case EVENT_NULL:      assert(0);       break;
     case EVENT_YIELD:     c = schedule(c); break;
