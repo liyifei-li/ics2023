@@ -12,8 +12,9 @@ typedef union {
     Context *cp;
     AddrSpace as;
     // we do not free memory, so use `max_brk' to determine when to call _map()
+    char bufa[128];
     uintptr_t max_brk;
-    uintptr_t buf[128];
+    char bufb[128];
   };
 } PCB;
 
