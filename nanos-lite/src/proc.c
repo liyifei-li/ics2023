@@ -23,6 +23,7 @@ void hello_fun(void *arg) {
 }
 
 void context_kload(PCB *pcb, void (*entry)(void *), void *arg) {
+  protect(&pcb->as);
   pcb->cp = kcontext((Area) { pcb->stack, pcb + 1 }, entry, arg);
 }
 
@@ -83,7 +84,6 @@ void init_proc() {
 }
 
 Context *schedule(Context *prev) {
-  current->cp = prev;
   printf("%p %p\n", current, &pcb[1]);
   current = (current == &pcb[0] ? &pcb[1] : &pcb[0]);
   return current->cp;
