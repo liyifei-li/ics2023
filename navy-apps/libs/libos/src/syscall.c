@@ -73,6 +73,7 @@ int _write(int fd, void *buf, size_t count) {
 extern char end;
 
 void *_sbrk(intptr_t increment) {
+  printf("%p %d\n", (void *)end, increment);
   static void *program_break = NULL;
   if (program_break == NULL) program_break = &end;
   void *ret = program_break;
