@@ -11,6 +11,7 @@ void __am_switch(Context *c);
 Context* __am_irq_handle(Context *c) {
   printf("have been here\n");
   __am_get_cur_as(c);
+  printf("have been here 2\n");
   if (user_handler) {
     Event ev = {0};
     switch (c->mcause) {
@@ -28,6 +29,7 @@ Context* __am_irq_handle(Context *c) {
       default: ev.event = EVENT_ERROR; break;
     }
     c = user_handler(ev, c);
+  printf("have been here 3\n");
     assert(c != NULL);
   }
   __am_switch(c);
