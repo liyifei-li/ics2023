@@ -39,12 +39,16 @@ uintptr_t loader(PCB *pcb, const char *filename) {
   Elf_Phdr phdr[phnum];
   fs_lseek(fd, phoff, SEEK_SET);
   fs_read(fd, &phdr, phnum * sizeof(Elf_Phdr));
+  uintptr_t heap = 0;
   for (int i = 0; i < phnum; i++) {
     if (phdr[i].p_type == PT_LOAD) {
       word_t filesz = phdr[i].p_filesz;
       word_t memsz = phdr[i].p_memsz;
       Elf_Off offset = phdr[i].p_offset;
       Elf_Addr vaddr = phdr[i].p_vaddr;
+      if (heap < vaddr + memsz) {
+        heap = vaddr + memsz;
+      }
       fs_lseek(fd, offset, SEEK_SET);
       void *curpage = (void *)(vaddr & 0xfffff000);
       printf("stuff area: %p - %p\n", vaddr, vaddr + filesz);
@@ -72,6 +76,7 @@ uintptr_t loader(PCB *pcb, const char *filename) {
       }
     }
   }
+  pcb->max_brk = heap;
   void *stack = pcb->as.area.end - 8 * PGSIZE;
   for (int i = 0; i < 8; i++) {
     void *newpage = new_page(1);
