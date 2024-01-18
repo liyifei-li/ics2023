@@ -76,7 +76,6 @@ uintptr_t loader(PCB *pcb, const char *filename) {
     stack += PGSIZE;
   }
   Elf_Addr entry = ehdr.e_entry;
-  printf("hey...\n");
   return entry;
 }
 
