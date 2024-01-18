@@ -26,6 +26,7 @@
 #endif
 
 uintptr_t loader(PCB *pcb, const char *filename) {
+  memset((void *)0x80000000, 0, 4);
   int fd = fs_open(filename, 0, 0);
 
   Elf_Ehdr ehdr;
