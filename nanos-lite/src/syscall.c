@@ -2,6 +2,7 @@
 #include "syscall.h"
 #include <fs.h>
 #include <proc.h>
+#include <mm.h>
 #include <sys/time.h>
 
 void sys_exit(int status);
@@ -47,7 +48,7 @@ void sys_exit(int status) {
 }
 
 int sys_brk(void *addr) {
-  return 0;//OK for PA3
+  return mm_brk((uintptr_t)addr);
 }
 
 int sys_execve(const char *fname, char * const argv[], char *const envp[]) {

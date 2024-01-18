@@ -4,5 +4,6 @@
 #include <common.h>
 
 void* new_page(size_t nr_page);
+int mm_brk(uintptr_t brk);
 
 #endif
