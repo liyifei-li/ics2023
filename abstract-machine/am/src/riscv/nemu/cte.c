@@ -2,18 +2,6 @@
 #include <riscv/riscv.h>
 #include <klib.h>
 
-typedef union {
-  uint8_t stack[4096];
-  struct {
-    Context *cp;
-    AddrSpace as;
-    // we do not free memory, so use `max_brk' to determine when to call _map()
-    uintptr_t max_brk;
-  };
-} PCB;
-
-extern PCB *current;
-
 static Context* (*user_handler)(Event, Context*) = NULL;
 
 void __am_get_cur_as(Context *c);
@@ -21,7 +9,6 @@ void __am_get_cur_as(Context *c);
 void __am_switch(Context *c);
 
 Context* __am_irq_handle(Context *c) {
-  printf("hahaha %p %p %p\n", current, current->as.area.start, current->max_brk);
   __am_get_cur_as(c);
   if (user_handler) {
     Event ev = {0};
