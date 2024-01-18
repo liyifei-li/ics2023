@@ -49,6 +49,7 @@ Context *kcontext(Area kstack, void (*entry)(void *), void *arg) {
   c->mstatus = 0x1800;//To pass difftest
   c->mepc = (uintptr_t)entry;
   c->GPRx = (uintptr_t)arg;
+  c->pdir = NULL;
   return c;
 }
 
