@@ -67,14 +67,8 @@ uintptr_t loader(PCB *pcb, const char *filename) {
 
         curpage += PGSIZE;
       }
-      /*
-      fs_lseek(fd, offset, SEEK_SET);
-      fs_read(fd, (void *)vaddr, filesz);
-      memset((void *)(vaddr + filesz), 0, memsz - filesz);
-      */
     }
   }
-  printf("hey...\n");
   void *stack = pcb->as.area.end - 8 * PGSIZE;
   for (int i = 0; i < 8; i++) {
     void *newpage = new_page(1);
@@ -82,6 +76,7 @@ uintptr_t loader(PCB *pcb, const char *filename) {
     stack += PGSIZE;
   }
   Elf_Addr entry = ehdr.e_entry;
+  printf("hey...\n");
   return entry;
 }
 
