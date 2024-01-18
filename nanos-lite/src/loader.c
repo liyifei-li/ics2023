@@ -74,6 +74,7 @@ uintptr_t loader(PCB *pcb, const char *filename) {
       */
     }
   }
+  printf("hey...\n");
   void *stack = pcb->as.area.end - 8 * PGSIZE;
   for (int i = 0; i < 8; i++) {
     void *newpage = new_page(1);
