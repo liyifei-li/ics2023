@@ -74,7 +74,7 @@ void map(AddrSpace *as, void *va, void *pa, int prot) {
   uint32_t VPN1 = ((uintptr_t)va >> 22);
   uint32_t VPN0 = ((uintptr_t)va >> 12) & 0x3ff;
   PTE PTE1 = (PTE)as->ptr + 4 * VPN1;
-  //printf("%p\n", as->ptr);
+  printf("%p\n", as->ptr);
   if (*(PTE *)PTE1 == 0) {
     *(PTE *)PTE1 = (PTE)pgalloc_usr(PGSIZE);
   }
