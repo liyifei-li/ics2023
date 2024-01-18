@@ -86,5 +86,6 @@ void init_proc() {
 Context *schedule(Context *prev) {
 //  printf("%p %p\n", current, &pcb[0]);
   current = (current == &pcb[0] ? &pcb[1] : &pcb[0]);
+  assert(current->cp);
   return current->cp;
 }
