@@ -32,7 +32,7 @@ int mm_brk(uintptr_t brk) {
   if (brk <= (current->max_brk & 0xfffff000) + PGSIZE) return 0;
   void *curpage = (void *)((current->max_brk & 0xfffff000) + PGSIZE);
   while ((uintptr_t)curpage < brk) {
-    printf("curpage: %p", curpage);
+    printf("curpage: %p\n", curpage);
     void *newpage = new_page(1);
     map(&current->as, curpage, newpage, 0);
     curpage += PGSIZE;
