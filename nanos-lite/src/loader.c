@@ -48,9 +48,11 @@ uintptr_t loader(PCB *pcb, const char *filename) {
       Elf_Addr vaddr = phdr[i].p_vaddr;
       fs_lseek(fd, offset, SEEK_SET);
       void *curpage = (void *)(vaddr & 0xfffff000);
+      /*
       printf("stuff area: %p - %p\n", vaddr, vaddr + filesz);
       printf("0 area: %p - %p\n", vaddr + filesz, vaddr + memsz);
       printf("curpage: %p\n", curpage);
+      */
       while ((uintptr_t)curpage < vaddr + memsz) {
         void *newpage = new_page(1);
         //printf("%p %p %p %p\n", vaddr, curpage, newpage, vaddr + memsz);
