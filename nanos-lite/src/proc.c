@@ -63,6 +63,7 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[], char *con
   cur -= 4;
   *(uintptr_t *)cur = argv_length;
   void *entry = (void *)loader(pcb, filename);
+  printf("hey!!! %p\n", pcb->max_brk);
   
   pcb->cp = ucontext(&pcb->as, (Area) { pcb->stack, pcb + 1 }, entry);
   pcb->cp->GPRx = (uintptr_t)cur;
