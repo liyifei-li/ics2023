@@ -51,12 +51,12 @@ uintptr_t loader(PCB *pcb, const char *filename) {
       }
       fs_lseek(fd, offset, SEEK_SET);
       void *curpage = (void *)(vaddr & 0xfffff000);
-      printf("stuff area: %p - %p\n", vaddr, vaddr + filesz);
-      printf("0 area: %p - %p\n", vaddr + filesz, vaddr + memsz);
-      printf("curpage: %p\n", curpage);
+      // printf("stuff area: %p - %p\n", vaddr, vaddr + filesz);
+      // printf("0 area: %p - %p\n", vaddr + filesz, vaddr + memsz);
+      // printf("curpage: %p\n", curpage);
       while ((uintptr_t)curpage < vaddr + memsz) {
         void *newpage = new_page(1);
-        //printf("%p %p %p %p\n", vaddr, curpage, newpage, vaddr + memsz);
+        // printf("%p %p %p %p\n", vaddr, curpage, newpage, vaddr + memsz);
         map(&pcb->as, curpage, newpage, 0);
 
         if ((uintptr_t)curpage < vaddr + filesz) {
@@ -68,7 +68,7 @@ uintptr_t loader(PCB *pcb, const char *filename) {
         if ((uintptr_t)curpage + PGSIZE >= vaddr + filesz && (uintptr_t)curpage < vaddr + memsz) {
           word_t memoffset_start = vaddr + filesz > (uint32_t)curpage ? vaddr + filesz - (uint32_t)curpage : 0;
           word_t memoffset_end = vaddr + memsz < (uint32_t)curpage + PGSIZE ? vaddr + memsz - (uint32_t)curpage : PGSIZE;
-          printf("%p %p\n", memoffset_start, memoffset_end);
+          // printf("%p %p\n", memoffset_start, memoffset_end);
           memset(newpage + memoffset_start, 0, memoffset_end - memoffset_start);
         }
 
