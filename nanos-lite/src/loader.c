@@ -26,7 +26,6 @@
 #endif
 
 uintptr_t loader(PCB *pcb, const char *filename) {
-  memset((void *)0xa0000000, 0, 0x100);
   int fd = fs_open(filename, 0, 0);
 
   Elf_Ehdr ehdr;
@@ -49,25 +48,32 @@ uintptr_t loader(PCB *pcb, const char *filename) {
       Elf_Addr vaddr = phdr[i].p_vaddr;
       fs_lseek(fd, offset, SEEK_SET);
       void *curpage = (void *)(vaddr & 0xfffff000);
-      /*
-      while ((uint32_t)curpage <= vaddr + filesz) {
-        void *newpage = new_page(1);
-        map(&pcb->as, curpage, newpage, 0);
-        uint32_t pgoffset = vaddr > (uint32_t)curpage ? vaddr - (uint32_t)curpage : 0;
-        uint32_t pagesz = (uint32_t)curpage + PGSIZE > vaddr + memsz ? vaddr + memsz - (uint32_t)curpage : cursize;
-        fs_read(fd, (void *)vaddr, );
-        curpage += PGSIZE;
-      }
-      */
-      while ((uintptr_t)curpage <= vaddr + memsz) {
+      word_t pagecnt = 0;
+      while ((uintptr_t)curpage < vaddr + memsz) {
         void *newpage = new_page(1);
         //printf("%p %p %p %p\n", vaddr, curpage, newpage, vaddr + memsz);
         map(&pcb->as, curpage, newpage, 0);
+
+        if ((uintptr_t)curpage < vaddr + filesz) {
+          word_t fileoffset_start = vaddr > (uint32_t)curpage ? vaddr - (uint32_t)curpage : 0;
+          word_t fileoffset_end = vaddr + filesz < (uint32_t)curpage + PGSIZE ? vaddr + filesz - (uint32_t)curpage + 1 : PGSIZE;
+          fs_read(fd, newpage + fileoffset_start, fileoffset_end - fileoffset_start);
+        }
+
+        if ((uintptr_t)curpage >= vaddr + filesz && (uintptr_t)curpage < vaddr + memsz) {
+          word_t memoffset_start = vaddr + filesz > (uint32_t)curpage ? vaddr + filesz - (uint32_t)curpage : 0;
+          word_t memoffset_end = vaddr + memsz < (uint32_t)curpage + PGSIZE ? vaddr + memsz - (uint32_t)curpage + 1 : PGSIZE;
+          memset(newpage + memoffset_start, 0, memoffset_end - memoffset_start);
+        }
+
         curpage += PGSIZE;
+        pagecnt++;
       }
+      /*
       fs_lseek(fd, offset, SEEK_SET);
       fs_read(fd, (void *)vaddr, filesz);
       memset((void *)(vaddr + filesz), 0, memsz - filesz);
+      */
     }
   }
   void *stack = pcb->as.area.end - 8 * PGSIZE;
