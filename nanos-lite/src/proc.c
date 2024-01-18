@@ -39,7 +39,6 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[], char *con
   argv_ptr[argv_length] = NULL;
   envp_ptr[envp_length] = NULL;
   for (int i = 0; i < argv_length; i++) {
-    printf("aaa\n");
     len = strlen(argv[i]);
     cur -= len + 1;
     strcpy((char *)cur, argv[i]);
@@ -70,7 +69,7 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[], char *con
 }
 
 void init_proc() {
-  char *argv[] = {"/bin/pal", "--skip"};
+  char *argv[] = {"/bin/pal", "--skip", NULL};
   char *envp[] = {NULL};
   context_kload(&pcb[0], hello_fun, (void *)1);
   context_uload(&pcb[1], "/bin/pal", argv, envp);
