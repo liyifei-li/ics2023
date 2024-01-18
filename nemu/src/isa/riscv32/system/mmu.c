@@ -36,7 +36,7 @@ paddr_t isa_mmu_translate(vaddr_t vaddr, int len, int type) {
     default:              assert(0);
   }
   paddr_t pageaddr = 0xfffff000 & paddr_read((PTE0 & 0xfffff000) + 4 * VPN0, 4);
-  paddr_t paddr = pageaddr | (0x00000fff & vaddr);
-  assert(paddr == vaddr);
+  // paddr_t paddr = pageaddr | (0x00000fff & vaddr);
+  // assert(paddr == vaddr);
   return pageaddr | MEM_RET_OK;
 }
