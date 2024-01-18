@@ -72,8 +72,8 @@ void init_proc() {
   char *argv[] = {"/bin/pal", "--skip"};
   char *envp[] = {NULL};
   context_kload(&pcb[0], hello_fun, (void *)1);
-  printf("aaa\n");
   context_uload(&pcb[1], "/bin/pal", argv, envp);
+  printf("aaa\n");
   switch_boot_pcb();
 
   Log("Initializing processes...");
