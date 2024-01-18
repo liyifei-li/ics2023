@@ -62,7 +62,7 @@ uintptr_t loader(PCB *pcb, const char *filename) {
           fs_read(fd, newpage + fileoffset_start, fileoffset_end - fileoffset_start);
         }
 
-        if ((uintptr_t)curpage >= vaddr + filesz && (uintptr_t)curpage < vaddr + memsz) {
+        if ((uintptr_t)curpage + PGSIZE >= vaddr + filesz && (uintptr_t)curpage < vaddr + memsz) {
           word_t memoffset_start = vaddr + filesz > (uint32_t)curpage ? vaddr + filesz - (uint32_t)curpage : 0;
           word_t memoffset_end = vaddr + memsz < (uint32_t)curpage + PGSIZE ? vaddr + memsz - (uint32_t)curpage + 1 : PGSIZE;
           printf("%p %p\n", memoffset_start, memoffset_end);
