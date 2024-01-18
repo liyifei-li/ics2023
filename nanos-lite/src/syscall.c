@@ -45,7 +45,7 @@ void sys_exit(int status) {
 }
 
 int sys_brk(void *addr) {
-  printf("%p\n", addr);
+//  printf("%p\n", addr);
   return mm_brk((uintptr_t)addr);
 }
 
