@@ -23,7 +23,7 @@ void hello_fun(void *arg) {
 }
 
 void context_kload(PCB *pcb, void (*entry)(void *), void *arg) {
-  protect(&pcb->as);
+//  protect(&pcb->as);
   pcb->cp = kcontext((Area) { pcb->stack, pcb + 1 }, entry, arg);
 }
 
