@@ -48,7 +48,6 @@ uintptr_t loader(PCB *pcb, const char *filename) {
       Elf_Addr vaddr = phdr[i].p_vaddr;
       fs_lseek(fd, offset, SEEK_SET);
       void *curpage = (void *)(vaddr & 0xfffff000);
-      word_t pagecnt = 0;
       while ((uintptr_t)curpage < vaddr + memsz) {
         void *newpage = new_page(1);
         //printf("%p %p %p %p\n", vaddr, curpage, newpage, vaddr + memsz);
@@ -67,7 +66,6 @@ uintptr_t loader(PCB *pcb, const char *filename) {
         }
 
         curpage += PGSIZE;
-        pagecnt++;
       }
       /*
       fs_lseek(fd, offset, SEEK_SET);
