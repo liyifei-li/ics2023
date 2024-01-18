@@ -31,7 +31,6 @@ uintptr_t loader(PCB *pcb, const char *filename) {
   Elf_Ehdr ehdr;
   fs_lseek(fd, 0, SEEK_SET);
   fs_read(fd, &ehdr, sizeof(Elf_Ehdr));
-
   assert(*(uint32_t *)ehdr.e_ident == 0x464c457f);
   assert(ehdr.e_machine == EXPECT_TYPE);
 
