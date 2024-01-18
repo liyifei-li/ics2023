@@ -13,7 +13,7 @@ void switch_boot_pcb() {
 }
 
 void hello_fun(void *arg) {
-  yield();
+  printf("%p\n", pcb[1].max_brk);
   yield();
   int j = 1;
   while (1) {
