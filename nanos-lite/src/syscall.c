@@ -53,7 +53,6 @@ int sys_brk(void *addr) {
 int sys_execve(const char *fname, char * const argv[], char *const envp[]) {
   if (fs_open(fname, 0, 0) == -1) return -2;
   context_uload(current, fname, argv, envp);
-  //printf("sys_exceve: \n");
   switch_boot_pcb();
   yield();
   return -1;
