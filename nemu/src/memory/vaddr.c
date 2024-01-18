@@ -17,6 +17,7 @@
 #include <memory/paddr.h>
 
 word_t vaddr2paddr(vaddr_t addr, int len, int type) {
+  printf("addr: 0x%8x\n", addr);
   switch (isa_mmu_check(addr, len, type)) {
     case MMU_DIRECT: break;
     case MMU_TRANSLATE: addr = (isa_mmu_translate(addr, len, 0) & 0xfffff000) | (addr & 0x00000fff); break;
