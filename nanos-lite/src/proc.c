@@ -88,5 +88,6 @@ Context *schedule(Context *prev) {
   current->cp = prev;
   current = (current == &pcb[0] ? &pcb[1] : &pcb[0]);
   printf("%s: %p %p\n", current == &pcb[0] ? "kernel" : "user", current, current->max_brk);
+  printf("what? %p\n", pcb[1].max_brk);
   return current->cp;
 }
