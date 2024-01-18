@@ -5,8 +5,6 @@
 #include <mm.h>
 #include <sys/time.h>
 
-#define CONFIG_STRACE 1
-
 void sys_exit(int status);
 int sys_brk(void *addr);
 int sys_execve(const char *fname, char * const argv[], char *const envp[]);
@@ -47,6 +45,7 @@ void sys_exit(int status) {
 }
 
 int sys_brk(void *addr) {
+  printf("%p\n", addr);
   return mm_brk((uintptr_t)addr);
 }
 
