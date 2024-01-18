@@ -86,6 +86,6 @@ Context *schedule(Context *prev) {
   // printf("%p %p\n", current, &pcb[0]);
   current->cp = prev;
   current = (current == &pcb[0] ? &pcb[1] : &pcb[0]);
-  printf("curcp %p\n", current->cp);
+  printf("%s\n", current == &pcb[0] ? "kernel\n" : "user\n");
   return current->cp;
 }
