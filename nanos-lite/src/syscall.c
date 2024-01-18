@@ -39,12 +39,9 @@ void do_syscall(Context *c) {
 }
 
 void sys_exit(int status) {
-  /*
-  char *argv[] = {"/bin/nterm", NULL};
+  char *argv[] = {"/bin/pal", NULL};
   char *envp[] = {NULL};
-  sys_execve("/bin/nterm", argv, envp);
-  */
-  halt(0);
+  sys_execve("/bin/pal", argv, envp);
 }
 
 int sys_brk(void *addr) {
