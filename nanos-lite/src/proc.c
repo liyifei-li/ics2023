@@ -5,11 +5,12 @@
 #define MAX_NR_PROC 4
 
 static PCB pcb[MAX_NR_PROC] __attribute__((used)) = {};
-static PCB pcb_boot = {};
+//static PCB pcb_boot = {};
 PCB *current = NULL;
 
 void switch_boot_pcb() {
-  current = &pcb_boot;
+  //current = &pcb_boot;
+  current = &pcb[1];
 }
 
 void hello_fun(void *arg) {
@@ -86,8 +87,8 @@ void init_proc() {
 Context *schedule(Context *prev) {
   // printf("%p %p\n", current, &pcb[0]);
   current->cp = prev;
-  current = (current == &pcb[0] ? &pcb[1] : &pcb[0]);
-  // current = &pcb[0];
+  // current = (current == &pcb[0] ? &pcb[1] : &pcb[0]);
+  current = &pcb[1];
   printf("%s: %p %p %p\n", current == &pcb[0] ? "kernel" : "user", current, current->as.area.start, current->max_brk);
   return current->cp;
 }
