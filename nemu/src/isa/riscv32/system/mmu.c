@@ -18,7 +18,7 @@
 #include <memory/paddr.h>
 
 paddr_t isa_mmu_translate(vaddr_t vaddr, int len, int type) {
-  printf("0x%8x\n", vaddr);
+  if (vaddr < 0x8000000) printf("0x%8x\n", vaddr);
   uint32_t VPN1 = (vaddr >> 22);
   uint32_t VPN0 = (vaddr >> 12) & 0x3ff;
   PTE PTE1 = (cpu.satp << 12) + 4 * VPN1;
