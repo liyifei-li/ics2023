@@ -26,9 +26,7 @@ Context* __am_irq_handle(Context *c) {
       case 19: ev.event = EVENT_SYSCALL; break;
       default: ev.event = EVENT_ERROR; break;
     }
-  printf("have been here 2\n");
     c = user_handler(ev, c);
-  printf("have been here 3\n");
     assert(c != NULL);
   }
   __am_switch(c);
