@@ -86,7 +86,7 @@ Context *schedule(Context *prev) {
   // printf("%p %p\n", current, &pcb[0]);
   current->cp = prev;
   // current = (current == &pcb[0] ? &pcb[1] : &pcb[0]);
-  current = &pcb[0];
+  current = &pcb[1];
   // printf("%s: %p %p\n", current == &pcb[0] ? "kernel" : "user", current, current->max_brk);
   return current->cp;
 }
