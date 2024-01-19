@@ -79,7 +79,7 @@ uintptr_t loader(PCB *pcb, const char *filename) {
   pcb->max_brk = heap;
   void *stack = pcb->as.area.end - 8 * PGSIZE;
   for (int i = 0; i < 8; i++) {
-    printf("stackhere: %p\n", stack);
+    // printf("stackhere: %p\n", stack);
     void *newpage = new_page(1);
     map(&pcb->as, stack, newpage, 0);
     stack += PGSIZE;
