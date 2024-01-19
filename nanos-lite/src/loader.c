@@ -71,7 +71,6 @@ uintptr_t loader(PCB *pcb, const char *filename) {
           // printf("%p %p\n", memoffset_start, memoffset_end);
           memset(newpage + memoffset_start, 0, memoffset_end - memoffset_start);
         }
-
         curpage += PGSIZE;
       }
     }
