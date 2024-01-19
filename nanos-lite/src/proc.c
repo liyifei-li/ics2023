@@ -69,7 +69,7 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[], char *con
 
   void *vstack = (void *)0x7fff8000;
   for (int i = 0; i < 8; i++) {
-    printf("mapped from %p to %p\n", vstack + i * PGSIZE, pstack + i * PGSIZE);
+    // printf("mapped from %p to %p\n", vstack + i * PGSIZE, pstack + i * PGSIZE);
     map(&pcb->as, vstack + i * PGSIZE, pstack + i * PGSIZE, 0);
   }
   void *vstack_end = (void *)0x7fffffff;
@@ -98,7 +98,7 @@ Context *schedule(Context *prev) {
   current->cp = prev;
   current = (current == &pcb[0] ? &pcb[1] : &pcb[0]);
   // current = &pcb[0];
-  printf("%s: %p %p %p\n", current == &pcb[0] ? "kernel" : "user", current, current->max_brk, current->cp->pdir);
+  printf("%s: %p %p %p\n", current == &pcb[0] ? "kernel" : "user", current, current->max_brk, &current->cp->pdir);
   // printf("%s\n", current == &pcb[0] ? "kernel" : "user");
   assert(current != &pcb[0] || current->cp->pdir == NULL);
   return current->cp;
