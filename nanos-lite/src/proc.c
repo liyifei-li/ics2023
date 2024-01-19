@@ -75,7 +75,6 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[], char *con
   }
   void *vstack_end = (void *)0x7fffffff;
   void *vcur = vstack_end - (pstack_end - cur);
-  printf("vcur:%p\n", vcur);
   
   pcb->cp = ucontext(&pcb->as, (Area) { pcb->stack, pcb->stack + STACK_SIZE }, entry);
   pcb->cp->GPRx = (uintptr_t)vcur;
