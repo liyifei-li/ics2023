@@ -47,7 +47,7 @@ bool cte_init(Context*(*handler)(Event, Context*)) {
 Context *kcontext(Area kstack, void (*entry)(void *), void *arg) {
   Context *c = (Context *)kstack.end - 1;
   c->mstatus = 0x1800;//To pass difftest
-  c->mepc = (uintptr_t)entry;
+  c->mepc = (uintptr_t)entry - 4;
   c->GPRx = (uintptr_t)arg;
   c->pdir = NULL;
   printf("kcontext: c: %p, c->pdir: %p\n", c, c->pdir);
