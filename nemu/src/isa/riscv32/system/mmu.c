@@ -26,7 +26,9 @@ paddr_t isa_mmu_translate(vaddr_t vaddr, int len, int type) {
 //  printf("satp: 0x%8x\n", cpu.satp << 12);
 //  printf("PTE1: 0x%8x\n", PTE1);
 //  printf("PTE0: 0x%8x\n", PTE0);
-  assert((vaddr >= 0x40000000 && vaddr < 0x50000000) || (vaddr >= 0x8000000 && vaddr < 0x90000000) || (vaddr >= 0xa000000 && vaddr < 0xb0000000));
+  if (vaddr >= 0x40000000 && vaddr < 0x50000000) assert(PTE0 & PTE_V);
+  if (vaddr >= 0x80000000 && vaddr < 0x90000000) assert(PTE0 & PTE_V);
+  if (vaddr >= 0xa0000000 && vaddr < 0xb0000000) assert(PTE0 & PTE_V);
   assert(PTE0 & PTE_V);
   paddr_t leaf = paddr_read((PTE0 & 0xfffff000) + 4 * VPN0, 4);
   assert(leaf & PTE_V);
