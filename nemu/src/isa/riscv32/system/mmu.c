@@ -17,6 +17,7 @@
 #include <memory/vaddr.h>
 #include <memory/paddr.h>
 
+#define PTESIZE 4
 #define VPN1(n) ((n) >> 22)
 #define VPN0(n) (((n) >> 12) & 0x3ff)
 #define PPN1(n) ((n) >> 22)
@@ -31,11 +32,11 @@ paddr_t isa_mmu_translate(vaddr_t vaddr, int len, int type) {
   assert(vaddr < 0x7e000000 || vaddr >= 0x80000000);
   assert(vaddr < 0x7f000000 || vaddr >= 0x80000000);
   assert(vaddr < 0x70000000 || vaddr >= 0x80000000);
-  vaddr_t PTE1_ADDR = (cpu.satp << 12) + 4 * VPN1(vaddr);
-  PTE PTE1 = paddr_read(PTE1_ADDR, 4);
+  vaddr_t PTE1_ADDR = (cpu.satp << 12) + PTESIZE * VPN1(vaddr);
+  PTE PTE1 = paddr_read(PTE1_ADDR, PTESIZE);
   assert(PTE1 & PTE_V);
-  vaddr_t PTE0_ADDR = PTEPAGE(PTE1) + 4 * VPN0(vaddr);
-  PTE PTE0 = paddr_read(PTE0_ADDR, 4);
+  vaddr_t PTE0_ADDR = PTEPAGE(PTE1) + PTESIZE * VPN0(vaddr);
+  PTE PTE0 = paddr_read(PTE0_ADDR, PTESIZE);
   assert(PTE0 & PTE_V);
 //  printf("satp: 0x%8x\n", cpu.satp << 12);
 //  printf("PTE1: 0x%8x\n", PTE1);
