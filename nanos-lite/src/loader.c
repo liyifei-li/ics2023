@@ -60,14 +60,14 @@ uintptr_t loader(PCB *pcb, const char *filename) {
         map(&pcb->as, curpage, newpage, 0);
 
         if ((uintptr_t)curpage < vaddr + filesz) {
-          word_t fileoffset_start = vaddr > (uint32_t)curpage ? vaddr - (uint32_t)curpage : 0;
-          word_t fileoffset_end = vaddr + filesz < (uint32_t)curpage + PGSIZE ? vaddr + filesz - (uint32_t)curpage : PGSIZE;
+          word_t fileoffset_start = vaddr > (word_t)curpage ? vaddr - (word_t)curpage : 0;
+          word_t fileoffset_end = vaddr + filesz < (word_t)curpage + PGSIZE ? vaddr + filesz - (word_t)curpage : PGSIZE;
           fs_read(fd, newpage + fileoffset_start, fileoffset_end - fileoffset_start);
         }
 
         if ((uintptr_t)curpage + PGSIZE >= vaddr + filesz && (uintptr_t)curpage < vaddr + memsz) {
-          word_t memoffset_start = vaddr + filesz > (uint32_t)curpage ? vaddr + filesz - (uint32_t)curpage : 0;
-          word_t memoffset_end = vaddr + memsz < (uint32_t)curpage + PGSIZE ? vaddr + memsz - (uint32_t)curpage : PGSIZE;
+          word_t memoffset_start = vaddr + filesz > (word_t)curpage ? vaddr + filesz - (word_t)curpage : 0;
+          word_t memoffset_end = vaddr + memsz < (word_t)curpage + PGSIZE ? vaddr + memsz - (word_t)curpage : PGSIZE;
           // printf("%p %p\n", memoffset_start, memoffset_end);
           memset(newpage + memoffset_start, 0, memoffset_end - memoffset_start);
         }
