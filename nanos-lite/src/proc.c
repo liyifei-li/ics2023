@@ -96,15 +96,10 @@ void init_proc() {
 }
 
 Context *schedule(Context *prev) {
-  // printf("%p %p %p %p %p %p\n", &pcb[0], &pcb[1], &pcb[0].stack, &pcb[0].cp, &pcb[0].as, &pcb[0].max_brk);
-  // printf("%p\n", &pcb[0].cp->pdir);
   current->cp = prev;
   current = (current == &pcb[0] ? &pcb[1] : &pcb[0]);
   // current = &pcb[0];
   printf("%s: %p %p %p %p\n", current == &pcb[0] ? "kernel" : "user", current, current->max_brk, &current->max_brk, &current->cp->pdir);
-  // printf("%s\n", current == &pcb[0] ? "kernel" : "user");
-  // printf("%p\n", pcb[0].cp->pdir);
   assert(current == &pcb[1] || current->cp->pdir == NULL);
-  printf("%p\n", current->cp);
   return current->cp;
 }
