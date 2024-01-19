@@ -272,7 +272,7 @@ exprs eval(uint32_t p, uint32_t q) {
       if (ret.error == 1)
         ret.value = 0;
       else
-        ret.value = vaddr_read(ret.value, 4);
+        ret.value = paddr_read(ret.value, 4);
     }
     else if (tokens[op].type == UMINUS) {
       ret = eval(p + 1, q);
