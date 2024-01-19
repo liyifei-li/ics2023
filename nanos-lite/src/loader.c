@@ -80,7 +80,7 @@ uintptr_t loader(PCB *pcb, const char *filename) {
   void *pstack = pcb->stack;
   void *vstack = pcb->as.area.end - STACK_SIZE;
   for (int i = 0; i < 8; i++) {
-    printf("mapped from %p to %p\n", pstack, vstack);
+    // printf("mapped from %p to %p\n", pstack, vstack);
     map(&pcb->as, vstack, pstack, 0);
     pstack += PGSIZE;
     vstack += PGSIZE;
