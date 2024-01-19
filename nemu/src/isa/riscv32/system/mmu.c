@@ -34,8 +34,8 @@ paddr_t isa_mmu_translate(vaddr_t vaddr, int len, int type) {
   // if (vaddr >= 0x7fff8000 && vaddr < 0x80000000) printf("0x%8x %x %x\n", vaddr, PTE1_ADDR, VPN1(vaddr));
   // printf("0x%8x %x %x\n", vaddr, PTE1_ADDR, VPN1(vaddr));
   if (PTE1 == 0) {
+    printf("vaddr: 0x%08x, pc: 0x%08x\n", vaddr, cpu.pc);
     assert(vaddr < 0x7fff8000 || vaddr >= 0x80000000);
-    printf("vaddr: 0x%08x\n", vaddr);
   }
   assert(PTE1);
   assert(PTE1 & PTE_V);
