@@ -18,6 +18,7 @@
 #include <memory/paddr.h>
 
 paddr_t isa_mmu_translate(vaddr_t vaddr, int len, int type) {
+  assert(vaddr < 0x70000000 || vaddr >= 0x80000000);
   assert(cpu.satp & 0x80000000);
   uint32_t VPN1 = (vaddr >> 22);
   uint32_t VPN0 = (vaddr >> 12) & 0x3ff;
