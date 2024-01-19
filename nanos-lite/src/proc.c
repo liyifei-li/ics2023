@@ -85,7 +85,7 @@ void init_proc() {
   char *argv[] = {"/bin/pal", "--skip", NULL};
   char *envp[] = {NULL};
   context_kload(&pcb[0], hello_fun, (void *)1);
-  context_uload(&pcb[2], "/bin/pal", argv, envp);
+  context_uload(&pcb[3], "/bin/pal", argv, envp);
   switch_boot_pcb();
 
   Log("Initializing processes...");
@@ -99,7 +99,7 @@ Context *schedule(Context *prev) {
   // printf("%p %p %p %p %p %p\n", &pcb[0], &pcb[1], &pcb[0].stack, &pcb[0].cp, &pcb[0].as, &pcb[0].max_brk);
   // printf("%p\n", &pcb[0].cp->pdir);
   current->cp = prev;
-  current = (current == &pcb[0] ? &pcb[2] : &pcb[0]);
+  current = (current == &pcb[0] ? &pcb[3] : &pcb[0]);
   // current = &pcb[0];
   printf("%s: %p %p %p %p\n", current == &pcb[0] ? "kernel" : "user", current, current->max_brk, &current->max_brk, &current->cp->pdir);
   // printf("%s\n", current == &pcb[0] ? "kernel" : "user");
