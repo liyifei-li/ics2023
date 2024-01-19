@@ -24,7 +24,7 @@ void hello_fun(void *arg) {
 }
 
 void context_kload(PCB *pcb, void (*entry)(void *), void *arg) {
-  printf("%p %p\n", pcb->stack, pcb->stack + STACK_SIZE);
+  // printf("%p %p\n", pcb->stack, pcb->stack + STACK_SIZE);
   pcb->cp = kcontext((Area) { pcb->stack, pcb->stack + STACK_SIZE }, entry, arg);
 }
 
@@ -95,7 +95,7 @@ void init_proc() {
 }
 
 Context *schedule(Context *prev) {
-  // printf("%p %p\n", current, &pcb[0]);
+  printf("%p %p\n", &pcb[0], &pcb[1]);
   // printf("%p\n", &pcb[0].cp->pdir);
   assert(current != &pcb[0] || pcb[0].cp->pdir == NULL);
   current->cp = prev;
