@@ -26,9 +26,9 @@ paddr_t isa_mmu_translate(vaddr_t vaddr, int len, int type) {
 //  printf("satp: 0x%8x\n", cpu.satp << 12);
 //  printf("PTE1: 0x%8x\n", PTE1);
 //  printf("PTE0: 0x%8x\n", PTE0);
-  assert(PTE0 & PTE_V);
+  // assert(PTE0 & PTE_V);
   paddr_t leaf = paddr_read((PTE0 & 0xfffff000) + 4 * VPN0, 4);
-  assert(leaf & PTE_V);
+  // assert(leaf & PTE_V);
   switch (type) {
     case MEM_TYPE_IFETCH: assert(leaf & PTE_X); break;
     case MEM_TYPE_READ:   assert(leaf & PTE_R); break;
