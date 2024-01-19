@@ -21,6 +21,7 @@
 #include <regex.h>
 
 #include <memory/paddr.h>
+#include <memory/vaddr.h>
 
 enum {
   TK_NOTYPE = 256, TK_EQ, TK_NEQ, TK_AND, TK_DECINT, TK_HEXINT, TK_REG, DEREF, UMINUS,
@@ -271,7 +272,7 @@ exprs eval(uint32_t p, uint32_t q) {
       if (ret.error == 1)
         ret.value = 0;
       else
-        ret.value = *(uint32_t *)guest_to_host(ret.value);
+        ret.value = vaddr_read(ret.value, 4);
     }
     else if (tokens[op].type == UMINUS) {
       ret = eval(p + 1, q);
