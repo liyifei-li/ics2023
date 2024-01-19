@@ -28,13 +28,13 @@ void free_page(void *p) {
 
 /* The brk() system call handler. */
 int mm_brk(uintptr_t brk) {
-  printf("brk: %p max_brk: %p\n", brk, current->max_brk);
+  // printf("brk: %p max_brk: %p\n", brk, current->max_brk);
   if (brk <= current->max_brk) {
     return 0;
   }
   void *curpage = (void *)(((current->max_brk + 0xfff) & 0xfffff000));
   while ((uintptr_t)curpage < brk) {
-    printf("curpage: %p\n", curpage);
+    // printf("curpage: %p\n", curpage);
     void *newpage = new_page(1);
     map(&current->as, curpage, newpage, 0);
     curpage += PGSIZE;
