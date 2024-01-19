@@ -16,7 +16,7 @@ void hello_fun(void *arg) {
   yield();
   int j = 1;
   while (1) {
-    if (j % 10 == 0)
+    if (j % 1000 == 0)
     Log("Hello World from Nanos-lite with arg '%p' for the %dth time!", (uintptr_t)arg, j / 1000);
     j ++;
     yield();
