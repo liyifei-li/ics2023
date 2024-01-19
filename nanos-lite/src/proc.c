@@ -84,6 +84,7 @@ void init_proc() {
   char *envp[] = {NULL};
   context_kload(&pcb[0], hello_fun, (void *)1);
   context_uload(&pcb[1], "/bin/pal", argv, envp);
+  assert(pcb[0].cp->pdir == NULL);
   switch_boot_pcb();
 
   Log("Initializing processes...");
