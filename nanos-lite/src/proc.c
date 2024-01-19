@@ -106,5 +106,6 @@ Context *schedule(Context *prev) {
   printf("%p\n", pcb[0].cp->pdir);
   printf("%p\n", pcb[0].cp->pdir);
   assert(current == &pcb[1] || current->cp->pdir == NULL);
+  printf("%p\n", current->cp);
   return current->cp;
 }
