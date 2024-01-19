@@ -50,7 +50,7 @@ Context *kcontext(Area kstack, void (*entry)(void *), void *arg) {
   c->mepc = (uintptr_t)entry;
   c->GPRx = (uintptr_t)arg;
   c->pdir = NULL;
-  printf("c: %p, k pdir: %p; kstack.end: %p\n", &c, &c->pdir, kstack.end);
+  printf("c: %p, k pdir: %p; kstack.end: %p\n", c, &c->pdir, kstack.end);
   return c;
 }
 
