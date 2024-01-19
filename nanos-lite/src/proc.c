@@ -24,7 +24,7 @@ void hello_fun(void *arg) {
 }
 
 void context_kload(PCB *pcb, void (*entry)(void *), void *arg) {
-  pcb->cp = kcontext((Area) { pcb->stack, pcb + 1 }, entry, arg);
+  pcb->cp = kcontext((Area) { pcb->stack, pcb->stack + STACK_SIZE }, entry, arg);
 }
 
 void context_uload(PCB *pcb, const char *filename, char *const argv[], char *const envp[]) {
@@ -65,7 +65,7 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[], char *con
   *(uintptr_t *)cur = argv_length;
   void *entry = (void *)loader(pcb, filename);
   
-  pcb->cp = ucontext(&pcb->as, (Area) { pcb->stack, pcb + 1 }, entry);
+  pcb->cp = ucontext(&pcb->as, (Area) { pcb->stack, pcb->stack+STACK_SIZE }, entry);
   pcb->cp->GPRx = (uintptr_t)cur;
 }
 
