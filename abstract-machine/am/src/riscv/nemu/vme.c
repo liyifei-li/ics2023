@@ -85,7 +85,7 @@ void map(AddrSpace *as, void *va, void *pa, int prot) {
 }
 
 Context *ucontext(AddrSpace *as, Area kstack, void *entry) {
-  Context *c = (Context*)kstack.end - 1;
+  Context *c = (Context*)kstack.end - sizeof(Context);
   printf("c: %p", &c->pdir);
   c->mstatus = 0x1800;//To pass difftest
   c->mepc = (uintptr_t)entry;
