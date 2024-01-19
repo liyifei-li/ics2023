@@ -97,7 +97,7 @@ Context *schedule(Context *prev) {
   current->cp = prev;
   current = (current == &pcb[0] ? &pcb[1] : &pcb[0]);
   // current = &pcb[0];
-  printf("%s: current: %p, currentt->max_brk: %p, &current->max_brk: %p,current->cp->pdir: %p\n", current == &pcb[0] ? "kernel" : "user", current, current->max_brk, &current->max_brk, current->cp->pdir);
+  printf("%s:\ncurrent: %p, currentt->max_brk: %p, &current->max_brk: %p,current->cp->pdir: %p\n", current == &pcb[0] ? "kernel" : "user", current, current->max_brk, &current->max_brk, current->cp->pdir);
   assert(current == &pcb[1] || current->cp->pdir == NULL);
   return current->cp;
 }
