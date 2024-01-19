@@ -67,17 +67,17 @@ void __am_switch(Context *c) {
 }
 
 void map(AddrSpace *as, void *va, void *pa, int prot) {
-  //printf("%p %p\n", va, pa);
+  // printf("%p %p\n", va, pa);
   assert(((uintptr_t)va & 0xfff) == 0);
   assert(((uintptr_t)pa & 0xfff) == 0);
   uint32_t VPN1 = ((uintptr_t)va >> 22);
   uint32_t VPN0 = ((uintptr_t)va >> 12) & 0x3ff;
   PTE PTE1 = (PTE)as->ptr + 4 * VPN1;
-  //printf("%p\n", as->ptr);
+  // printf("%p\n", as->ptr);
   if (*(PTE *)PTE1 == 0) {
     *(PTE *)PTE1 = (PTE)pgalloc_usr(PGSIZE);
   }
-  //printf("0x%8x\n", *(PTE *)PTE1);
+  // printf("0x%8x\n", *(PTE *)PTE1);
   *(PTE *)PTE1 |= PTE_V;
   PTE PTE0;
   PTE0 = (*(PTE *)PTE1 & 0xfffff000) + 4 * VPN0;
@@ -86,7 +86,7 @@ void map(AddrSpace *as, void *va, void *pa, int prot) {
 
 Context *ucontext(AddrSpace *as, Area kstack, void *entry) {
   Context *c = (Context*)kstack.end - sizeof(Context);
-  printf("c: %p %p %p\n", c, &c->mstatus, &c->mepc);
+  // printf("c: %p %p %p\n", c, &c->mstatus, &c->mepc);
   c->mstatus = 0x1800;//To pass difftest
   c->mepc = (uintptr_t)entry;
   c->pdir = as->ptr;
