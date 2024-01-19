@@ -45,6 +45,8 @@ static struct rule {
   {"\\$(0|pc|ra|[sgt]p|([astx][0-9]+))", TK_REG}, // register (no error handle)
   {"==", TK_EQ},          // equal
   {"!=", TK_NEQ},         // not equal
+  {"<", '<'},             // below
+  {">", '>'},             // above
   {"&&", TK_AND},         // logical and
   {"$a", DEREF},          // dereference, will never match
   {"$a", UMINUS},         // unary minus, will never match
@@ -150,6 +152,14 @@ static bool make_token(char *e) {
             tokens[nr_token].precedence = 1;
             tokens[nr_token++].type = ')';
             break;
+          case '<':
+            tokens[nr_token].precedence = 6;
+            tokens[nr_token++].type = '<';
+            break;
+          case '>':
+            tokens[nr_token].precedence = 6;
+            tokens[nr_token++].type = '>';
+            break;
           case TK_EQ:
             tokens[nr_token].precedence = 7;
             tokens[nr_token++].type = TK_EQ;
@@ -176,6 +186,7 @@ static bool make_token(char *e) {
     if (tokens[i].type == '*' && (i == 0 || tokens[i - 1].type == '('
     || tokens[i - 1].type == '+' || tokens[i - 1].type == '-'
     || tokens[i - 1].type == '*' || tokens[i - 1].type == '/'
+    || tokens[i - 1].type == '<' || tokens[i - 1].type == '>'
     || tokens[i - 1].type == TK_EQ || tokens[i - 1].type == TK_NEQ
     || tokens[i - 1].type == TK_AND || tokens[i - 1].type == DEREF
     || tokens[i - 1].type == UMINUS)) {
@@ -185,6 +196,7 @@ static bool make_token(char *e) {
     if (tokens[i].type == '-' && (i == 0 || tokens[i - 1].type == '('
     || tokens[i - 1].type == '+' || tokens[i - 1].type == '-'
     || tokens[i - 1].type == '*' || tokens[i - 1].type == '/'
+    || tokens[i - 1].type == '<' || tokens[i - 1].type == '>'
     || tokens[i - 1].type == TK_EQ || tokens[i - 1].type == TK_NEQ
     || tokens[i - 1].type == TK_AND || tokens[i - 1].type == DEREF
     || tokens[i - 1].type == UMINUS)) {
@@ -299,6 +311,12 @@ exprs eval(uint32_t p, uint32_t q) {
             break;
           case '/':
             ret.value = subret1.value / subret2.value;
+            break;
+          case '<':
+            ret.value = subret1.value < subret2.value;
+            break;
+          case '>':
+            ret.value = subret1.value > subret2.value;
             break;
           case TK_EQ:
             ret.value = subret1.value == subret2.value;
