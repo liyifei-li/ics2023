@@ -35,7 +35,9 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[], char *con
   int envp_length = 0;
   while (envp[envp_length] != NULL) envp_length++;
   uintptr_t *argv_ptr[argv_length + 1], *envp_ptr[envp_length + 1];
-  void *cur = new_page(8) + 8 * PGSIZE - 1;
+  void *pstack = new_page(8);
+  void *pstack_end = pstack + 8 * PGSIZE - 1;
+  void *cur = pstack_end;
   size_t len;
   argv_ptr[argv_length] = NULL;
   envp_ptr[envp_length] = NULL;
@@ -64,9 +66,17 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[], char *con
   cur -= 4;
   *(uintptr_t *)cur = argv_length;
   void *entry = (void *)loader(pcb, filename);
+
+  void *vstack = (void *)0x7fff8000;
+  for (int i = 0; i < 8; i++) {
+    printf("mapped from %p to %p\n", vstack + i * PGSIZE, pstack + i * PGSIZE);
+    map(&pcb->as, vstack + i * PGSIZE, pstack + i * PGSIZE, 0);
+  }
+  void *vstack_end = (void *)0x7fffffff;
+  void *vcur = vstack_end - (pstack_end - cur);
   
   pcb->cp = ucontext(&pcb->as, (Area) { pcb->stack, pcb->stack + STACK_SIZE }, entry);
-  pcb->cp->GPRx = (uintptr_t)cur;
+  pcb->cp->GPRx = (uintptr_t)vcur;
 }
 
 void init_proc() {
