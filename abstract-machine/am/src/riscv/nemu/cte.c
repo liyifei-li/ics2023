@@ -9,7 +9,7 @@ void __am_get_cur_as(Context *c);
 void __am_switch(Context *c);
 
 Context* __am_irq_handle(Context *c) {
-  __am_get_cur_as(c);
+  if (c->pdir != NULL) __am_get_cur_as(c);
   if (user_handler) {
     Event ev = {0};
     switch (c->mcause) {
@@ -50,7 +50,6 @@ Context *kcontext(Area kstack, void (*entry)(void *), void *arg) {
   c->mepc = (uintptr_t)entry;
   c->GPRx = (uintptr_t)arg;
   c->pdir = NULL;
-  printf("size: %p, c: %p, k pdir: %p; kstack.end: %p\n", sizeof(Context), c, &c->pdir, kstack.end);
   return c;
 }
 
