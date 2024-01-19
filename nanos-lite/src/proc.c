@@ -75,6 +75,7 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[], char *con
   }
   void *vstack_end = (void *)0x7fffffff;
   void *vcur = vstack_end - (pstack_end - cur);
+  printf("vcur:%p\n", vcur);
   
   pcb->cp = ucontext(&pcb->as, (Area) { pcb->stack, pcb->stack + STACK_SIZE }, entry);
   pcb->cp->GPRx = (uintptr_t)vcur;
@@ -96,7 +97,7 @@ void init_proc() {
 
 Context *schedule(Context *prev) {
   // printf("%p %p\n", current, &pcb[0]);
-  printf("%p\n", &pcb[0].cp->pdir);
+  // printf("%p\n", &pcb[0].cp->pdir);
   assert(current != &pcb[0] || pcb[0].cp->pdir == NULL);
   current->cp = prev;
   current = (current == &pcb[0] ? &pcb[1] : &pcb[0]);
