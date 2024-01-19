@@ -17,26 +17,30 @@
 #include <memory/vaddr.h>
 #include <memory/paddr.h>
 
+#define VPN1(n) ((n) >> 22)
+#define VPN0(n) (((n) >> 12) & 0x3ff)
+#define PPN1(n) ((n) >> 22)
+#define PPN0(n) (((n) >> 10) & 0x3ff)
+#define TOPA(n) (((n) & 0xfffffc00) << 2)
+#define PTEPAGE(n) ((n) & 0xfffff000)
+#define OFFSET(n) ((n) & 0xfff)
+
 paddr_t isa_mmu_translate(vaddr_t vaddr, int len, int type) {
-  assert(vaddr < 0x70000000 || vaddr >= 0x80000000);
-  assert(cpu.satp & 0x80000000);
-  uint32_t VPN1 = (vaddr >> 22);
-  uint32_t VPN0 = (vaddr >> 12) & 0x3ff;
-  PTE PTE1 = (cpu.satp << 12) + 4 * VPN1;
-  PTE PTE0 = paddr_read(PTE1, 4);
+  vaddr_t PTE1_ADDR = (cpu.satp << 12) + 4 * VPN1(vaddr);
+  PTE PTE1 = paddr_read(PTE1_ADDR, 4);
+  assert(PTE1 & PTE_V);
+  vaddr_t PTE0_ADDR = PTEPAGE(PTE1) + 4 * VPN0(vaddr);
+  PTE PTE0 = paddr_read(PTE0_ADDR, 4);
+  assert(PTE0 & PTE_V);
 //  printf("satp: 0x%8x\n", cpu.satp << 12);
 //  printf("PTE1: 0x%8x\n", PTE1);
 //  printf("PTE0: 0x%8x\n", PTE0);
-  paddr_t leaf = paddr_read((PTE0 & 0xfffff000) + 4 * VPN0, 4);
-  assert(leaf & PTE_V);
   switch (type) {
-    case MEM_TYPE_IFETCH: assert(leaf & PTE_X); break;
-    case MEM_TYPE_READ:   assert(leaf & PTE_R); break;
-    case MEM_TYPE_WRITE:  assert(leaf & PTE_W); break;
+    case MEM_TYPE_IFETCH: assert(PTE0 & PTE_X); break;
+    case MEM_TYPE_READ:   assert(PTE0 & PTE_R); break;
+    case MEM_TYPE_WRITE:  assert(PTE0 & PTE_W); break;
     default:              assert(0);
   }
-  paddr_t pageaddr = 0xfffff000 & paddr_read((PTE0 & 0xfffff000) + 4 * VPN0, 4);
-  // paddr_t paddr = pageaddr | (0x00000fff & vaddr);
-  // assert(paddr == vaddr);
-  return pageaddr | MEM_RET_OK;
+  paddr_t paddr = TOPA(PTE0);
+  return paddr | MEM_RET_OK;
 }

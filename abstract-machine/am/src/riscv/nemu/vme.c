@@ -72,8 +72,8 @@ void __am_switch(Context *c) {
 #define VPN0(n) (((n) >> 12) & 0x3ff)
 #define PPN1(n) ((n) >> 22)
 #define PPN0(n) (((n) >> 10) & 0x3ff)
+#define TOPPN(n) ((n) >> 2)
 #define OFFSET(n) ((n) & 0xfff)
-
 
 void map(AddrSpace *as, void *va, void *pa, int prot) {
   // printf("%p %p\n", va, pa);
@@ -88,7 +88,7 @@ void map(AddrSpace *as, void *va, void *pa, int prot) {
   }
   // printf("0x%8x\n", *(PTE *)PTE1);
   PTE PTE0 = (*(PTE *)PTE1 & 0xfffff000) + 4 * VPN0(VA);
-  *(PTE *)PTE0 = (PTE_V | PTE_R | PTE_W | PTE_X) | PA;
+  *(PTE *)PTE0 = (PTE_V | PTE_R | PTE_W | PTE_X) | TOPPN(PA);
 }
 
 Context *ucontext(AddrSpace *as, Area kstack, void *entry) {
