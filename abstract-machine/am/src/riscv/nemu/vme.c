@@ -68,10 +68,10 @@ void __am_switch(Context *c) {
 
 #define VA ((uintptr_t)va)
 #define PA ((uintptr_t)pa)
-// #define VPN1(n) ((n) >> 22)
-// #define VPN0(n) (((n) >> 12) & 0x3ff)
+#define VPN1(n) ((n) >> 22)
+#define VPN0(n) (((n) >> 12) & 0x3ff)
 #define PPN1(n) ((n) >> 22)
-#define VPN0(n) (((n) >> 10) & 0x3ff)
+#define PPN0(n) (((n) >> 10) & 0x3ff)
 #define OFFSET(n) ((n) & 0xfff)
 
 
@@ -79,18 +79,15 @@ void map(AddrSpace *as, void *va, void *pa, int prot) {
   // printf("%p %p\n", va, pa);
   assert(OFFSET(VA) == 0);
   assert(OFFSET(PA) == 0);
-  uint32_t VPN1 = ((uintptr_t)va >> 22) & 0x3ff;
-  uint32_t VPN0 = ((uintptr_t)va >> 12) & 0x3ff;
 
-  PTE PTE1 = (PTE)as->ptr + 4 * VPN1;
+  PTE PTE1 = (PTE)as->ptr + 4 * VPN1(VA);
   // printf("%p\n", as->ptr);
   if (*(PTE *)PTE1 == 0) {
     *(PTE *)PTE1 = (PTE)pgalloc_usr(PGSIZE);
   }
   // printf("0x%8x\n", *(PTE *)PTE1);
   *(PTE *)PTE1 |= PTE_V;
-  PTE PTE0;
-  PTE0 = (*(PTE *)PTE1 & 0xfffff000) + 4 * VPN0;
+  PTE PTE0 = (*(PTE *)PTE1 & 0xfffff000) + 4 * VPN0(VA);
   *(PTE *)PTE0 = ((PTE_V | PTE_R | PTE_W | PTE_X) | (uintptr_t)pa);
 }
 
