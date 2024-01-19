@@ -16,7 +16,7 @@
 #include <isa.h>
 
 word_t isa_raise_intr(word_t NO, vaddr_t epc) {
-  cpu.mepc = NO >= 0 ? epc : epc + 4;
+  cpu.mepc = NO ? epc : epc + 4;
   cpu.mcause = NO;
   #ifdef CONFIG_ETRACE
     printf("intr NO.%d raised at pc=0x%08x\n", NO, epc);
