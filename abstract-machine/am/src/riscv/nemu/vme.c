@@ -88,7 +88,7 @@ void map(AddrSpace *as, void *va, void *pa, int prot) {
   // printf("0x%8x\n", *(PTE *)PTE1);
   *(PTE *)PTE1 |= PTE_V;
   PTE PTE0 = (*(PTE *)PTE1 & 0xfffff000) + 4 * VPN0(VA);
-  *(PTE *)PTE0 = ((PTE_V | PTE_R | PTE_W | PTE_X) | (uintptr_t)pa);
+  *(PTE *)PTE0 = (PTE_V | PTE_R | PTE_W | PTE_X) | PA;
 }
 
 Context *ucontext(AddrSpace *as, Area kstack, void *entry) {
