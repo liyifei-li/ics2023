@@ -10,7 +10,7 @@ void __am_switch(Context *c);
 
 Context* __am_irq_handle(Context *c) {
   __am_get_cur_as(c);
-  if (user_handler) {
+  if (user_handler) { //do_event
     Event ev = {0};
     switch (c->mcause) {
       case -1: ev.event = EVENT_YIELD; break;
