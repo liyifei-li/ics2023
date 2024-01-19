@@ -95,7 +95,7 @@ void init_proc() {
 }
 
 Context *schedule(Context *prev) {
-  // printf("%p %p\n", current, &pcb[0]);
+  printf("%p %p\n", current, &pcb[0]);
   // printf("%p\n", &pcb[0].cp->pdir);
   assert(current != &pcb[0] || pcb[0].cp->pdir == NULL);
   current->cp = prev;
