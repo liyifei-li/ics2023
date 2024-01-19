@@ -79,7 +79,7 @@ void __am_switch(Context *c) {
 #define OFFSET(n) ((n) & 0xfff)
 
 void map(AddrSpace *as, void *va, void *pa, int prot) {
-  // printf("%p %p\n", va, pa);
+  printf("%p %p\n", va, pa);
   assert(OFFSET(VA) == 0);
   assert(OFFSET(PA) == 0);
 
