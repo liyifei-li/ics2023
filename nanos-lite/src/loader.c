@@ -77,12 +77,13 @@ uintptr_t loader(PCB *pcb, const char *filename) {
     }
   }
   pcb->max_brk = heap;
-  void *stack = pcb->as.area.end - 8 * PGSIZE;
+  void *pstack = pcb->stack;
+  void *vstack = pcb->as.area.end - STACK_SIZE;
   for (int i = 0; i < 8; i++) {
-    printf("stackhere: %p\n", stack);
-    void *newpage = new_page(1);
-    map(&pcb->as, stack, newpage, 0);
-    stack += PGSIZE;
+    printf("mapped from %p to %p", pstack, vstack);
+    map(&pcb->as, vstack, pstack, 0);
+    pstack += PGSIZE;
+    vstack += PGSIZE;
   }
   Elf_Addr entry = ehdr.e_entry;
   return entry;
