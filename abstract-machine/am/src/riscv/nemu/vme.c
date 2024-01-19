@@ -84,9 +84,9 @@ void map(AddrSpace *as, void *va, void *pa, int prot) {
   // printf("%p\n", as->ptr);
   if (*(PTE *)PTE1 == 0) {
     *(PTE *)PTE1 = (PTE)pgalloc_usr(PGSIZE);
+    *(PTE *)PTE1 |= PTE_V;
   }
   // printf("0x%8x\n", *(PTE *)PTE1);
-  *(PTE *)PTE1 |= PTE_V;
   PTE PTE0 = (*(PTE *)PTE1 & 0xfffff000) + 4 * VPN0(VA);
   *(PTE *)PTE0 = (PTE_V | PTE_R | PTE_W | PTE_X) | PA;
 }
