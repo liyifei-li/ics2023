@@ -33,6 +33,7 @@ paddr_t isa_mmu_translate(vaddr_t vaddr, int len, int type) {
   assert(vaddr < 0x7e000000 || vaddr >= 0x7f000000);
   assert(vaddr < 0x7f000000 || vaddr >= 0x7ff00000);
   assert(vaddr < 0x7ff00000 || vaddr >= 0x7fff8000);
+  assert(vaddr < 0x7fff8000 || vaddr >= 0x80000000);
   vaddr_t PTE1_ADDR = (cpu.satp << 12) + PTESIZE * VPN1(vaddr);
   PTE PTE1 = paddr_read(PTE1_ADDR, PTESIZE);
   if (PTE1 == 0) assert(vaddr < 0x7fff8000 || vaddr >= 0x80000000);
