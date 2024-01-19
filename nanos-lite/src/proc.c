@@ -26,6 +26,7 @@ void hello_fun(void *arg) {
 void context_kload(PCB *pcb, void (*entry)(void *), void *arg) {
   // printf("%p %p\n", pcb->stack, pcb->stack + STACK_SIZE);
   pcb->cp = kcontext((Area) { pcb->stack, pcb->stack + STACK_SIZE }, entry, arg);
+  printf("k &pcb->cp: %p\n", &pcb->cp);
 }
 
 void context_uload(PCB *pcb, const char *filename, char *const argv[], char *const envp[]) {
@@ -101,7 +102,7 @@ Context *schedule(Context *prev) {
   current->cp = prev;
   current = (current == &pcb[0] ? &pcb[1] : &pcb[0]);
   // current = &pcb[0];
-  printf("%s: %p %p %p\n", current == &pcb[0] ? "kernel" : "user", current, current->max_brk, &current->max_brk, &current->cp->pdir);
+  printf("%s: %p %p %p %p\n", current == &pcb[0] ? "kernel" : "user", current, current->max_brk, &current->max_brk, &current->cp->pdir);
   // printf("%s\n", current == &pcb[0] ? "kernel" : "user");
   assert(current != &pcb[0] || pcb[0].cp->pdir == NULL);
   return current->cp;
