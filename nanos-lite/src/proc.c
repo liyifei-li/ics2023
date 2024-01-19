@@ -16,7 +16,7 @@ void hello_fun(void *arg) {
   yield();
   int j = 1;
   while (1) {
-    if (j % 1000 == 0)
+    if (j % 10 == 0)
     Log("Hello World from Nanos-lite with arg '%p' for the %dth time!", (uintptr_t)arg, j / 1000);
     j ++;
     yield();
@@ -98,7 +98,6 @@ void init_proc() {
 Context *schedule(Context *prev) {
   // printf("%p %p %p %p %p %p\n", &pcb[0], &pcb[1], &pcb[0].stack, &pcb[0].cp, &pcb[0].as, &pcb[0].max_brk);
   // printf("%p\n", &pcb[0].cp->pdir);
-  assert(current != &pcb[0] || pcb[0].cp->pdir == NULL);
   current->cp = prev;
   current = (current == &pcb[0] ? &pcb[1] : &pcb[0]);
   // current = &pcb[0];
@@ -106,6 +105,6 @@ Context *schedule(Context *prev) {
   // printf("%s\n", current == &pcb[0] ? "kernel" : "user");
   printf("%p\n", pcb[0].cp->pdir);
   printf("%p\n", pcb[0].cp->pdir);
-  assert(current == &pcb[1] || pcb[0].cp->pdir == NULL);
+  assert(current == &pcb[1] || current->cp->pdir == NULL);
   return current->cp;
 }
