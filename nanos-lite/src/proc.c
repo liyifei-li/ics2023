@@ -13,7 +13,6 @@ void switch_boot_pcb() {
 }
 
 void hello_fun(void *arg) {
-  yield();
   int j = 1;
   while (1) {
     if (j % 1000 == 0)
@@ -97,7 +96,7 @@ Context *schedule(Context *prev) {
   current->cp = prev;
   current = (current == &pcb[0] ? &pcb[1] : &pcb[0]);
   // current = &pcb[0];
-  printf("%s:\ncurrent: %p, currentt->max_brk: %p, &current->max_brk: %p,current->cp->pdir: %p\n", current == &pcb[0] ? "kernel" : "user", current, current->max_brk, &current->max_brk, current->cp->pdir);
+  printf("%s:\ncurrent: %p, current->max_brk: %p, &current->max_brk: %p, current->cp->pdir: %p\n", current == &pcb[0] ? "kernel" : "user", current, current->max_brk, &current->max_brk, current->cp->pdir);
   assert(current == &pcb[1] || current->cp->pdir == NULL);
   return current->cp;
 }
