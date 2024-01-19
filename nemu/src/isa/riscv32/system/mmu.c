@@ -26,6 +26,11 @@
 #define OFFSET(n) ((n) & 0xfff)
 
 paddr_t isa_mmu_translate(vaddr_t vaddr, int len, int type) {
+  assert(vaddr < 0x78000000 || vaddr >= 0x80000000);
+  assert(vaddr < 0x7c000000 || vaddr >= 0x80000000);
+  assert(vaddr < 0x7e000000 || vaddr >= 0x80000000);
+  assert(vaddr < 0x7f000000 || vaddr >= 0x80000000);
+  assert(vaddr < 0x70000000 || vaddr >= 0x80000000);
   vaddr_t PTE1_ADDR = (cpu.satp << 12) + 4 * VPN1(vaddr);
   PTE PTE1 = paddr_read(PTE1_ADDR, 4);
   assert(PTE1 & PTE_V);
