@@ -36,6 +36,7 @@ f(30) f(31)
 #define OFFSET_CAUSE  ((NR_REGS + 0) * XLEN)
 #define OFFSET_STATUS ((NR_REGS + 1) * XLEN)
 #define OFFSET_EPC    ((NR_REGS + 2) * XLEN)
+#define OFFSET_PDIR   ((NR_REGS + 3) * XLEN) //uses the mscratch register
 
 .align 3
 .globl __am_asm_trap
@@ -47,10 +48,12 @@ __am_asm_trap:
   csrr t0, mcause
   csrr t1, mstatus
   csrr t2, mepc
+  csrr t3, mscratch //actually pdir
 
   STORE t0, OFFSET_CAUSE(sp)
   STORE t1, OFFSET_STATUS(sp)
   STORE t2, OFFSET_EPC(sp)
+  STORE t3, OFFSET_PDIR(sp)
 
   # set mstatus.MPRV to pass difftest
   li a0, (1 << 17)
@@ -64,8 +67,10 @@ __am_asm_trap:
 
   LOAD t1, OFFSET_STATUS(sp)
   LOAD t2, OFFSET_EPC(sp)
+  LOAD t3, OFFSET_PDIR(sp)
   csrw mstatus, t1
   csrw mepc, t2
+  csrw mscratch, t3 //actually pdir
 
   MAP(REGS, POP)
 
