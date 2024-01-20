@@ -10,7 +10,10 @@ void __am_switch(Context *c);
 
 Context* __am_irq_handle(Context *c) {
   static int cnt = 0;
-  printf("cnt: %d, c: %p\n", cnt,  c);
+  if (c->mcause == -1) {
+    printf("cnt: %d, c: %p\n", cnt, c);
+    cnt++;
+  }
   __am_get_cur_as(c);
   if (user_handler) { //do_event
     Event ev = {0};
