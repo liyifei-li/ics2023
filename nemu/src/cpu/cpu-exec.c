@@ -72,7 +72,7 @@ static void exec_once(Decode *s, vaddr_t pc) {
   space_len = space_len * 3 + 1;
   memset(p, ' ', space_len);
   p += space_len;
-  
+
 
   memset(iringbuf[iringpos], 0, sizeof(iringbuf[iringpos]));
   memcpy(iringbuf[iringpos == 0 ? 15 : iringpos - 1], "      ", 6);
