@@ -76,7 +76,7 @@ void mret_setcsr() {
     cpu.mstatus &= ~MIE_MASK;
   }
   cpu.mstatus |= MPIE_MASK;
-  printf("mret_setcsr: 0x%8x\n", cpu.mstatus);
+  printf("mret_setcsr: 0x%x\n", cpu.mstatus);
 }
 
 void csrrw_inst(word_t imm, int rd, word_t src1) {
