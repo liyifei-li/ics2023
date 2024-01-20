@@ -96,7 +96,7 @@ Context *schedule(Context *prev) {
   current = (current == &pcb[0] ? &pcb[1] : &pcb[0]);
   // current = &pcb[1];
   // printf("&current: %p\n", &current); //0x8214a010
-  // printf("%s: current: %p, &current->cp: %p, current->cp->pdir: %p\n", current == &pcb[0] ? "kernel" : "user", current, &current->cp, current->cp->pdir);
+  printf("%s: current: %p, current->cp->mstatus: %p\n", current == &pcb[0] ? "kernel" : "user", current, current->cp->mstatus);
   // 0x82129fdc
   // printf("hello_fun:%p\n", (void *)hello_fun);
   return current->cp;
