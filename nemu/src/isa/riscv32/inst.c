@@ -23,13 +23,11 @@
 #define MER cpu.mepc
 #define MSR cpu.mstatus
 #define MCR cpu.mcause
-#define PDIR cpu.pdir
 #define SATP_REG 0x180
 #define MT_REG 0x305
 #define ME_REG 0x341
 #define MS_REG 0x300
 #define MC_REG 0x342
-#define PDIR_REG 0x340
 
 #define R(i) gpr(i)
 #define Mr vaddr_read
@@ -74,7 +72,6 @@ void csrrw_inst(word_t imm, int rd, word_t src1) {
     case ME_REG: R(rd) = MER; MER = src1; break;
     case MS_REG: R(rd) = MSR; MSR = src1; break;
     case MC_REG: R(rd) = MCR; MCR = src1; break;
-    case PDIR_REG: R(rd) = PDIR; PDIR = src1; break;
     default: assert(0); break;
   }
   return;
@@ -87,7 +84,6 @@ void csrrs_inst(word_t imm, int rd, word_t src1) {
     case ME_REG: R(rd) = MER; MER |= src1; break;
     case MS_REG: R(rd) = MSR; MSR |= src1; break;
     case MC_REG: R(rd) = MCR; MCR |= src1; break;
-    case PDIR_REG: R(rd) = PDIR; PDIR |= src1; break;
     default: assert(0); break;
   }
   return;
@@ -100,7 +96,6 @@ void csrrc_inst(word_t imm, int rd, word_t src1) {
     case ME_REG: R(rd) = MER; MER &= ~src1; break;
     case MS_REG: R(rd) = MSR; MSR &= ~src1; break;
     case MC_REG: R(rd) = MCR; MCR &= ~src1; break;
-    case PDIR_REG: R(rd) = PDIR; PDIR &= ~src1; break;
     default: assert(0); break;
   }
   return;
