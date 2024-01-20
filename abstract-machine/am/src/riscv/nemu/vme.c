@@ -99,6 +99,6 @@ Context *ucontext(AddrSpace *as, Area kstack, void *entry) {
   c->mstatus = 0x1800;//To pass difftest
   c->mepc = (uintptr_t)entry;
   c->pdir = as->ptr;
-  printf("ucontext: c: %p, pdir: %p\n", c, c->pdir);
+  // printf("ucontext: c: %p, pdir: %p\n", c, c->pdir);
   return c;
 }
