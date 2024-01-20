@@ -9,7 +9,7 @@ static Context* do_event(Event e, Context* c) {
     case EVENT_SYSCALL:   do_syscall(c);   break;
     case EVENT_PAGEFAULT: assert(0);       break;
     case EVENT_ERROR:     assert(0);       break;
-    case EVENT_IRQ_TIMER:                  break;
+    case EVENT_IRQ_TIMER: assert(0);                 break;
     case EVENT_IRQ_IODEV: assert(0);       break;
     default: panic("Unhandled event ID = %d", e.event);
   }
