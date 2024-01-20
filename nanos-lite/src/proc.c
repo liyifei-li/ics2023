@@ -93,8 +93,8 @@ void init_proc() {
 
 Context *schedule(Context *prev) {
   current->cp = prev;
-  current = (current == &pcb[0] ? &pcb[1] : &pcb[0]);
-  // current = &pcb[0];
+  // current = (current == &pcb[0] ? &pcb[1] : &pcb[0]);
+  current = &pcb[0];
   // printf("&current: %p\n", &current); //0x8214a010
   printf("%s: current: %p, &current->cp: %p, &current->cp->pdir: %p\n", current == &pcb[0] ? "kernel" : "user", current, &current->cp, &current->cp->pdir);
   // 0x82129fdc
