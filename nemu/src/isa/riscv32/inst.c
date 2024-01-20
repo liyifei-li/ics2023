@@ -71,6 +71,7 @@ IFDEF(CONFIG_ITRACE, extern uint32_t funccnt);
 void mret_setcsr() {
   printf("mret_setcsr(before): 0x%x\n", cpu.mstatus);
   if (cpu.mstatus & MPIE_MASK) {
+    printf("should be here!\n");
     cpu.mstatus |= MIE_MASK;
   }
   else {
