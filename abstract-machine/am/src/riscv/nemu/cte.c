@@ -14,7 +14,7 @@ Context* __am_irq_handle(Context *c) {
     printf("cnt: %d, c: %p, c->pdir: %p\n", cnt, c, c->pdir);
     cnt++;
   }
-  __am_get_cur_as(c);
+  if (c->pdir != NULL) __am_get_cur_as(c);
   if (user_handler) { //do_event
     Event ev = {0};
     switch (c->mcause) {
