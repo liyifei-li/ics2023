@@ -11,7 +11,7 @@ void __am_switch(Context *c);
 Context* __am_irq_handle(Context *c) {
   static int cnt = 0;
   if (c->mcause == -1) {
-    printf("cnt: %d, c: %p\n", cnt, c);
+    printf("cnt: %d, c: %p, c->pdir: %p\n", cnt, c, c->pdir);
     cnt++;
   }
   __am_get_cur_as(c);
