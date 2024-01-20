@@ -15,9 +15,21 @@
 
 #include <isa.h>
 
+#define IRQ_TIMER 0x80000007
+#define MIE_MASK 0x8
+#define MPIE_MASK 0x80
+
 word_t isa_raise_intr(word_t NO, vaddr_t epc) {
   cpu.mepc = NO ? epc + 4 : epc;
   cpu.mcause = NO;
+  if (cpu.mstatus & MIE_MASK) {
+    cpu.mstatus |= MPIE_MASK;
+  }
+  else {
+    cpu.mstatus &= ~MPIE_MASK;
+  }
+  cpu.mstatus &= ~MIE_MASK;
+
   #ifdef CONFIG_ETRACE
     printf("intr NO.%d raised at pc=0x%08x\n", NO, epc);
   #endif
@@ -25,5 +37,9 @@ word_t isa_raise_intr(word_t NO, vaddr_t epc) {
 }
 
 word_t isa_query_intr() {
+  if (cpu.INTR == true && (cpu.mstatus & MIE_MASK)) {
+    cpu.INTR = false;
+    return IRQ_TIMER;
+  }
   return INTR_EMPTY;
 }

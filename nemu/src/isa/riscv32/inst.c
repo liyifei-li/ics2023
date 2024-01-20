@@ -65,6 +65,19 @@ IFDEF(CONFIG_ITRACE, void jal_ftrace(vaddr_t curpc, vaddr_t dnpc, int rd));
 IFDEF(CONFIG_ITRACE, void jalr_ftrace(vaddr_t curpc, vaddr_t dnpc, uint32_t instval, int rd));
 IFDEF(CONFIG_ITRACE, extern uint32_t funccnt);
 
+#define MIE_MASK 0x8
+#define MPIE_MASK 0x80
+
+void mret_setcsr() {
+  if (cpu.mstatus & MPIE_MASK) {
+    cpu.mstatus |= MIE_MASK;
+  }
+  else {
+    cpu.mstatus &= ~MIE_MASK;
+  }
+  cpu.mstatus |= MPIE_MASK;
+}
+
 void csrrw_inst(word_t imm, int rd, word_t src1) {
   switch (imm) {
     case SATP_REG: R(rd) = SATP; SATP = src1; break;
@@ -168,7 +181,7 @@ static int decode_exec(Decode *s) {
   INSTPAT("??????? ????? ????? 001 ????? 11100 11", csrrw  , I, csrrw_inst(imm, rd, src1));
   INSTPAT("??????? ????? ????? 010 ????? 11100 11", csrrs  , I, csrrs_inst(imm, rd, src1));
   INSTPAT("??????? ????? ????? 011 ????? 11100 11", csrrc  , I, csrrc_inst(imm, rd, src1));
-  INSTPAT("0011000 00010 00000 000 00000 11100 11", mret   , N, s->dnpc = cpu.mepc);//TODO: set mstatus bits
+  INSTPAT("0011000 00010 00000 000 00000 11100 11", mret   , N, s->dnpc = MER; mret_setcsr());//TODO: set mstatus bits
   INSTPAT("??????? ????? ????? ??? ????? ????? ??", inv    , N, INV(s->pc));
   INSTPAT_END();
 
