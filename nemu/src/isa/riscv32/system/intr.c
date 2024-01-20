@@ -20,10 +20,10 @@
 #define MPIE_MASK 0x80
 
 word_t isa_raise_intr(word_t NO, vaddr_t epc) {
-  printf("start of exception: %d\n", NO);
   cpu.mepc = ((NO == IRQ_TIMER) || (NO == 0)) ? epc : epc + 4;
   cpu.mcause = NO;
   if (NO == IRQ_TIMER) {
+  printf("start of exception: %d\n", NO);
     if (cpu.mstatus & MIE_MASK) {
       cpu.mstatus |= MPIE_MASK;
     }
