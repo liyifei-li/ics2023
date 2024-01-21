@@ -44,13 +44,24 @@ f(30) // f(31) - (saving them first and restoring them last)
 __am_asm_trap:
 
   csrrw sp, mscratch, sp
-  bnez sp, save_context
-  csrrw sp, mscratch, sp // rly don't wan't to modify this line or use inline assembly, but didn't think of an easy solution... 
+  bnez sp, save_sp_user
+
+save_sp_kernel:
+
+  csrr sp, mscratch
+  STORE t6, (OFFSET_T6 - CONTEXT_SIZE)(sp)
+  STORE sp, (OFFSET_SP - CONTEXT_SIZE)(sp)
+  j save_context
+
+save_sp_user:
+
+  STORE t6, (OFFSET_T6 - CONTEXT_SIZE)(sp)
+  csrr t6, mscratch
+  STORE t6, (OFFSET_SP - CONTEXT_SIZE)(sp)
 
 save_context:
   addi sp, sp, -CONTEXT_SIZE
 
-  STORE t6, OFFSET_T6(sp)
 
   addi t6, sp, CONTEXT_SIZE
   STORE t6, OFFSET_SP(sp)
@@ -60,16 +71,19 @@ save_context:
 save_np_kernel:
 
   li t6, 3
+  STORE t6, OFFSET_NP(sp)
+  addi t6, sp, CONTEXT_SIZE
+  STORE t6, OFFSET_SP(sp)
   j save_np_finish
 
 save_np_user:
 
   li t6, 0
+  STORE t6, OFFSET_NP(sp)
   csrw mscratch, zero
 
 save_np_finish:
 
-  STORE t6, OFFSET_NP(sp)
 
   MAP(REGS, PUSH)
 
