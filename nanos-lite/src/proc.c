@@ -92,7 +92,7 @@ void init_proc() {
 }
 
 Context *schedule(Context *prev) {
-  printf("prev: %p, prev->np: %p, prev->gpr[2]: %p\n", prev, prev->np, prev->gpr[2]);
+  // printf("prev: %p, prev->np: %p, prev->gpr[2]: %p\n", prev, prev->np, prev->gpr[2]);
   static unsigned char cnt = 0;
   current->cp = prev;
   current = &pcb[1];
@@ -110,6 +110,6 @@ Context *schedule(Context *prev) {
   // printf("%s: current: %p, current->cp->mstatus: %p\n", current == &pcb[0] ? "kernel" : "user", current, current->cp->mstatus);
   // 0x82129fdc
   // printf("hello_fun:%p\n", (void *)hello_fun);
-  printf("current->cp: %p\n", current->cp);
+  // printf("current->cp: %p\n", current->cp);
   return current->cp;
 }
