@@ -61,12 +61,12 @@ save_context:
 
 save_np_kernel:
 
-  li t5, 3
+  li t5, 0
   j save_np_finish
 
 save_np_user:
 
-  li t5, 0
+  li t5, 3
 
 save_np_finish:
 
