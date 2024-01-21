@@ -95,7 +95,8 @@ save_np_finish:
 
 restore_ksp_user:
 
-  csrw mscratch, sp
+  addi t5, sp, CONTEXT_SIZE
+  csrw mscratch, t5
 
 restore_ksp_finish:
 
@@ -108,5 +109,6 @@ restore_ksp_finish:
   LOAD t5, OFFSET_T5(sp)
   LOAD t6, OFFSET_T6(sp)
 
-  addi sp, sp, CONTEXT_SIZE
+  // addi sp, sp, CONTEXT_SIZE
+  LOAD sp, OFFSET_SP(sp)
   mret
