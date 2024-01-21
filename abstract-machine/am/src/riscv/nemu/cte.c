@@ -10,7 +10,9 @@ void __am_switch(Context *c);
 
 Context* __am_irq_handle(Context *c) {
   __am_get_cur_as(c);
-  printf("%d\n", c->mcause);
+  uint32_t mscratch;
+  asm volatile("csrr %0, mscratch" : "=r"(mscratch));
+  printf("%d\n", mscratch);
   if (user_handler) { //do_event
     Event ev = {0};
     switch (c->mcause) {
