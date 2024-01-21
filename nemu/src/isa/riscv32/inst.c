@@ -71,6 +71,7 @@ IFDEF(CONFIG_ITRACE, extern uint32_t funccnt);
 #define MPIE_MASK 0x80
 
 void mret_setcsr() {
+  assert((cpu.mstatus & MIE_MASK) == 0);
   if (cpu.mstatus & MPIE_MASK) {
     cpu.mstatus |= MIE_MASK;
   }

@@ -22,7 +22,6 @@
 word_t isa_raise_intr(word_t NO, vaddr_t epc) {
   cpu.mepc = ((NO == IRQ_TIMER) || (NO == 0)) ? epc : epc + 4;
   cpu.mcause = NO;
-  assert(cpu.mcause != 0x1800);
   if (cpu.mstatus & MIE_MASK) {
     cpu.mstatus |= MPIE_MASK;
   }
