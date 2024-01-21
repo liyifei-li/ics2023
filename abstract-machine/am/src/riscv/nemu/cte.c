@@ -10,6 +10,7 @@ void __am_switch(Context *c);
 
 Context* __am_irq_handle(Context *c) {
   __am_get_cur_as(c);
+  printf("%d\n", c->mcause);
   if (user_handler) { //do_event
     Event ev = {0};
     switch (c->mcause) {
@@ -31,7 +32,6 @@ Context* __am_irq_handle(Context *c) {
     assert(c != NULL);
   }
   __am_switch(c);
-  printf("here?\n");
   return c;
 }
 
