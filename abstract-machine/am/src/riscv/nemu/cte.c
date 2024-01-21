@@ -51,6 +51,7 @@ Context *kcontext(Area kstack, void (*entry)(void *), void *arg) {
   c->mepc = (uintptr_t)entry;
   c->GPRx = (uintptr_t)arg;
   c->pdir = NULL;
+  c->np = 3; //KERNEL
   // printf("kcontext: c: %p, &c->pdir: %p\n", c, &c->pdir);
   return c;
 }

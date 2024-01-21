@@ -99,6 +99,7 @@ Context *ucontext(AddrSpace *as, Area kstack, void *entry) {
   c->mstatus = 0x1880;
   c->mepc = (uintptr_t)entry;
   c->pdir = as->ptr;
+  c->np = 0; // USER
   // printf("ucontext: c: %p, pdir: %p\n", c, c->pdir);
   return c;
 }
