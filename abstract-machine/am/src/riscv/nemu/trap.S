@@ -91,7 +91,9 @@ save_np_finish:
   csrw mstatus, t1
 
   mv a0, sp
+
   jal __am_irq_handle
+
   mv sp, a0
 
   LOAD t5, OFFSET_NP(sp)
