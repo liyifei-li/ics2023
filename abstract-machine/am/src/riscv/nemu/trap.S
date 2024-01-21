@@ -95,7 +95,7 @@ save_np_finish:
   mv sp, a0
 
   LOAD t5, OFFSET_NP(sp)
-  bne t5, zero, restore_ksp_finish
+  bnez t5, restore_ksp_finish
 
 restore_ksp_user:
   
