@@ -99,6 +99,7 @@ save_np_finish:
 
 restore_ksp_user:
   
+  addi t5, sp, CONTEXT_SIZE
   csrw mscratch, t5
 
 restore_ksp_finish:
