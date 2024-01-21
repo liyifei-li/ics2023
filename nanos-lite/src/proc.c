@@ -110,5 +110,6 @@ Context *schedule(Context *prev) {
   // printf("%s: current: %p, current->cp->mstatus: %p\n", current == &pcb[0] ? "kernel" : "user", current, current->cp->mstatus);
   // 0x82129fdc
   // printf("hello_fun:%p\n", (void *)hello_fun);
+  printf("current->cp: %p\n", current->cp);
   return current->cp;
 }
