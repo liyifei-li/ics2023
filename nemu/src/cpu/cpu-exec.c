@@ -56,6 +56,9 @@ static void exec_once(Decode *s, vaddr_t pc) {
   s->pc = pc;
   s->snpc = pc;
   isa_exec_once(s);
+  if (cpu.pc == 0x4003cac4) {
+    printf("0x%08x\n", s->dnpc);
+  }
   cpu.pc = s->dnpc;
 #ifdef CONFIG_ITRACE
   char *p = s->logbuf;
@@ -113,9 +116,6 @@ static void execute(uint64_t n) {
     word_t intr = isa_query_intr();
     if (intr != INTR_EMPTY) {
       cpu.pc = isa_raise_intr(intr, cpu.pc);
-    }
-    if (cpu.pc == 0x4003cac4) {
-      printf("heil!\n");
     }
   }
 }
