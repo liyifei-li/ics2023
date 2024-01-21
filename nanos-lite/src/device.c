@@ -23,7 +23,7 @@ size_t serial_write(const void *buf, size_t offset, size_t len) {
   return len;
 }
 
-size_t fg_pcb;
+size_t fg_pcb = 1;
 
 size_t events_read(void *buf, size_t offset, size_t len) {
   AM_INPUT_KEYBRD_T input_keybrd = io_read(AM_INPUT_KEYBRD);
