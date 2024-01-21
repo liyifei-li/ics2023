@@ -92,6 +92,7 @@ void init_proc() {
 }
 
 Context *schedule(Context *prev) {
+  printf("%p\n", prev);
   static unsigned char cnt = 0;
   current->cp = prev;
   current = &pcb[1];
