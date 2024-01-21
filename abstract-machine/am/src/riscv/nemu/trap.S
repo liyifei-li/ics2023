@@ -54,8 +54,8 @@ save_context:
   STORE t5, OFFSET_T5(sp)
   STORE t6, OFFSET_T6(sp)
 
+  STORE sp, OFFSET_SP(sp)
   addi t5, sp, CONTEXT_SIZE
-  STORE t5, OFFSET_SP(sp)
   csrr t6, mscratch
   bne t5, t6, save_np_user
 
@@ -99,7 +99,7 @@ save_np_finish:
 
 restore_ksp_user:
   
-  // addi t5, sp, CONTEXT_SIZE
+  addi t5, sp, CONTEXT_SIZE
   csrw mscratch, t5
 
 restore_ksp_finish:
