@@ -95,7 +95,7 @@ save_np_finish:
   mv sp, a0
 
   LOAD t5, OFFSET_NP(sp)
-  bnez t5, restore_ksp_finish
+  bne t5, zero, restore_ksp_finish
 
 restore_ksp_user:
   
@@ -114,4 +114,5 @@ restore_ksp_finish:
   LOAD t6, OFFSET_T6(sp)
 
   LOAD sp, OFFSET_SP(sp)
+  addi sp, sp, CONTEXT_SIZE
   mret
