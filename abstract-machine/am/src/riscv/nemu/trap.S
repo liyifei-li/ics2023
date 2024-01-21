@@ -19,7 +19,7 @@ f(10) f(11) f(12) f(13) f(14) f(15)
 #define REGS_HI16(f) \
                                     f(16) f(17) f(18) f(19) \
 f(20) f(21) f(22) f(23) f(24) f(25) f(26) f(27) f(28) f(29) \
-// f(30) f(31) - (saving them first and restoring them last)
+f(30) // f(31) - (saving them first and restoring them last)
 #define NR_REGS 32
 #else
 #define REGS_HI16(f)
@@ -33,7 +33,6 @@ f(20) f(21) f(22) f(23) f(24) f(25) f(26) f(27) f(28) f(29) \
 
 #define CONTEXT_SIZE   ((NR_REGS + 4 + 1) * XLEN)
 #define OFFSET_SP      ( 2 * XLEN)
-#define OFFSET_T5      (30 * XLEN)
 #define OFFSET_T6      (31 * XLEN)
 #define OFFSET_CAUSE   ((NR_REGS + 0) * XLEN)
 #define OFFSET_STATUS  ((NR_REGS + 1) * XLEN)
@@ -51,27 +50,26 @@ __am_asm_trap:
 save_context:
   addi sp, sp, -CONTEXT_SIZE
 
-  STORE t5, OFFSET_T5(sp)
   STORE t6, OFFSET_T6(sp)
 
-  addi t5, sp, CONTEXT_SIZE
-  STORE t5, OFFSET_SP(sp)
-  csrr t5, mscratch
-  bnez t5, save_np_user
+  addi t6, sp, CONTEXT_SIZE
+  STORE t6, OFFSET_SP(sp)
+  csrr t6, mscratch
+  bnez t6, save_np_user
 
 save_np_kernel:
 
-  li t5, 3
+  li t6, 3
   j save_np_finish
 
 save_np_user:
 
-  li t5, 0
+  li t6, 0
   csrw mscratch, zero
 
 save_np_finish:
 
-  STORE t5, OFFSET_NP(sp)
+  STORE t6, OFFSET_NP(sp)
 
   MAP(REGS, PUSH)
 
@@ -94,13 +92,13 @@ save_np_finish:
 
   mv sp, a0
 
-  LOAD t5, OFFSET_NP(sp)
-  bnez t5, restore_ksp_finish
+  LOAD t6, OFFSET_NP(sp)
+  bnez t6, restore_ksp_finish
 
 restore_ksp_user:
 
-  addi t5, sp, CONTEXT_SIZE
-  csrw mscratch, t5
+  addi t6, sp, CONTEXT_SIZE
+  csrw mscratch, t6
 
 restore_ksp_finish:
 
@@ -110,7 +108,6 @@ restore_ksp_finish:
   csrw mepc, t2
 
   MAP(REGS, POP)
-  LOAD t5, OFFSET_T5(sp)
   LOAD t6, OFFSET_T6(sp)
 
   LOAD sp, OFFSET_SP(sp)
