@@ -11,8 +11,9 @@ void __am_switch(Context *c);
 Context* __am_irq_handle(Context *c) {
   printf("__am_irq_handle c: %p, c->mcause: %d\n", c, c->mcause);
   for (int i = 0; i < 32; i++) {
-    printf("saved registers no.i: %x\n", c->gpr[i]);
+    printf("saved registers no.%d: %x\n", i, c->gpr[i]);
   }
+  printf("\n");
   __am_get_cur_as(c);
   if (user_handler) { //do_event
     Event ev = {0};
