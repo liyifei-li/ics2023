@@ -62,9 +62,6 @@ save_sp_user:
 save_context:
   addi sp, sp, -CONTEXT_SIZE
 
-
-  addi t6, sp, CONTEXT_SIZE
-  STORE t6, OFFSET_SP(sp)
   csrr t6, mscratch
   bnez t6, save_np_user
 
