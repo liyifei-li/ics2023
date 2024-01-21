@@ -51,6 +51,8 @@ save_sp_kernel:
   csrr sp, mscratch
   STORE t6, (OFFSET_T6 - CONTEXT_SIZE)(sp)
   STORE sp, (OFFSET_SP - CONTEXT_SIZE)(sp)
+  li t6, 3
+  STORE t6, (OFFSET_NP - CONTEXT_SIZE)(sp)
   j save_context
 
 save_sp_user:
@@ -58,25 +60,14 @@ save_sp_user:
   STORE t6, (OFFSET_T6 - CONTEXT_SIZE)(sp)
   csrr t6, mscratch
   STORE t6, (OFFSET_SP - CONTEXT_SIZE)(sp)
+  li t6, 0
+  STORE t6, (OFFSET_NP - CONTEXT_SIZE)(sp)
 
 save_context:
   addi sp, sp, -CONTEXT_SIZE
 
   csrr t6, mscratch
   bnez t6, save_np_user
-
-save_np_kernel:
-
-  li t6, 3
-  STORE t6, OFFSET_NP(sp)
-  j save_np_finish
-
-save_np_user:
-
-  li t6, 0
-  STORE t6, OFFSET_NP(sp)
-
-save_np_finish:
 
   csrw mscratch, zero
   MAP(REGS, PUSH)
