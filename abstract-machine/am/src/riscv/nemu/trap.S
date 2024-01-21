@@ -62,7 +62,6 @@ save_context:
 save_np_kernel:
 
   li t5, 3
-  ebreak
   j save_np_finish
 
 save_np_user:
