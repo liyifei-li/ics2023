@@ -63,10 +63,6 @@ save_user:
 
 save_context:
   addi sp, sp, -CONTEXT_SIZE
-
-  csrr t6, mscratch
-  bnez t6, save_np_user
-
   csrw mscratch, zero
   MAP(REGS, PUSH)
 
