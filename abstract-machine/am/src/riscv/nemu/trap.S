@@ -55,7 +55,7 @@ save_context:
   STORE t6, OFFSET_T6(sp)
 
   addi t5, sp, CONTEXT_SIZE
-  STORE sp, OFFSET_SP(sp)
+  STORE t5, OFFSET_SP(sp)
   csrr t5, mscratch
   bnez t5, save_np_user
 
@@ -67,11 +67,11 @@ save_np_kernel:
 save_np_user:
 
   li t5, 0
+  csrw mscratch, zero
 
 save_np_finish:
 
   STORE t5, OFFSET_NP(sp)
-  csrw mscratch, zero
 
   MAP(REGS, PUSH)
 
@@ -114,5 +114,4 @@ restore_ksp_finish:
   LOAD t6, OFFSET_T6(sp)
 
   LOAD sp, OFFSET_SP(sp)
-  addi sp, sp, CONTEXT_SIZE
   mret
