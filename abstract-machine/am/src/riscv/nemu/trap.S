@@ -73,6 +73,7 @@ save_np_user:
 save_np_finish:
 
   STORE t5, OFFSET_NP(sp)
+  csrw mscratch, zero
 
   MAP(REGS, PUSH)
 
@@ -114,5 +115,4 @@ restore_ksp_finish:
 
   // addi sp, sp, CONTEXT_SIZE
   LOAD sp, OFFSET_SP(sp)
-  ebreak
   mret
