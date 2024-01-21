@@ -22,7 +22,6 @@
 word_t isa_raise_intr(word_t NO, vaddr_t epc) {
   cpu.mepc = ((NO == IRQ_TIMER) || (NO == 0)) ? epc : epc + 4;
   cpu.mcause = NO;
-  // printf("start of exception: %d\n", NO);
     if (cpu.mstatus & MIE_MASK) {
       cpu.mstatus |= MPIE_MASK;
     }
@@ -30,6 +29,7 @@ word_t isa_raise_intr(word_t NO, vaddr_t epc) {
       cpu.mstatus &= ~MPIE_MASK;
     }
     cpu.mstatus &= ~MIE_MASK;
+    printf("start of exception: %d\n", NO);
     assert(cpu.mstatus != 0x1800);
 
   #ifdef CONFIG_ETRACE
