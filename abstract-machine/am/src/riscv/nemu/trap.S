@@ -71,7 +71,7 @@ save_np_user:
 save_np_finish:
 
   STORE t5, OFFSET_NP(sp)
-  csrw mscratch, zero
+//  csrw mscratch, zero
 
   MAP(REGS, PUSH)
 
