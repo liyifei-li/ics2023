@@ -181,12 +181,12 @@ static int decode_exec(Decode *s) {
   INSTPAT("0000001 ????? ????? 111 ????? 01100 11", remu   , R, R(rd) = src1 % src2);
 
 // Special
-  INSTPAT("0000000 00000 00000 000 00000 11100 11", ecall  , N, s->dnpc = isa_raise_intr(R(17), cpu.pc));
+  INSTPAT("0000000 00000 00000 000 00000 11100 11", ecall  , N, s->dnpc = isa_raise_intr(R(17), cpu.pc);if (s->dnpc == 0) printf("aaa"));
   INSTPAT("0000000 00001 00000 000 00000 11100 11", ebreak , N, NEMUTRAP(s->pc, R(10))); // R(10) is $a0
   INSTPAT("??????? ????? ????? 001 ????? 11100 11", csrrw  , I, csrrw_inst(imm, rd, src1));
   INSTPAT("??????? ????? ????? 010 ????? 11100 11", csrrs  , I, csrrs_inst(imm, rd, src1));
   INSTPAT("??????? ????? ????? 011 ????? 11100 11", csrrc  , I, csrrc_inst(imm, rd, src1));
-  INSTPAT("0011000 00010 00000 000 00000 11100 11", mret   , N, s->dnpc = MER; mret_setcsr(); printf("mscratch after mret: 0x%08x, pc: 0x%08x\n", cpu.mscratch, MER);if (s->dnpc == 0) printf("aaa"));
+  INSTPAT("0011000 00010 00000 000 00000 11100 11", mret   , N, s->dnpc = MER; mret_setcsr(); printf("mscratch after mret: 0x%08x, pc: 0x%08x\n", cpu.mscratch, MER));
   INSTPAT("??????? ????? ????? ??? ????? ????? ??", inv    , N, INV(s->pc));
   INSTPAT_END();
 
