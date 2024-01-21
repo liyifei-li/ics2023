@@ -114,4 +114,5 @@ restore_ksp_finish:
 
   // addi sp, sp, CONTEXT_SIZE
   LOAD sp, OFFSET_SP(sp)
+  ebreak
   mret
