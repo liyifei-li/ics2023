@@ -94,7 +94,7 @@ void init_proc() {
 Context *schedule(Context *prev) {
   static unsigned char cnt = 0;
   current->cp = prev;
-  current = &pcb[0];
+  current = &pcb[1];
   /*
   if (cnt == 0) {
     current = &pcb[0];
