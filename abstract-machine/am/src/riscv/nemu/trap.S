@@ -99,9 +99,9 @@ save_np_finish:
 
 restore_ksp_user:
   
-  LOAD t5, OFFSET_SP(sp)
   addi t5, sp, CONTEXT_SIZE
   csrw mscratch, t5
+  ebreak
 
 restore_ksp_finish:
 
