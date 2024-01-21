@@ -21,7 +21,7 @@
 typedef struct {
   word_t gpr[MUXDEF(CONFIG_RVE, 16, 32)];
   vaddr_t pc;
-  word_t mtvec, mepc, mstatus, mcause, satp;
+  word_t mtvec, mepc, mstatus, mcause, mscratch, satp;
   bool INTR;
 } MUXDEF(CONFIG_RV64, riscv64_CPU_state, riscv32_CPU_state);
 

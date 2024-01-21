@@ -25,7 +25,7 @@ Context* __am_irq_handle(Context *c) {
       case 13: ev.event = EVENT_SYSCALL; break;
       case 19: ev.event = EVENT_SYSCALL; break;
       case 0x80000007: ev.event = EVENT_IRQ_TIMER; break;
-      default: ev.event = EVENT_ERROR; break;
+      default: ev.event = EVENT_ERROR;
     }
     c = user_handler(ev, c); //do_event
     assert(c != NULL);
