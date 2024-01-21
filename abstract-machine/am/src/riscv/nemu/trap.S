@@ -69,8 +69,6 @@ save_np_kernel:
 
   li t6, 3
   STORE t6, OFFSET_NP(sp)
-  addi t6, sp, CONTEXT_SIZE
-  STORE t6, OFFSET_SP(sp)
   j save_np_finish
 
 save_np_user:
