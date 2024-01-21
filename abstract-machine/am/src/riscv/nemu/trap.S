@@ -37,6 +37,9 @@ f(30) f(31)
 #define OFFSET_STATUS  ((NR_REGS + 1) * XLEN)
 #define OFFSET_EPC     ((NR_REGS + 2) * XLEN)
 
+.section .data
+my_global_var: .word 0
+
 .section .text
 .align 3
 .globl __am_asm_trap
