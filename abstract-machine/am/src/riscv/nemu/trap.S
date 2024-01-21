@@ -44,10 +44,9 @@ f(30) // f(31) - (saving them first and restoring them last)
 __am_asm_trap:
 
   csrrw sp, mscratch, sp
-  bnez sp, save_sp_user
+  bnez sp, save_user
 
-save_sp_kernel:
-
+save_kernel:
   csrr sp, mscratch
   STORE t6, (OFFSET_T6 - CONTEXT_SIZE)(sp)
   STORE sp, (OFFSET_SP - CONTEXT_SIZE)(sp)
@@ -55,8 +54,7 @@ save_sp_kernel:
   STORE t6, (OFFSET_NP - CONTEXT_SIZE)(sp)
   j save_context
 
-save_sp_user:
-
+save_user:
   STORE t6, (OFFSET_T6 - CONTEXT_SIZE)(sp)
   csrr t6, mscratch
   STORE t6, (OFFSET_SP - CONTEXT_SIZE)(sp)
@@ -94,13 +92,10 @@ save_context:
   LOAD t6, OFFSET_NP(sp)
   bnez t6, restore_ksp_finish
 
-restore_ksp_user:
-
   addi t6, sp, CONTEXT_SIZE
   csrw mscratch, t6
 
 restore_ksp_finish:
-
   LOAD t1, OFFSET_STATUS(sp)
   LOAD t2, OFFSET_EPC(sp)
   csrw mstatus, t1
@@ -108,6 +103,5 @@ restore_ksp_finish:
 
   MAP(REGS, POP)
   LOAD t6, OFFSET_T6(sp)
-
   LOAD sp, OFFSET_SP(sp)
   mret
