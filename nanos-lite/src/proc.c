@@ -95,7 +95,7 @@ Context *schedule(Context *prev) {
   printf("prev: %p, prev->np: %p, prev->gpr[2]: %p\n", prev, prev->np, prev->gpr[2]);
   static unsigned char cnt = 0;
   current->cp = prev;
-  current = &pcb[1];
+  current = &pcb[0];
   /*
   if (cnt == 0) {
     current = &pcb[0];
