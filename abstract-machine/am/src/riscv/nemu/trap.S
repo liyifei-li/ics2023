@@ -103,7 +103,7 @@ restore_ksp_user:
   // addi t5, sp, CONTEXT_SIZE
   csrw mscratch, t5
   mv a0, t5
-  ecall
+  ebreak
 
 restore_ksp_finish:
 
