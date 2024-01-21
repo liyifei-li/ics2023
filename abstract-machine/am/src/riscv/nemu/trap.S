@@ -46,7 +46,7 @@ __am_asm_trap:
 
   csrrw sp, mscratch, sp
   bnez sp, save_context
-  csrr sp, mscratch
+  csrrw sp, mscratch, sp // rly don't wan't to modify this line or use inline assembly, but didn't think of an easy solution... 
 
 save_context:
   addi sp, sp, -CONTEXT_SIZE
@@ -56,8 +56,8 @@ save_context:
 
   addi t5, sp, CONTEXT_SIZE
   STORE t5, OFFSET_SP(sp)
-  csrr t6, mscratch
-  bne t5, t6, save_np_user
+  csrr t5, mscratch
+  bnez t5, save_np_user
 
 save_np_kernel:
 
