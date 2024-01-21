@@ -94,12 +94,15 @@ void init_proc() {
 Context *schedule(Context *prev) {
   static unsigned char cnt = 0;
   current->cp = prev;
+  current = &pcb[0];
+  /*
   if (cnt == 0) {
     current = &pcb[0];
   }
   else {
     current = &pcb[1];
   }
+  */
   cnt++;
   // current = &pcb[1];
   // printf("&current: %p\n", &current); //0x8214a010
