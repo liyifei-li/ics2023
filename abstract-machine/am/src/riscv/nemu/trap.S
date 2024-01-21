@@ -98,7 +98,8 @@ save_np_finish:
   bne t5, zero, restore_ksp_finish
 
 restore_ksp_user:
-
+  
+  LOAD t5, OFFSET_SP(sp)
   addi t5, sp, CONTEXT_SIZE
   csrw mscratch, t5
 
