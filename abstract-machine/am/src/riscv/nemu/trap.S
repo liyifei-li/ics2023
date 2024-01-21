@@ -67,7 +67,6 @@ save_np_kernel:
 save_np_user:
 
   li t5, 0
-  ebreak
 
 save_np_finish:
 
