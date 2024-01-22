@@ -77,11 +77,10 @@ save_np_user:
 
   li t6, 0
   STORE t6, OFFSET_NP(sp)
-  csrw mscratch, zero
 
 save_np_finish:
 
-
+  csrw mscratch, zero
   MAP(REGS, PUSH)
 
   csrr t0, mcause
